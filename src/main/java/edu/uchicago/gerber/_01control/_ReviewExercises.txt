@@ -10,3 +10,91 @@ R1.5 The following are all benefits to using Java over machine code:
 5/ With the introduction of Java8, Java is now a declarative and functional programming language.
 6/ The GraalVM is capable of compiling Java programs to o/s targeted binary code, forgoing the JVM altogether.
 
+R2.4 Translating math expressions to Java:
+1/ s = s_0 + v_0 * t + 0.5 * g * Math.pow(t, 2)
+2/ FV = PV * Math.pow((1 + (INT / 100)), YRS)
+3/ G = 4 * Math.pow(pi, 2) * (Math.pow(a, 3) / (math.pow(p, 2) * (m1 + m2)))
+4/ c = Math.sqrt(Math.pow(a,2) + math.pow(b, 2) - 2 * a * b * Math.cos(lambda))
+
+R2.7 Understanding integer operations, order of precedence, and integer division.
+Given n, m are type int and n = 17 and m = 18
+a/ n / 10 + n % 10 = 8
+b/ n % 2 + m % 2 = 1
+c/ (m + n) / 2 = 17
+d/ (m + n) / 2.0 = 17.5
+e/ (int) (0.5 * (m + n)) = 17
+f/ (int) Math.round(0.5 * (m + n)) = 18
+
+R2.14 How the compiler interprets primitive values
+The difference between 2, 2.0, '2', "2", and "2.0" are that they are all different primitive types.
+2 is an integer and is interpreted by the compiler as a 32 signed bit integer.
+2.0 is a double and is interpreted by the compiler as a 64 bit floating point number.
+'2' is a char and is interpreted by the compiler as a single character.
+"2" and "2.0" are similiar in that they are both strings.
+
+R2.17 Pseudocode understading
+//get input-message from user
+//Store input-message in String
+//Create empty string to store initials
+//Split the String using sapce as regex
+//for each word in the input-message
+    //store the first letter of each word as a string
+    //Concatnate the letter to the string storing the output
+//print resulting string
+
+R2.22 More pseudocode - you do not need to draw a diagram for this question
+So, step by step using the number 4. The code first initializes a string with names containing "SunMonTueWedThuFriSat".
+Next, using the input 4, we would compute the starting position as 3x the day number, which would give us 12.
+Finally, we would extract the substring of names with the starting position of 12 with length 3, getting
+indexes 12,13,14. This results in "Thu"
+
+R3.19 Pseudocode for grade problem
+//get input-message from user
+//store input-message as a integer called score
+// if score is between 90 and 100
+    // return the string "A"
+// else if score is between 80 and 89
+    // return the string "B"
+// else if score is between 70 and 78
+    //return the string "C"
+// else if the score is between 60a nd 69
+    //return the string "D"
+// else if the score is less than 60
+    //return the string "F"
+
+R3.30 Boolean expressions
+a/ b && x == 0
+    false
+b/ b || x == 0
+    true
+c/ !b && x == 0
+    true
+d/ !b || x == 0
+    true
+e/ b && x != 0
+    false
+f/ b || x != 0
+    false
+g/ !b && x != 0
+    false
+h/ !b || x != 0
+    true
+
+R4.12 Implementing loops
+Which loop statements does Java support? Give simple rules for when to use each loop type.
+The three loop statements which Java supports are the while loop, do-while loop and for loop.
+
+The while loop will continue looping through commands until the specified command is not fulfilled
+stopping the looping. You should use it when you do not know how many times you need to iterate a
+block of code.
+
+The for loop will continue looping through commands for a specified amount of times. It should be used when
+you know in advance how many times you want to iterate through a block of code
+
+The do-while loop works that the block of code will execute at least once even if the condition is false from
+the start. So it will execute the code then check the condition and will stop once the output of the block of
+code renders false. It should be used if you want to execute the loop at least once regardless of the condition.
+
+
+R4.14 Calendar problem
+
