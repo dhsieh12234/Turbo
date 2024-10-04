@@ -98,3 +98,21 @@ code renders false. It should be used if you want to execute the loop at least o
 
 R4.14 Calendar problem
 
+//print out the header "Su M T W Th F Sa" onto the terminal
+//initialize the variable CurrentDay to 1 to keep track of days
+// initialize an empty array CalanderArray
+// for each day before you want to start the day on
+    // append the empty space to the
+// for each day until the last day of the week
+    //append the empty spaces to the array for each day before the 1st
+// for each day until the end of the month
+    //if the current day < 10
+        //append the current day with a space at the end for proper alignment
+    //else
+        // append the current day
+    //increment the current day by 1
+    //if the day falls on a saturday
+        //join the Calanderarray as a string and print
+        //reinitialize the calanderArray as a empty list
+//if calanderarray is not empty
+    //print out remaining days
