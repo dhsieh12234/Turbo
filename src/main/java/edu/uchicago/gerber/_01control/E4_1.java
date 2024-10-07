@@ -21,9 +21,10 @@ public class E4_1 {
 //        Problem C
         int total_c = 0;
         for (int i = 0; i <= 20; i++) {
-            total_c += (int)Math.pow(2,i);
+            total_c += (int) Math.pow(2, i);
+            System.out.printf("%d ", (int) Math.pow(2, i));
         }
-        System.out.println("Total for E4.2.c: " + total_c);
+        System.out.println("\nTotal for E4.2.c: " + total_c);
 
 //        Problem D
         Scanner sc1 = new Scanner(System.in);
@@ -58,7 +59,7 @@ public class E4_1 {
             int remainder = number % 10;
             number = number / 10;
 
-            if (remainder  % 2== 1) {
+            if (remainder % 2 == 1) {
                 total_e += remainder;
             }
         }

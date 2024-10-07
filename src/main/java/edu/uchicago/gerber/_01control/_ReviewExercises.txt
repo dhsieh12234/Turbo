@@ -30,23 +30,24 @@ The difference between 2, 2.0, '2', "2", and "2.0" are that they are all differe
 2 is an integer and is interpreted by the compiler as a 32 signed bit integer.
 2.0 is a double and is interpreted by the compiler as a 64 bit floating point number.
 '2' is a char and is interpreted by the compiler as a single character.
-"2" and "2.0" are similiar in that they are both strings.
+"2" and "2.0" are similar in that they are both strings. "2" is 1 char in the compiler meanwhile "2.0" is 3 char in
+the compiler
 
-R2.17 Pseudocode understading
+R2.17 Pseudocode understanding
 //get input-message from user
 //Store input-message in String
 //Create empty string to store initials
-//Split the String using sapce as regex
+//Split the String using space as delimiter
 //for each word in the input-message
     //store the first letter of each word as a string
-    //Concatnate the letter to the string storing the output
+    //Concatenate the letter to the string storing the output
 //print resulting string
 
 R2.22 More pseudocode - you do not need to draw a diagram for this question
 So, step by step using the number 4. The code first initializes a string with names containing "SunMonTueWedThuFriSat".
 Next, using the input 4, we would compute the starting position as 3x the day number, which would give us 12.
 Finally, we would extract the substring of names with the starting position of 12 with length 3, getting
-indexes 12,13,14. This results in "Thu"
+indexes 12,13,14. This results in "Thu".
 
 R3.19 Pseudocode for grade problem
 //get input-message from user
@@ -55,9 +56,9 @@ R3.19 Pseudocode for grade problem
     // return the string "A"
 // else if score is between 80 and 89
     // return the string "B"
-// else if score is between 70 and 78
+// else if score is between 70 and 79
     //return the string "C"
-// else if the score is between 60a nd 69
+// else if the score is between 60 and 69
     //return the string "D"
 // else if the score is less than 60
     //return the string "F"
@@ -84,14 +85,14 @@ R4.12 Implementing loops
 Which loop statements does Java support? Give simple rules for when to use each loop type.
 The three loop statements which Java supports are the while loop, do-while loop and for loop.
 
-The while loop will continue looping through commands until the specified command is not fulfilled
+The while loop will continue looping through the code block until the specified condition is not fulfilled,
 stopping the looping. You should use it when you do not know how many times you need to iterate a
-block of code.
+code block.
 
 The for loop will continue looping through commands for a specified amount of times. It should be used when
 you know in advance how many times you want to iterate through a block of code
 
-The do-while loop works that the block of code will execute at least once even if the condition is false from
+The do-while loop works that the code block will execute at least once even if the condition is false from
 the start. So it will execute the code then check the condition and will stop once the output of the block of
 code renders false. It should be used if you want to execute the loop at least once regardless of the condition.
 
@@ -102,9 +103,7 @@ R4.14 Calendar problem
 //initialize the variable CurrentDay to 1 to keep track of days
 // initialize an empty array CalanderArray
 // for each day before you want to start the day on
-    // append the empty space to the
-// for each day until the last day of the week
-    //append the empty spaces to the array for each day before the 1st
+    // append the empty space to the empty array
 // for each day until the end of the month
     //if the current day < 10
         //append the current day with a space at the end for proper alignment

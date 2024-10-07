@@ -13,10 +13,10 @@ public class E4_17 {
 
         while (n != 0) {
             int remainder = n % 2;
-            n = n /2;
+            n /= 2;
 
             if (length == 4) {
-                result = " " + remainder + result;
+                result =  " " + remainder + result;
                 length = 1;
             } else {
                 result = remainder + result;
