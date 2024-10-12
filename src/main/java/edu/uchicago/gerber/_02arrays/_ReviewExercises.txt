@@ -14,6 +14,209 @@ Since Java5, you can even specify a variable number of arguments aka varargs whi
 Notice that the varargs parameter "String... strNickNames" must be listed last.  Calling this method would look something like this:
  String[] strReturnValues = someMethod(99, "Jim", "Jamie", "James", "Jamey", "Jimmy", "Jimbo");
 
+R5.8 Pseudocode
+Write pseudocode for a method that translates a telephone number with letters in it (such as 1-800-FLOWERS) into
+the actual phone number. Use the standard letters on a phone pad.
+// get input message from user
+// store input-message as a string called score
+// create empty string Res to return phone number
+// for each char in the input message
+    // if the char is a letter (use method)
+        //switch case for each letter correspodning to a number
+        // Case 'A', 'B', 'C':
+            // Append '2' to Res
+        // Case 'D', 'E', 'F':
+            // Append '3' to Res
+        // Case 'G', 'H', 'I':
+            // Append '4' to Res
+        // Case 'J', 'K', 'L':
+            // Append '5' to Res
+        // Case 'M', 'N', 'O':
+            // Append '6' to Res
+        // Case 'P', 'Q', 'R', 'S':
+            // Append '7' to Res
+        // Case 'T', 'U', 'V':
+            // Append '8' to Res
+        // Case 'W', 'X', 'Y', 'Z':
+            // Append '9' to Res
+        // append the number to Res string
+    // else for numbers and spaces
+        // append the char to the Res string
+// return the string
+
+R5.10 Variable scope
+Identify the Scope
+    Line 5 int i = 10; // this is a local scope to main methhod
+    Line 6 int b = g(i); // this is a local scope to the main method
+    LIne 10 public static int f(int i) // this is a parameter for method f
+    Line 12 int n = 0; // this is a local scope for method f
+    Line 19 int b = 0; // this is a local scope to method g
+    Line 20 int n = 0 // this is a local scope for the for loop in method g
+    Line 22 int i = f(n); // this is a local scope in the method g
+
+    The program prints out 26.
+
+R5.14 Pass by value versus pass by reference
+This method doesn't work because when you call the method falseSwap(x,y), the method makes a copy of the
+values x,y into new memory then performs the method of swapping. This leads towards when referencing x and y in
+the print statement they are still accessing the variables in memory in which the variables haven't swapped resulting
+in no changing of the variables.
+
+R6.3 Considering loops
+int[] a = { 1, 2, 3, 4, 5, 4, 3, 2, 1, 0 };
+
+Find the value for each loop
+    a. 25
+    b. 13
+    c. 12
+    d. 22
+    e. 11
+    f. 25
+    g. 12
+    h. -1
+
+R6.10 Enhanced for-loop
+Rewrite the following loops, using the enhanced for loop construct. Here, values is an array of floating-point numbers.
+a. for (double value : values) { total = total + value; }
+b. boolean skipFirst = true;
+   for (double value : values) {
+       if (skipFirst) {
+           skipFirst = false;
+           continue;
+       }
+       total = total + value;
+    }
+c.  int index = 0
+    for (double value : values {
+       if (value == target) {
+            return index
+       }
+       index ++
+   }
+
+R6.23 Computing runs
+
+// store beginning index as an int
+// store end index as an int
+// store result variable as an int
+// start a while loop with condition until end hits the length of the given away
+    // if array [beginning index] is equal to array[ending index]:
+        // start a while loop with condition that array [beginning variable] is equal to array[ending variable]:
+            // add 1 to the ending variable
+    // else
+        // add 1 to ending variable
+    // subtract hte beginning index from the end index
+    // set result variable to be max of difference above and the target before
+    // set beginning index to be end index
+    // set end index to be beginning index plus 1
+// return the result
+
+R6.29 Multi-dimensional arrays
+a.
+    for (int i; i < ROWS; i++) {
+        for (int j; j < COLUMNS; j ++) {
+           values[i][j] = 0;
+        }
+    }
+
+b.
+    for (int i; i < ROWS; i++) {
+        for (int j; j < COLUMNS; j ++) {
+           if ((i + j) % 2 == 0) {
+                values[i][j] = 0;
+           } else {
+                values[i][j] = 1;
+           }
+        }
+    }
+
+c.
+    for (int i; i < ROWS; i++) {
+        for (int j; j < COLUMNS; j ++) {
+           if (i == 0 || i == ROWS - 1)) {
+                values[i][j] == 0;
+           }
+        }
+    }
+
+d.
+    int total = 0
+    for (int i; i < ROWS; i++) {
+        for (int j; j < COLUMNS; j ++) {
+           total += values[i][j]
+        }
+    }
+
+e.
+    for (int i; i < ROWS; i++) {
+        for (int j; j < COLUMNS; j ++) {
+           if (j == COLUMNS - 1) {
+                System.out.printf(" %d/n", values[i][j]);
+           } else {
+                System.pout.printf("%d ", values[i][j]
+           }
+        }
+    }
+
+R6.34 Understanding arrays
+    a. All elements of an array list are of the same type. TRUE
+    b. Array list index values must be integers. TRUE
+    c. Array lists cannot contain strings as elements. FALSE
+    d. Array lists can change their size, getting larger or smaller. TRUE
+    e. A method cannot return an array list. FALSE
+    f. A method cannot change the size of an array list argument. FALSE
+
+
+R7.1 Exceptions
+What happens if you try to open a file for reading that doesn’t exist? What happens if you try to open a
+file for writing that doesn’t exist?
+
+    If you try to open a file for reading that doesn't exist Java will throw an FileNotFoundException error making it
+    so you can't proceed to try to read. If you try to open a file for writing that doesn't exist you will be abel to
+    write on a blank file.
+
+R7.6 Throwing and catching
+What is the difference between throwing an exception and catching an exception?
+
+    Throwing an exception uses the "throw" statement to check an error at compile time then runtime. This allows you to
+    write code to catch the exception. To catch an exception means to handle the error that has been thrown. It provides
+    a way for the program to respond to the exception without crashing
+
+R7.7 Checked versus unchecked
+What is a checked exception? What is an unchecked exception? Give an example for each.
+Which exceptions do you need to declare with the throws reserved word?
+
+    A checked exception means that it is an exception that is checked by the compiler at compile-time.
+    An example would be checking for a nonexistent file where the user would use the try, catch expression to
+    catch the exception.
+
+    An unchecked exception is an exception that is not checked by the compiler at compile-time.
+    An example would be indexing into an array which does nto include the element which woudl trigger a
+    ArrayIndexOutOfBoundsException.
+
+    The exceptions you need to declare with the throws reserved word would be checked exceptions
+
+R7.8 Exceptions philosophy in Java
+Why don’t you need to declare that your method might throw an IndexOutOfBounds -
+Exception?
+    You don't need to declare it since it is a unchecked exception as it is a logic error. This error occurs
+    during runtime and are not anticipated so you do not need to declare your method might throw this error.
+
+R7.11 What is an exception object
+What can your program do with the exception object that a catch clause receives?
+    It can provide a message for your user to diagnose the issue with your code or debug it. The program is also
+    able to self diagnosis and handle the exception to recover the code. It can also help terminate the program
+    gracefully.
+
+R7.15 Scanner exceptions. Explain why these are either checked or unchecked.
+Which exceptions can the next and nextInt methods of the Scanner class throw? Are
+they checked exceptions or unchecked exceptions?
+    Next reads the next token from the input as a String. nextInt reads the next token from the input as an integer.
+    These are both unchecked exceptions which can throw type errors, throw an error if no input exists and thrown if
+    the Scanner is closed when attempting to read input.
+
+
+
 
 
 
