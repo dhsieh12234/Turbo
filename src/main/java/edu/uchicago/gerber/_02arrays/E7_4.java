@@ -18,7 +18,6 @@ public class E7_4 {
         try {
             File inputFile = new File(inputFileName);
             Scanner in = new Scanner(inputFile);
-
             PrintWriter out = new PrintWriter(outputFileName);
 
             int lineNumber = 1;
