@@ -22,7 +22,7 @@ the actual phone number. Use the standard letters on a phone pad.
 // create empty string Res to return phone number
 // for each char in the input message
     // if the char is a letter (use method)
-        //switch case for each letter correspodning to a number
+        //switch case for each letter corresponding to a number
         // Case 'A', 'B', 'C':
             // Append '2' to Res
         // Case 'D', 'E', 'F':
@@ -52,7 +52,7 @@ Identify the Scope
     Line 12 int n = 0; // this is a local scope for method f
     Line 19 int b = 0; // this is a local scope to method g
     Line 20 int n = 0 // this is a local scope for the for loop in method g
-    Line 22 int i = f(n); // this is a local scope in the method g
+    Line 22 int i = f(n); // this is a block scope
 
     The program prints out 26.
 
@@ -99,13 +99,13 @@ R6.23 Computing runs
 // store beginning index as an int
 // store end index as an int
 // store result variable as an int
-// start a while loop with condition until end hits the length of the given away
+// start a while loop with condition until end hits the length of the given array
     // if array [beginning index] is equal to array[ending index]:
         // start a while loop with condition that array [beginning variable] is equal to array[ending variable]:
             // add 1 to the ending variable
     // else
         // add 1 to ending variable
-    // subtract hte beginning index from the end index
+    // subtract the beginning index from the end index
     // set result variable to be max of difference above and the target before
     // set beginning index to be end index
     // set end index to be beginning index plus 1
@@ -178,9 +178,9 @@ file for writing that doesn’t exist?
 R7.6 Throwing and catching
 What is the difference between throwing an exception and catching an exception?
 
-    Throwing an exception uses the "throw" statement to check an error at compile time then runtime. This allows you to
-    write code to catch the exception. To catch an exception means to handle the error that has been thrown. It provides
-    a way for the program to respond to the exception without crashing
+    Throwing an exception uses the "throw" statement to create an error at compile time then runtime. To catch an
+    exception means to handle the error that has been thrown. It provides a way for the program to respond to the
+    exception without crashing.
 
 R7.7 Checked versus unchecked
 What is a checked exception? What is an unchecked exception? Give an example for each.
@@ -191,19 +191,20 @@ Which exceptions do you need to declare with the throws reserved word?
     catch the exception.
 
     An unchecked exception is an exception that is not checked by the compiler at compile-time.
-    An example would be indexing into an array which does nto include the element which woudl trigger a
+    An example would be indexing into an array which does not include the element which would trigger a
     ArrayIndexOutOfBoundsException.
 
     The exceptions you need to declare with the throws reserved word would be checked exceptions
 
 R7.8 Exceptions philosophy in Java
-Why don’t you need to declare that your method might throw an IndexOutOfBounds -
-Exception?
+Why don’t you need to declare that your method might throw an IndexOutOfBounds - Exception?
+
     You don't need to declare it since it is a unchecked exception as it is a logic error. This error occurs
     during runtime and are not anticipated so you do not need to declare your method might throw this error.
 
 R7.11 What is an exception object
 What can your program do with the exception object that a catch clause receives?
+
     It can provide a message for your user to diagnose the issue with your code or debug it. The program is also
     able to self diagnosis and handle the exception to recover the code. It can also help terminate the program
     gracefully.
@@ -211,9 +212,18 @@ What can your program do with the exception object that a catch clause receives?
 R7.15 Scanner exceptions. Explain why these are either checked or unchecked.
 Which exceptions can the next and nextInt methods of the Scanner class throw? Are
 they checked exceptions or unchecked exceptions?
+
     Next reads the next token from the input as a String. nextInt reads the next token from the input as an integer.
-    These are both unchecked exceptions which can throw type errors, throw an error if no input exists and thrown if
+    These are both unchecked exceptions which can throw type errors, throw an error if no input exists and throw if
     the Scanner is closed when attempting to read input.
+
+    Next and Nextint Exceptions:
+        InputMismatchException - If the token does not match the regular expression
+        NoSuchElementException - If there are no more tokens in the scanner
+        IllegalStateException - If the scanner has been closed
+
+
+
 
 
 
