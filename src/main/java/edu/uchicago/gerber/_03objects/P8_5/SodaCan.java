@@ -7,7 +7,7 @@ public class SodaCan {
         this.height = height;
         this.radius = radius;
     }
-    public double SurfaceArea(int height, int radius) {
+    public double SurfaceArea() {
         return 2 * Math.PI * this.radius * this.height + 2 * Math.PI * Math.pow(this.radius,2);
     }
     public double getVolume() {

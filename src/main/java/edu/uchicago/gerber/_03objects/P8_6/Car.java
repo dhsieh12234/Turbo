@@ -2,14 +2,14 @@ package edu.uchicago.gerber._03objects.P8_6;
 
 public class Car {
     private double fuel_level;
-    private final int milespergallon;
+    private final int milesPerGallon;
 
-    public Car(int milespergallon) {
+    public Car(int milesPerGallon) {
         this.fuel_level = 0.0;
-        this.milespergallon = milespergallon;
+        this.milesPerGallon = milesPerGallon;
     }
     public void drive(int miles) {
-        double gallonsUsed = (double) miles / milespergallon;
+        double gallonsUsed = (double) miles / milesPerGallon;
         if (gallonsUsed <= fuel_level) {
             fuel_level -= gallonsUsed;
         } else {
@@ -19,7 +19,7 @@ public class Car {
     public void addGas(double gallon) {
         this.fuel_level += gallon;
     }
-    public int getGasLevel(int fuel_level) {
-        return fuel_level;
+    public double getGasLevel() {
+        return this.fuel_level;
     }
 }
