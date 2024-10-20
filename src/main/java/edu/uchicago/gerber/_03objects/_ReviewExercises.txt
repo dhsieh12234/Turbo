@@ -2,8 +2,54 @@
 # Use this file to answer Review Exercises from the Big Java textbook
 #########################################################################
 
+R8.1 Encapsulation
+Encapsulation refers to the bunding of attribites and methods that operate on the data into a single unit. It also
+involves restricting direct acess to soem fo an objects components to protect the integrity of the data (private
+and public methods). It provides a public interfact while hiding teh implemtnaiton deatilas. it is useful to make the
+objects mroe efficent and capable with impacting the programmers that use the objects
 
+R8.4 Public interface
+A public interface of the class is the set of methods provided by a class together with a description of their
+behavior. It acts as the contract between the class and the rest of the program and exposes what is necesssary for the
+user to interact wiht the class. It is different from implemtnation since when you work with objects of a
+class you are not directly referring to the internal logic and details inside the class.
 
+R8.7 Instance versus static
+An instance method is a method that you invoke on teh object. for Java it uses this. as its first parameter which allows
+the method to access and modify the instance's attributes. This is different from static method which belongs to the
+class rather than any specific instance and do not require access to instance attributes or methods.
 
+R8.8 Mutator and accessor
+A mutator method is a method which allows for modification of an objects attributes while a accessor provides only
+read-oly access to an objects attributes. The accessor method ensures the internal state of an object is not exposed
+directly.
 
+R8.9 Implicit parameter
+An implicit parameter is the object on which a method is invoked and is not written in teh method declaration. It is
+most commonly used in methods which call only the "this" object. This is different from an explicit parameter which is
+explicitly mentioned in teh method declaration.
 
+R8.10 Implicit parameter
+An instance method can have exactly one implicit parameter (this). A static method does not have an implicit parameter.
+An instance method can have from 0 to infinity explicit parameters.
+
+R8.12 Constructors
+A class can only have multiple constructor as Java supports overloading. When a class with no constructo gets called,
+there is a ghost constructor which sets the object parameters to its default value (either 0, null, etc.)
+If a class has one or more constructor called it will only call the most constructor that matches the argument list.
+
+R8.16 Instance variables
+The private reserved word is important part of encapsulation and ensures that certain instance variables and methods
+are only accessible within the class they are defined in. When a class declares an instance varibale or method as
+private only direct access to the variable/method is restricted to the class itself and no other outside class can
+modify it. It does nto however guarentee abosulte security against usage
+
+R8.19 The 'this' reference
+The 'this' reference is similar to 'self' in Python where 'this' is seen as an implicit variable called in every
+instance method. It refers to the current instance of the class in which a method or constructor is being executed and
+can be used to access instance variables sand methods.
+
+R8.20 Zero, null, false, empty String
+They are all used to represent empty or false values but for different data types. Zero is used for numeric data types
+like int, float, double etc. Null is used for references and pointers meaning that the variable does not reference any
+object. False is used for boolean type. The empty string "" is a valid string with no characters.
