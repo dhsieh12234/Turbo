@@ -5,7 +5,7 @@
 R8.1 Encapsulation
 Encapsulation refers to the binding of attributes and methods that operate on the data into a single unit. It also
 involves restricting direct access to certain components of an object to protect the integrity of the data (private
-and public methods). It provides a public interface while hiding the implementation details. it is useful to make the
+and public methods). It provides a public interface while hiding the implementation details. It is useful to make the
 objects more efficient and capable with impacting the programmers that use the objects
 
 R8.4 Public interface
@@ -15,19 +15,19 @@ user to interact with the class. It is different from implementation since when 
 class you are not directly referring to the internal logic and details inside the class.
 
 R8.7 Instance versus static
-An instance method is a method that you invoke on teh object. for Java it uses this. as its first parameter which allows
-the method to access and modify the instance's attributes. This is different from static method which belongs to the
-class rather than any specific instance and do not require access to instance attributes or methods.
+An instance method is a method that you invoke on the object. For instance method you need to create a new object for
+the class while for a static method you can it call directly on the class.
 
 R8.8 Mutator and accessor
 A mutator method is a method which allows for modification of an objects attributes while a accessor provides only
-read-oly access to an objects attributes. The accessor method ensures the internal state of an object is not exposed
+read-only access to an objects attributes. The accessor method ensures the internal state of an object is not exposed
 directly.
 
 R8.9 Implicit parameter
-An implicit parameter is the object on which a method is invoked and is not written in teh method declaration. It is
-most commonly used in methods which call only the "this" object. This is different from an explicit parameter which is
-explicitly mentioned in teh method declaration.
+An implicit parameter is the object on which a method is invoked on and is not written in the method declaration. It is
+commonly used in methods which call the "this" object. This is different from an explicit parameter which is
+explicitly mentioned in the method declaration.
+dave.setJobtitle("Candlestick Maker"); -> implicit is dave, explicit is "Candlestick Maker"
 
 R8.10 Implicit parameter
 An instance method can have exactly one implicit parameter (this). A static method does not have an implicit parameter.
@@ -42,12 +42,12 @@ R8.16 Instance variables
 The private reserved word is important part of encapsulation and ensures that certain instance variables and methods
 are only accessible within the class they are defined in. When a class declares an instance variable or method as
 private only direct access to the variable/method is restricted to the class itself and no other outside class can
-modify it. It does nto however guarantee absolute security against usage
+modify it. It does not however guarantee absolute security against usage
 
 R8.19 The 'this' reference
 The 'this' reference is similar to 'self' in Python where 'this' is seen as an implicit variable called in every
 instance method. It refers to the current instance of the class in which a method or constructor is being executed and
-can be used to access instance variables sand methods.
+can be used to access instance variables and methods.
 
 R8.20 Zero, null, false, empty String
 They are all used to represent empty or false values but for different data types. Zero is used for numeric data types
