@@ -1,10 +1,9 @@
 package edu.uchicago.gerber._03objects.P8_16;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Mailbox {
-    private List<Message> messages;
+    private ArrayList<Message> messages;
     public Mailbox() {
         messages = new ArrayList<>();
     }

@@ -1,9 +1,9 @@
 package edu.uchicago.gerber._03objects.P8_14;
 
 public class Country {
-    private String name;
-    private int population;
-    private double area;
+    private final String name;
+    private final int population;
+    private final double area;
 
     public Country(String name, int population, double area) {
         this.name = name;

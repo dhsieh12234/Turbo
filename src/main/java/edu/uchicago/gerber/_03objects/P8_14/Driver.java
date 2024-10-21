@@ -22,7 +22,7 @@ public class Driver {
 
             System.out.print("Area: ");
             double area = console.nextDouble();
-            console.nextLine(); // Consume the newline character
+            console.nextLine();
 
             countries.add(new Country(name, population, area));
         }

@@ -17,9 +17,9 @@ public class Car {
         }
     }
     public void addGas(double gallon) {
-        this.fuel_level += gallon;
+        fuel_level += gallon;
     }
     public double getGasLevel() {
-        return this.fuel_level;
+        return fuel_level;
     }
 }

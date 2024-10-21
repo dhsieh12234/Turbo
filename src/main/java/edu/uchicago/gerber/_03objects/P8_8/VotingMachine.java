@@ -19,10 +19,10 @@ public class VotingMachine {
         republican_votes = 0;
     }
     public int getDemocratVotes() {
-        return this.democrat_votes;
+        return democrat_votes;
     }
     public int getRepublicanVotes() {
-        return this.republican_votes;
+        return republican_votes;
     }
     public void print_votes() {
         System.out.println("Republicans: " + getRepublicanVotes());

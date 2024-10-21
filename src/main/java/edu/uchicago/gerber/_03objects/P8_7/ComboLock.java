@@ -3,9 +3,9 @@ package edu.uchicago.gerber._03objects.P8_7;
 import java.util.Random;
 
 public class ComboLock {
-    int secret1;
-    int secret2;
-    int secret3;
+    private int secret1;
+    private int secret2;
+    private int secret3;
 
     private int dial;
     private int step;
