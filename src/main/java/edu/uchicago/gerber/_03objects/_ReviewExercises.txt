@@ -3,15 +3,15 @@
 #########################################################################
 
 R8.1 Encapsulation
-Encapsulation refers to the bunding of attribites and methods that operate on the data into a single unit. It also
-involves restricting direct acess to soem fo an objects components to protect the integrity of the data (private
-and public methods). It provides a public interfact while hiding teh implemtnaiton deatilas. it is useful to make the
-objects mroe efficent and capable with impacting the programmers that use the objects
+Encapsulation refers to the binding of attributes and methods that operate on the data into a single unit. It also
+involves restricting direct access to certain components of an object to protect the integrity of the data (private
+and public methods). It provides a public interface while hiding the implementation details. it is useful to make the
+objects more efficient and capable with impacting the programmers that use the objects
 
 R8.4 Public interface
 A public interface of the class is the set of methods provided by a class together with a description of their
-behavior. It acts as the contract between the class and the rest of the program and exposes what is necesssary for the
-user to interact wiht the class. It is different from implemtnation since when you work with objects of a
+behavior. It acts as the contract between the class and the rest of the program and exposes what is necessary for the
+user to interact with the class. It is different from implementation since when you work with objects of a
 class you are not directly referring to the internal logic and details inside the class.
 
 R8.7 Instance versus static
@@ -34,15 +34,15 @@ An instance method can have exactly one implicit parameter (this). A static meth
 An instance method can have from 0 to infinity explicit parameters.
 
 R8.12 Constructors
-A class can only have multiple constructor as Java supports overloading. When a class with no constructo gets called,
+A class can only have multiple constructor as Java supports overloading. When a class with no constructor gets called,
 there is a ghost constructor which sets the object parameters to its default value (either 0, null, etc.)
 If a class has one or more constructor called it will only call the most constructor that matches the argument list.
 
 R8.16 Instance variables
 The private reserved word is important part of encapsulation and ensures that certain instance variables and methods
-are only accessible within the class they are defined in. When a class declares an instance varibale or method as
+are only accessible within the class they are defined in. When a class declares an instance variable or method as
 private only direct access to the variable/method is restricted to the class itself and no other outside class can
-modify it. It does nto however guarentee abosulte security against usage
+modify it. It does nto however guarantee absolute security against usage
 
 R8.19 The 'this' reference
 The 'this' reference is similar to 'self' in Python where 'this' is seen as an implicit variable called in every
