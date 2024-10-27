@@ -2,6 +2,72 @@
 # Use this file to answer Review Exercises from the Big Java textbook
 #########################################################################
 
+R9.1 Superclass and subclass
+    a. Superclass: Employee
+       Subclass: Manager
+    b. Superclass: Student
+       Subclass: GraduateStudent
+    c. Superclass: Person
+       Subclass: Student
+    d. Superclass: Employee
+       Subclass: Professor
+    e. Superclass: BankAccount
+       Subclass: CheckingAccount
+    f. Superclass: Vehicle
+       Subclass: Car
+    g. Superclass: Vehicle
+       Subclass: Minivan
+    h. Superclass: Car
+       Subclass: Minivan
+    i. Superclass: Vehicle
+       Subclass: Truck
+
+R9.2 superclass and subclass
+Superclass works such that all subclasses inherit all methods and objects from the superclass. It would not be effective
+to separate the appliances into separate classes when they all share similiar attributes going against the principle of
+subclassing which is to inherit attributes and methods from the superclass. You are adding additional complexity by
+using superclass and subclass which can easily be efficiently organized byu using a general SmallAppliance class with
+distinguising attrivutes for each product
+
+R9.4 SavingsAccount
+The methods in SavingsAccount class inherits the deposit() and getBalance() methods from the BankAccount superclass.
+The SavingsAccount class overrides the withdraw() and monthEnd() methods from the BankAccount superclass. It adds a
+new constructor SavingsAccount() and setInterestRate(double rate) method.
+
+R9.6 Sandwich
+    a. This is legal.
+    b. This is illegal.
+    c. This is illegal
+    d. This is legal.
+Basically, a superclass reference can hold an instance of its subclass but not the other way around
+
+R9.7 Inheretence -use the UML diagram tool in IntelliJ and indicate to the grader where uml file is located
+
+R9.8 Inheretence -use the UML diagram tool in IntelliJ and indicate to the grader where uml file is located
+
+R9.9 Inheretence -use the UML diagram tool in IntelliJ and indicate to the grader where uml file is located
+
+R9.10 Casting
+The cast such as (BankAccount) x is casting an object type class to x using inheritance hierarchy while (int) x is
+casting a primitive type onto x changing the primitive type from one to another.
+
+R9.11 instanceof operator
+    a. True
+    b. True
+    c. False
+    d. True
+    e. True
+    f. False
+
+R9.14 Edible interface
+    a. Legal
+    b. Illegal
+    c. Legal
+    d. illegal
+    e. Illegal
+    f. Illegal
+    g. Illegal
+    h. Legal
 
 
 
