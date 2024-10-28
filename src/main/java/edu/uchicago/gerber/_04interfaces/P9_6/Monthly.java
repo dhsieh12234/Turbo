@@ -16,9 +16,6 @@ public class Monthly extends Appointment {
         if (this.day != day) {
             return false;
         }
-        if (year > this.year || (year == this.year && month >= this.month)) {
-            return true;
-        }
-        return false;
+        return year > this.year || (year == this.year && month >= this.month);
     }
 }

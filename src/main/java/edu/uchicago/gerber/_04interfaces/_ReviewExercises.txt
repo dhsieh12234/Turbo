@@ -24,10 +24,10 @@ R9.1 Superclass and subclass
 
 R9.2 superclass and subclass
 Superclass works such that all subclasses inherit all methods and objects from the superclass. It would not be effective
-to separate the appliances into separate classes when they all share similiar attributes going against the principle of
+to separate the appliances into separate classes when they all share similar attributes going against the principle of
 subclassing which is to inherit attributes and methods from the superclass. You are adding additional complexity by
-using superclass and subclass which can easily be efficiently organized byu using a general SmallAppliance class with
-distinguising attrivutes for each product
+using superclass and subclass which can easily be efficiently organized by using a general SmallAppliance class with
+distinguishing attributes for each product
 
 R9.4 SavingsAccount
 The methods in SavingsAccount class inherits the deposit() and getBalance() methods from the BankAccount superclass.
@@ -42,10 +42,13 @@ R9.6 Sandwich
 Basically, a superclass reference can hold an instance of its subclass but not the other way around
 
 R9.7 Inheretence -use the UML diagram tool in IntelliJ and indicate to the grader where uml file is located
+        in R9_7 Folder
 
 R9.8 Inheretence -use the UML diagram tool in IntelliJ and indicate to the grader where uml file is located
+        in R9_8 Folder
 
 R9.9 Inheretence -use the UML diagram tool in IntelliJ and indicate to the grader where uml file is located
+        in R9_9 Folder
 
 R9.10 Casting
 The cast such as (BankAccount) x is casting an object type class to x using inheritance hierarchy while (int) x is

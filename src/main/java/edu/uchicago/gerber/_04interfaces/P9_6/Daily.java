@@ -17,9 +17,6 @@ public class Daily extends Appointment{
             return true;
         } else if (year == this.year && month > this.month) {
             return true;
-        } else if (year == this.year && month == this.month && day >= this.day) {
-            return true;
-        }
-        return false;
+        } else return year == this.year && month == this.month && day >= this.day;
     }
 }

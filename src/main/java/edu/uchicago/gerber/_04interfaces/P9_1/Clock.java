@@ -6,11 +6,11 @@ public class Clock {
         return Integer.parseInt(time.split(":")[0]);
 
     }
-    public int getMinuite() {
+    public int getMiniute() {
         String time =  java.time.LocalTime.now().toString();
         return Integer.parseInt(time.split(":")[1]);
     }
     public String getTime() {
-        return "Hour: " + getHour() + " Min: " + getMinuite();
+        return "Hour: " + getHour() + " Min: " + getMiniute();
     }
 }

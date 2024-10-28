@@ -3,8 +3,8 @@ package edu.uchicago.gerber._04interfaces.E9_17;
 import edu.uchicago.gerber._03objects.P8_5.SodaCan;
 
 public class SodaCan_v2 implements Measurable {
-    private int height;
-    private int radius;
+    private final int height;
+    private final int radius;
 
     public SodaCan_v2(int height, int radius) {
         this.height = height;
