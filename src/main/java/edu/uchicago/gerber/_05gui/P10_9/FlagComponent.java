@@ -5,27 +5,25 @@ import java.awt.*;
 
 public class FlagComponent extends JComponent {
     public void paintComponent(Graphics g) {
-        drawFlag(g, Color.black ,Color.red,Color.yellow);
-        drawFlag(g, Color.red ,Color.white,Color.green);
+        drawFlag(g, Color.black ,Color.red,Color.yellow, 100, 100);
+        drawFlag(g, Color.red ,Color.white,Color.green, 100, 300);
     }
-    public void drawFlag(Graphics g, Color color1, Color color2, Color color3) {
+    public void drawFlag(Graphics g, Color color1, Color color2, Color color3, int x, int y) {
 
-        int leftX = 100;
-        int rightX = 300;
-        int topY = 100;
-        int bottomY = 220;
+        int rightX = x + 200;
+        int bottomY = y + 120;
 
         g.setColor(color1);
-        g.fillRect(100,100,200,40);
+        g.fillRect(x,y,200,40);
         g.setColor(color2);
-        g.fillRect(100,140,200,40);
+        g.fillRect(x,y+40,200,40);
         g.setColor(color3);
-        g.fillRect(100,180,200,40);
+        g.fillRect(x,y + 80,200,40);
 
         g.setColor(Color.black);
-        g.drawLine(leftX, topY, rightX, topY);
-        g.drawLine(leftX, bottomY, rightX, bottomY);
-        g.drawLine(leftX, topY, leftX,bottomY);
-        g.drawLine(rightX,topY, rightX,bottomY);
+        g.drawLine(x, y, rightX, y);
+        g.drawLine(x, bottomY, rightX, bottomY);
+        g.drawLine(x, y, x,bottomY);
+        g.drawLine(rightX,y, rightX,bottomY);
     }
 }

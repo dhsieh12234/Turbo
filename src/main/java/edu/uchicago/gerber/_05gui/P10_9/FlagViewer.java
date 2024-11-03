@@ -7,7 +7,7 @@ import javax.swing.*;
 public class FlagViewer {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Flag");
-        frame.setSize(400,400);
+        frame.setSize(600,600);
         frame.setTitle("Flag");
         JComponent component = new FlagComponent();
         frame.add(component);

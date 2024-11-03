@@ -48,7 +48,7 @@ public class HouseComponent extends JComponent {
         super.paintComponent(g);
 
         drawHouse(g, 50, 200, 100, 100, Color.green);   // Small house
-//        drawHouse(g, 200, 200, 150, 150, Color.red);  // Medium house
-//        drawHouse(g, 400, 200, 200, 200, Color.blue);  // Large house
+        drawHouse(g, 200, 200, 150, 150, Color.red);  // Medium house
+        drawHouse(g, 400, 200, 200, 200, Color.blue);  // Large house
     }
 }

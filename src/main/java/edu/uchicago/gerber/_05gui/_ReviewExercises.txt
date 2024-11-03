@@ -3,7 +3,7 @@
 #########################################################################
 
 R10.5 Events
-An event object is the instance of a class that provides information about a speciic event, such as a click.
+An event object is the instance of a class that provides information about a specific event, such as a click.
 The event listener object are instances of classes that you must provide with instructions that you want to have executed
 whne the event occurs. The event source is the UI component which generates a particular event.
 
@@ -11,34 +11,34 @@ R10.6 actionPerformed
 The actionPerformed method is called immediately after the event is created, like a button click. .
 
 R10.11 Inner class and event-listeners
-We use inner clases for event listeners because it allows us to access insatnce variables and methods located in the
+We use inner classes for event listeners because it allows us to access instance variables and methods located in the
 listener class. This is especially helpful for organizational purposes and not allowing for a lot of variables to be
-recieved in teh constructor or method arguments. If Java did not allow inner classes, we could impleemnt event listeners
-in two separate classes but with a lot of variabels in constructors and methods.
+received in teh constructor or method arguments. If Java did not allow inner classes, we could implement event listeners
+in two separate classes but with a lot of variables in constructors and methods.
 
 R10.14 Object hierarchies
 - A method declared in JTExtArea: append(String str)
-- A mehtod that JTextArea inherits from JTextComponent: setText(String t)
+- A method that JTextArea inherits from JTextComponent: setText(String t)
 - A method that JTextArea inherits from JComponenet: setBackground(Color c)
 
 R10.22 Graphic methods
-I would modify the method by instead of doing setCOlor(color.green) I would allow for the user to input 2 colors and
+I would modify the method by instead of doing setColor(color.green) I would allow for the user to input 2 colors and
 fill in the color of the sides with the color of their choice.
 
 R11.2 Layout managers
-Each container has a layout manager which determines how components are laid out. This is advantegeous since it helps
-you control the layout fo the user-interface componenets insetad of simply doing it from left to right. Layout Manager
-provide a more flexible, adaptabel and maintainable approach to the user interface layout instead of manually specifying
+Each container has a layout manager which determines how components are laid out. This is advantageous since it helps
+you control the layout fo the user-interface components instead of simply doing it from left to right. Layout Manager
+provide a more flexible, adaptable and maintainable approach to the user interface layout instead of manually specifying
 component positions
 
 R11.11 ButtonGroup
-You need the button gropu for radio buttons and not check boxes since for radio buttons you can only have one options
-checked while for check boxes you can have more than 1 checked. The button gropu enforces this by grouping the radio
-button togther, deselcting any other selected radio buttons in that group when a new one is selected.
+You need the button group for radio buttons and not check boxes since for radio buttons you can only have one options
+checked while for check boxes you can have more than 1 checked. The button group enforces this by grouping the radio
+button together, deselecting any other selected radio buttons in that group when a new one is selected.
 
 R11.19 Types of Events
-ActioneEvent are generated from radio buttons, check boexes and combo bocxes when a user sleects an item. It doesn't
-matter what is checked as all componenets will notify the same listener object. Mousepressed is triggered when the
+ActionEvent are generated from radio buttons, check boxes and combo boxes when a user selects an item. It doesn't
+matter what is checked as all components will notify the same listener object. MousePress is triggered when the
 mouse button is pressed and actions are processed. So for ActionEvent the click has to be with interaction on an
 interactive element such as button, menu, etc. while MouseEvent is triggered by specific mouse interactions such as
 clicking, pressing, releasing etc.
