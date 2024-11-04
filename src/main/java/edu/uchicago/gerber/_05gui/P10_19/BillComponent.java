@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 
 public class BillComponent extends JComponent {
     private final JTextArea billArea;
+    private final JLabel totalLabel;
+    private final JLabel taxLabel;
+    private final JLabel tipLabel;
     private double totalBill = 0.0;
     private static final double TAX_RATE = 0.1;
     private static final double TIP_RATE = 0.15;
@@ -41,7 +44,21 @@ public class BillComponent extends JComponent {
         inputPanel.add(priceField);
         inputPanel.add(addButton);
         add(inputPanel, BorderLayout.SOUTH);
+
+        JPanel totalPanel = new JPanel();
+        totalPanel.setLayout(new GridLayout(3, 1));
+
+        totalLabel = new JLabel("Subtotal: $0.00");
+        taxLabel = new JLabel("Tax: $0.00");
+        tipLabel = new JLabel("Suggested Tip: $0.00");
+
+        totalPanel.add(totalLabel);
+        totalPanel.add(taxLabel);
+        totalPanel.add(tipLabel);
+
+        add(totalPanel, BorderLayout.EAST);
     }
+
     public void DrawButton(JPanel panel, String itemName, double itemPrice) {
         JButton button = new JButton(itemName + " ($" + itemPrice + ")");
         button.addActionListener(new ActionListener() {
@@ -52,6 +69,7 @@ public class BillComponent extends JComponent {
         });
         panel.add(button);
     }
+
     private void addCustomItem(String itemName, String priceText) {
         try {
             double itemPrice = Double.parseDouble(priceText);
@@ -72,14 +90,12 @@ public class BillComponent extends JComponent {
         double tip = totalBill * TIP_RATE;
         double finalTotal = totalBill + tax + tip;
 
-        billArea.append("\nSubtotal: $" + String.format("%.2f", totalBill));
-        billArea.append("\nTax: $" + String.format("%.2f", tax));
-        billArea.append("\nSuggested Tip: $" + String.format("%.2f", tip));
-        billArea.append("\nTotal: $" + String.format("%.2f", finalTotal) + "\n\n");
+        totalLabel.setText("Subtotal: $" + String.format("%.2f", totalBill));
+        taxLabel.setText("Tax: $" + String.format("%.2f", tax));
+        tipLabel.setText("Suggested Tip: $" + String.format("%.2f", tip));
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
     }
-
 }

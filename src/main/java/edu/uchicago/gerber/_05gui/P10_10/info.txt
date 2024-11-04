@@ -1,0 +1,7 @@
+So when doing this problem, I did not know a way to make the rings transparent while only using graphics. So I included
+both tries where I used graphics and graphics2D which I saw online (linked below):
+
+https://docs.oracle.com/javase/8/docs/api/index.html?java/awt/Graphics2D.html
+
+
+

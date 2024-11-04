@@ -11,10 +11,12 @@ public class OlympicFlagComponent extends JComponent {
         drawRing(g,100,150,Color.yellow);
         drawRing(g,200,150,Color.green);
     }
+
     public void drawRing(Graphics g, int positionX, int positionY, Color color) {
         g.setColor(color);
         g.fillOval(positionX , positionY, 100, 100);
 
+//        Color transparentColor = new Color(255, 255, 255, 0);
         g.setColor(Color.white);
         g.fillOval(positionX + 10, positionY + 10, 80, 80);
 

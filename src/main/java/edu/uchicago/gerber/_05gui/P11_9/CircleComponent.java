@@ -31,7 +31,6 @@ public class CircleComponent extends JComponent {
         super.paintComponent(g);
         if (centerPoint != null && peripheryPoint != null) {
             int radius = (int) centerPoint.distance(peripheryPoint);
-
             g.setColor(Color.BLUE);
             g.drawOval(centerPoint.x - radius, centerPoint.y - radius, 2 * radius, 2 * radius);
         }
