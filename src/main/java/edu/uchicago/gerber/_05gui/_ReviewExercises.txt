@@ -43,9 +43,15 @@ mouse button is pressed and actions are processed. So for ActionEvent the click 
 interactive element such as button, menu, etc. while MouseEvent is triggered by specific mouse interactions such as
 clicking, pressing, releasing etc.
 
+R11.20 Events
+The information an action event object caries is the source of the component that triggered the event, the string
+associated with the action, any modifier keys which were pressed and the time of which it is pressed. The Mouse event
+key holds the X,Y coordinates of the mouse cursor, the amount of clicks, which button is pressed, and whether the key
+exited/entered a component.
+
 R11.21 ActionListener versus MouseListener
 You can only click on an interactive element such as button, menu, etc, while for the mouse you can click, release,
-press, entered, and exit.
+press, entered, and exit. Therefore, mouse has 5 methods while ActionListener has only 1.
 
 
 
