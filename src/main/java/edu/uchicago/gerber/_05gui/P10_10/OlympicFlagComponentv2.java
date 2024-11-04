@@ -18,10 +18,8 @@ public class OlympicFlagComponentv2 extends JComponent {
     public void drawRing(Graphics2D g2d, int positionX, int positionY, Color color) {
         g2d.setColor(color);
 
-        // Set a thicker stroke for the border
-        g2d.setStroke(new BasicStroke(8)); // Adjust the width as needed
+        g2d.setStroke(new BasicStroke(8));
 
-        // Draw the outer ring
         g2d.drawOval(positionX, positionY, 100, 100);
 
     }
