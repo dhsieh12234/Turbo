@@ -2,6 +2,118 @@
 # Use this file to answer Review Exercises from the Big Java textbook
 #########################################################################
 
+R12.1 OO Analysis and Design
+The steps int eh rpocess of OO design the character reccomends is
+1. Gatehr requirements
+2. Use CRC cards to find classes responsibilites and collaborators
+3. Use UML diagrams to record class relationships
+4. Use javadoc to document mehtod behavior
+5. Implement your program
+
+R12.2 OO Analysis and Design
+The rule fo thumbs for finding classes is to look for nouns in teh problem descritpion or requirmrents. They often
+represent entities or objects in the program.
+
+R12.3 OO Analysis and Design
+The rule of thumb for finding these methods is to look for verbs in teh task description and then match the verbs to the
+appropriate objects
+
+R12.8 Relationships
+
+R12.9 CRC Quiz
+
+                                    Quiz
+ - manage collection of questions            Question
+ - add question to quiz
+ - keep track pof progression
+
+                                     Question
+ - Store detail of question                 Quiz
+ - Retrieves question text and check
+   if right
+
+
+R12.10 UML Quiz
+
+R12.11 CRC Cards
+
+                                    Country
+- Store area                                    Country Storage
+- Store population
+- Calculate population Density
+
+                                    CountryStorage
+- Load Data                                     Country
+- Find target area
+- Find target population
+- Find target population Density
+
+JAVADOC
+/**
+ * Represents a country with a name, population, and area.
+ */
+public class Country {
+    private String name;
+    private int population;
+    private double area;
+
+    public Country(String name, int population, double area) {
+        this.name = name;
+        this.population = population;
+        this.area = area;
+    }
+
+    /** @return the name of the country */
+    public String getName() { return name; }
+
+    /** @return the population of the country */
+    public int getPopulation() { return population; }
+
+    /** @return the area of the country */
+    public double getArea() { return area; }
+
+    /** @return the population density of the country (people per square kilometer) */
+    public double getPopulationDensity() {
+        return population / area;
+    }
+}
+
+/**
+ * Analyzes a collection of Country objects.
+ */
+public class CountryAnalyzer {
+    private List<Country> countries;
+
+    public CountryAnalyzer() {
+        countries = new ArrayList<>();
+    }
+
+    /**
+     * Loads country data from a file.
+     */
+    public void loadCountries(String file) { /* Implementation here */ }
+
+    /**
+     * Finds the country with the largest area.
+     * @return the country with the largest area
+     */
+    public Country getCountryWithLargestArea() { /* Implementation here */ }
+
+    /**
+     * Finds the country with the largest population.
+     * @return the country with the largest population
+     */
+    public Country getCountryWithLargestPopulation() { /* Implementation here */ }
+
+    /**
+     * Finds the country with the highest population density.
+     * @return the country with the highest population density
+     */
+    public Country getCountryWithLargestPopulationDensity() { /* Implementation here */ }
+}
+
+R12.13 UML Diagram
+
 
 
 
