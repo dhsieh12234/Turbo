@@ -11,14 +11,24 @@ The steps int eh rpocess of OO design the character reccomends is
 5. Implement your program
 
 R12.2 OO Analysis and Design
-The rule fo thumbs for finding classes is to look for nouns in teh problem descritpion or requirmrents. They often
+The rule of thumbs for finding classes is to look for nouns in the problem description  or requirements. They often
 represent entities or objects in the program.
 
 R12.3 OO Analysis and Design
-The rule of thumb for finding these methods is to look for verbs in teh task description and then match the verbs to the
-appropriate objects
+The rule of thumb for finding these methods is to look for verbs in the task description and then match the verbs to the
+appropriate objects.
 
 R12.8 Relationships
+UML Diagram
+                                    Coin
+ - holds coins (store value/ name)           Cash Register
+ - provide coin value
+
+
+                                    Cash Register
+ - Accept coin payment                        Coin
+ - Calculate Total payment
+ - Track Total
 
 R12.9 CRC Quiz
 
@@ -34,19 +44,25 @@ R12.9 CRC Quiz
 
 
 R12.10 UML Quiz
+- in the R12.10 Folder
 
 R12.11 CRC Cards
 
+(CRC Cards)
                                     Country
 - Store area                                    Country Storage
 - Store population
 - Calculate population Density
+
 
                                     CountryStorage
 - Load Data                                     Country
 - Find target area
 - Find target population
 - Find target population Density
+
+UML diagram in the R12.11 Folder
+
 
 JAVADOC
 /**
@@ -81,10 +97,10 @@ public class Country {
 /**
  * Analyzes a collection of Country objects.
  */
-public class CountryAnalyzer {
+public class CountryStorage {
     private List<Country> countries;
 
-    public CountryAnalyzer() {
+    public CountryStorage() {
         countries = new ArrayList<>();
     }
 
@@ -113,6 +129,16 @@ public class CountryAnalyzer {
 }
 
 R12.13 UML Diagram
+    UML diagram in the R12.13 Folder
+
+R12.14 UML Diagram
+    UML diagram in the R12.14 Folder
+
+R12.15 UML Diagram
+    UML diagram in the R12.15 Folder
+
+
+
 
 
 

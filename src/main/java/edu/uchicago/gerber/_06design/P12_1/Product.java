@@ -28,6 +28,7 @@ public class Product {
     public String display() {
         return "Product : " + name +  "  $" + cost + "  " + amount;
     }
+    //alter amount if product is bought
     public void buyProduct() {
         if (amount > 0) {
             amount -= 1;

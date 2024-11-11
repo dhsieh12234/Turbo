@@ -9,9 +9,11 @@ public class VendingMachine {
     private double totalInsertedAmount;
 
     public VendingMachine() {
+        totalInsertedAmount = 0;
         create_products();
     }
 
+    //translate coin to amount
     public void insertCoin(String coin) {
         switch (coin.toLowerCase()) {
             case "penny":
@@ -36,6 +38,7 @@ public class VendingMachine {
         System.out.printf("Inserted %s. Total amount: $%.2f%n", coin, totalInsertedAmount);
     }
 
+    //create products for vending machine
     public void create_products() {
         if (products.isEmpty()) {
             products.add(new Product("Cookie", 2.00));
@@ -53,14 +56,6 @@ public class VendingMachine {
         }
     }
 
-    //if insufficient money
-    public void insufficient_money() {
-        System.out.println("You don't have enough money!");
-    }
-    public void insufficient_products() {
-        System.out.println("We don't have that products!");
-    }
-
     //track coin amount
     public void returnCoins() {
         if (totalInsertedAmount > 0) {
@@ -71,6 +66,7 @@ public class VendingMachine {
         }
     }
 
+    //give product to person
     public boolean vend_out_product(int productNumber) {
         if (productNumber < 1 || productNumber > products.size()) {
             return false;

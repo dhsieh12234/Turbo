@@ -13,14 +13,14 @@ public class Problem {
     private void generateNumbers() {
         Random rand = new Random();
         if (level == 1) {
-            num1 = rand.nextInt(10); // 0-8
-            num2 = rand.nextInt(10 - num1 + 1); // 0 up to num1
+            num1 = rand.nextInt(10);
+            num2 = rand.nextInt(10 - num1 + 1);
         } else if (level == 2) {
-            num1 = rand.nextInt(10); // 0-8
-            num2 = rand.nextInt(10); // 0-8
+            num1 = rand.nextInt(10);
+            num2 = rand.nextInt(10);
         } else if (level == 3) {
-            num1 = rand.nextInt(10); // 0-8
-            num2 = rand.nextInt(10); // 0-8
+            num1 = rand.nextInt(10);
+            num2 = rand.nextInt(10);
             if (num1 < num2) {
                 int temp = num1;
                 num1 = num2;
