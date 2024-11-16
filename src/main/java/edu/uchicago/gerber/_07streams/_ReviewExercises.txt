@@ -2,7 +2,74 @@
 # Use this file to answer Review Exercises from the Big Java textbook
 #########################################################################
 
+R13.1 Terms
+    a. Recursion occurs when a function calls itself to solve smaller insatances of the same problem. Should include
+       a base case to stop the function from calling itself indefinitely;.
+    b. Iteration occurs when a set of instutcion or statements in a loop repeats itself. It occurs until a specific
+       condiiton is met unlike recursion which keeps calling itself.
+    c. This occurs when teh recursive fucniton lacks a base case and keeps calling itself indefinitely.
+    d. This fucntion supports the priamy recursive function used to handle intermediate steps or signify complex
+       recursive logic.
 
+R13.2 Smallest value
+// def function (lst)
+// base case: return if theres only 1 eleemnt in teh array
+// return either the first elemtn of array of the smallest array in the rest of list
+You reduce the problem size at each step using the min() function to detemrine the smallest element
+by comoaring it to the result of hte recursive call.
+
+R13.4 Sort array of numbers
+You can sort array using an algorithim called merge sort
+// def funciton(lst)
+// base case: return arry if len(array) <= 1
+// split the array into two halves
+// then recursively sort both half by calling itself
+//then return the merged halves together
+YOu continusely halve the array and sort when theres 2 elements per array then slowly make your way to the
+original array.
+
+R13.6 Exponents recursively
+The recursive call in this case would be using the previously found exponent x^(n-1) and multiplying by x to find the
+x^(n). it would terminate when at x^n where n = 0 as this always equates to 1.
+x^(0) = 1
+x^(n) = x^(n - 1) * x
+
+R13.8 Factorial recursively
+The recursive call in this case would be using teh previously found factorial and multiplying it by the next number i
+to find x!. It would terminate when at n! when n = 0 as this always equates to 1.
+0! = 1
+x! = (x-1)! * x
+
+R19.1 operations on Stream<String>
+    a. long count = stream.filter(s -> s.startsWith("a")).count();
+    b. long count = stream.filter(s -> s.length() > 10 && s.startsWith("a")).count();
+    c. boolean hasAtLeast100 = stream.filter(s -> s.startsWith("a")).limit(100).count() == 100;
+
+R19.3 How to read Java8
+The first one filters the length >10 then limits the output by 100 and counts it. The second one first applies
+limit(100) taking the first 100 words then filters to only include words with a greater lenght of 10 then counts it.
+
+R19.6 Transforming values
+You turn Stream<Double> into Stream<String> by using teh map funciton and apply Sting.valueof() to each element.
+This concerts each Double to a String representation. To convert it back to a Stream<Double> by again using the map
+function with Double.parseDouble to parse each string into a Double.
+
+R19.11 Terminal operations
+    - count
+    - findFirst
+    - findAny
+    - toArray
+    - collect
+    - ForEach
+    - allMatch, anymatch, noneMatch
+
+R19.12 Collectors
+    - groupingBy
+    - toSet
+    - count, sum, average, maximum, minimum
+    - summingInt, summingDouble, summingLong
+    - averagingint, averagingDouble, averagingLong
+    - maxBy, minBy
 
 
 
