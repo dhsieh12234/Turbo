@@ -8,32 +8,24 @@ public class PayingBills {
         Set<String> seen = new HashSet<>();
         int[] bills = {1, 5, 20, 100};
 
-        helper(new ArrayList<>(), 0, n, res, seen, bills);
+        helper(new ArrayList<>(), 0, n, res, bills, 0);
         return res;
     }
 
-    public static void helper(List<Integer> lst, int total, int n, List<List<Integer>> res, Set<String> seen, int[] bills) {
+    public static void helper(List<Integer> lst, int total, int n, List<List<Integer>> res, int[] bills, int startIndex) {
         if (total == n) {
-            // Sort the list to ensure unique combinations regardless of order
-            List<Integer> sortedList = new ArrayList<>(lst);
-            Collections.sort(sortedList);
-            String lstStr = sortedList.toString();
-
-            // Only add the combination if it has not been seen
-            if (!seen.contains(lstStr)) {
-                seen.add(lstStr);
-                res.add(sortedList);  // Add the sorted combination to the result
-            }
+            res.add(new ArrayList<>(lst));
             return;
         }
+
         if (total > n) {
             return;
         }
 
-        for (int bill : bills) {
-            List<Integer> newLst = new ArrayList<>(lst);
-            newLst.add(bill);
-            helper(newLst, total + bill, n, res, seen, bills);
+        for (int i = startIndex; i < bills.length; i++) {
+            lst.add(bills[i]);
+            helper(lst, total + bills[i], n, res, bills, i);
+            lst.remove(lst.size() - 1);
         }
     }
 }

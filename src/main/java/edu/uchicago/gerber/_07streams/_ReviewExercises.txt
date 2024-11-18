@@ -13,19 +13,19 @@ R13.1 Terms
 
 R13.2 Smallest value
 // def function (lst)
-// base case: return if theres only 1 eleemnt in teh array
-// return either the first elemtn of array of the smallest array in the rest of list
-You reduce the problem size at each step using the min() function to detemrine the smallest element
-by comoaring it to the result of hte recursive call.
+// base case: return if theres only 1 element in teh array
+// return either the first element of array of the smallest array in the rest of list
+You reduce the problem size at each step using the min() function to determine the smallest element
+by comparing it to the result of hte recursive call.
 
 R13.4 Sort array of numbers
-You can sort array using an algorithim called merge sort
-// def funciton(lst)
-// base case: return arry if len(array) <= 1
+You can sort array using an algorithm called merge sort
+// def function(lst)
+// base case: return array if len(array) <= 1
 // split the array into two halves
 // then recursively sort both half by calling itself
 //then return the merged halves together
-YOu continusely halve the array and sort when theres 2 elements per array then slowly make your way to the
+YOu continuously halve the array and sort when theres 2 elements per array then slowly make your way to the
 original array.
 
 R13.6 Exponents recursively

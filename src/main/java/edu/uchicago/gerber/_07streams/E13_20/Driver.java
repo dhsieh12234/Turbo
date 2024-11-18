@@ -2,6 +2,8 @@ package edu.uchicago.gerber._07streams.E13_20;
 
 import java.util.*;
 
+import static edu.uchicago.gerber._07streams.E13_20.PayingBills.ListAllPrices;
+
 public class Driver {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -9,7 +11,7 @@ public class Driver {
         System.out.println("Enter target cost: ");
         int n = sc.nextInt();
 
-        List<List<Integer>> result = PayingBills.ListAllPrices(n);
+        List<List<Integer>> result = ListAllPrices(n);
 
         System.out.print("Do you want to see the number of combinations or the combinations themselves? (Enter 'number' or 'combinations'): ");
         sc.nextLine();
