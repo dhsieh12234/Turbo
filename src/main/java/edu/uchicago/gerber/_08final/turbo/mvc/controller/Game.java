@@ -150,6 +150,9 @@ public class Game implements Runnable, KeyListener {
 
                 //detect collision
                 if (pntFriendCenter.distance(pntFoeCenter) < (radFriend + radFoe)) {
+                    System.out.println("RECOGNIZED COLLISION" + movFoe);
+                    //enqueue the Action to collide
+                    CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, GameOp.Action.COLLIDE);
                     CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.COLLIDE);
 //                    //enqueue the friend
 //                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.REMOVE);
@@ -208,11 +211,12 @@ public class Game implements Runnable, KeyListener {
             //pass the appropriate linked-list from above
             //this block will execute the addToGame() or removeFromGame() callbacks in the Movable models.
             GameOp.Action action = gameOp.getAction();
-            if (action == GameOp.Action.ADD)
+            if (action == GameOp.Action.ADD) {
                 mov.addToGame(list);
-            else //REMOVE
+            } else if (action == GameOp.Action.COLLIDE) {
+                mov.collidingToFriend(list);
+            } else //REMOVE
                 mov.removeFromGame(list);
-
         }//end while
     }
 

@@ -6,6 +6,7 @@ import edu.uchicago.gerber._08final.turbo.mvc.model.MiniMap;
 import edu.uchicago.gerber._08final.turbo.mvc.model.Movable;
 import edu.uchicago.gerber._08final.turbo.mvc.model.Star;
 import lombok.Data;
+import lombok.Getter;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -75,6 +76,10 @@ public class CommandCenter {
 	 */
 	private static CommandCenter instance = null;
 
+    // Check if input is enabled
+    @Getter
+    private boolean inputEnabled = true;
+
 	// Constructor made private
 	private CommandCenter() {}
 
@@ -86,7 +91,19 @@ public class CommandCenter {
 		return instance;
 	}
 
-	private void setLevelFromEnv(){
+	// Disable user input
+	public void disableInput() {
+		inputEnabled = false;
+		System.out.println("User input disabled.");
+	}
+
+	// Enable user input
+	public void enableInput() {
+		inputEnabled = true;
+		System.out.println("User input enabled.");
+	}
+
+    private void setLevelFromEnv(){
 		String strLevel = System.getenv("LEVEL");
 		String envLevel = (strLevel != null) ? strLevel : "6";
 		try {

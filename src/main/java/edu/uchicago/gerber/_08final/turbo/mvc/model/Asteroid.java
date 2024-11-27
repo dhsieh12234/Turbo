@@ -139,46 +139,21 @@ public class Asteroid extends Sprite {
 
 	}
 
+	@Override
 	public void collidingToFriend(LinkedList<Movable> list) {
-		super.collidingToFriend(list);
+		System.out.println("COLLISION");
+		Point asteroidCenter = getCenter(); // The Falcon's center point (or the object invoking this)
 
-		Point shipCenter = getCenter();
-		int shipRadius = getRadius();
+		// Apply shaking effect
+		for (int i = 0; i < 5; i++) {
+			int shakeOffsetX = (int) (Math.random() * 10 - 5); // Random offset between -5 and +5
+			int shakeOffsetY = (int) (Math.random() * 10 - 5); // Random offset between -5 and +5
 
-		for (Movable mov : list) {
-			// Check if the movable object is an Asteroid
-			if (mov instanceof Asteroid) {
-				Asteroid asteroid = (Asteroid) mov;
-
-				// Get the asteroid's center and radius
-				Point asteroidCenter = asteroid.getCenter();
-				int asteroidRadius = asteroid.getRadius();
-
-				// Detect collision
-				if (shipCenter.distance(asteroidCenter) < (shipRadius + asteroidRadius)) {
-					// Move the ship backward with acceleration
-					double deltaX = shipCenter.getX() - asteroidCenter.getX();
-					double deltaY = shipCenter.getY() - asteroidCenter.getY();
-					double magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-					// Normalize the direction and apply backward force
-					double backwardFactor = -5.0; // Acceleration factor for backward movement
-					setDeltaX((int) (backwardFactor * (deltaX / magnitude)));
-					setDeltaY((int) (backwardFactor * (deltaY / magnitude)));
-
-					// Shake the ship by randomly adjusting its position for a short duration
-					for (int i = 0; i < 5; i++) { // Shake effect for 5 frames
-						int shakeOffsetX = (int) (Math.random() * 10 - 5); // Random offset between -5 and 5
-						int shakeOffsetY = (int) (Math.random() * 10 - 5);
-						setCenter(new Point(
-								shipCenter.x + shakeOffsetX,
-								shipCenter.y + shakeOffsetY
-						));
-					}
-
-					break; // No need to check further if collision is detected
-				}
-			}
+			// Update the center of the Falcon (or object invoking this) to simulate shaking
+			setCenter(new Point(
+					asteroidCenter.x + shakeOffsetX,
+					asteroidCenter.y + shakeOffsetY
+			));
 		}
 	}
 

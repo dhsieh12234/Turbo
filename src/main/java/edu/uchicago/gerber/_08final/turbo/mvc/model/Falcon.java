@@ -187,6 +187,18 @@ public class Falcon extends Sprite {
 		if ( shield == 0)  decrementFalconNumAndSpawn();
 	}
 
+	@Override
+	public void collidingToFriend(LinkedList<Movable> list) {
+		// Set both X and Y velocity (acceleration) to zero
+		setDeltaX(0);
+		setDeltaY(0);
+
+		// Optionally, log the event for debugging
+		System.out.println("Falcon collided! Acceleration set to zero.");
+	}
+
+
+
 
 	public void decrementFalconNumAndSpawn(){
 
