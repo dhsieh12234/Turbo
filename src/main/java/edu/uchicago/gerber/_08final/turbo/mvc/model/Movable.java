@@ -31,5 +31,6 @@ public interface Movable {
 
 	void removeFromGame(LinkedList<Movable> list);
 
+	void collidingToFriend(LinkedList<Movable> list);
 
 } //end Movable

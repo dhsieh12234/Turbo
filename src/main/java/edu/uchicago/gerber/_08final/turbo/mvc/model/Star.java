@@ -91,6 +91,9 @@ public class Star implements Movable {
        list.remove(this);
     }
 
+    @Override
+    public void collidingToFriend(LinkedList<Movable> list) { list.add(this); }
+
 
 
 }

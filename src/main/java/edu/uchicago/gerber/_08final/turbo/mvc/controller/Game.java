@@ -150,10 +150,11 @@ public class Game implements Runnable, KeyListener {
 
                 //detect collision
                 if (pntFriendCenter.distance(pntFoeCenter) < (radFriend + radFoe)) {
-                    //enqueue the friend
-                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.REMOVE);
-                    //enqueue the foe
-                    CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, GameOp.Action.REMOVE);
+                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.COLLIDE);
+//                    //enqueue the friend
+//                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.REMOVE);
+//                    //enqueue the foe
+//                    CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, GameOp.Action.REMOVE);
                 }
             }//end inner for
         }//end outer for
