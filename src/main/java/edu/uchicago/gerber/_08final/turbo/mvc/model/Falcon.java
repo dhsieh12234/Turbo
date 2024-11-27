@@ -134,10 +134,9 @@ public class Falcon extends Sprite {
 			setDeltaX(-SIDE_THRUST); // Move left with fixed thrust
 		} else if (turnState == TurnState.RIGHT) {
 			setDeltaX(+SIDE_THRUST); // Move right with fixed thrust
+		} else {
+			setDeltaX(0); // Stop horizontal movement when no key is pressed
 		}
-//		else {
-//			setDeltaX(0); // Stop horizontal movement when no key is pressed
-//		}
 
 		setOrientation(270);
 	}

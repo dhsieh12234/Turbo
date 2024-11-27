@@ -258,7 +258,7 @@ public abstract class Sprite implements Movable {
 
     @Override
     public void removeFromGame(LinkedList<Movable> list) {
-        list.remove(this);
+//        list.remove(this);
     }
 
 

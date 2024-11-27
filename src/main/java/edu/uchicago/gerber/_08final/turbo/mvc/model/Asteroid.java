@@ -33,11 +33,11 @@ public class Asteroid extends Sprite {
 		setColor(Color.WHITE);
 
 		//the spin will be either plus or minus 0-9
-		setSpin(somePosNegValue(10));
+		setSpin(0);
 		//random delta-x
-		setDeltaX(somePosNegValue(10));
+		setDeltaX(0);
 		//random delta-y
-		setDeltaY(somePosNegValue(10));
+		setDeltaY(0);
 
 		setCartesians(generateVertices());
 
@@ -46,17 +46,17 @@ public class Asteroid extends Sprite {
 
 
 	//overloaded constructor, so we can spawn smaller asteroids from an exploding one
-	public Asteroid(Asteroid astExploded){
-		//calls the other constructor: Asteroid(int size)
-		this(astExploded.getSize() + 1);
-		setCenter((Point)astExploded.getCenter().clone());
-		int newSmallerSize = astExploded.getSize() + 1;
-		//random delta-x : inertia + the smaller the asteroid, the faster its possible speed
-		setDeltaX(astExploded.getDeltaX() / 1.5 + somePosNegValue( 5 + newSmallerSize * 2));
-		//random delta-y : inertia + the smaller the asteroid, the faster its possible speed
-		setDeltaY(astExploded.getDeltaY() / 1.5 + somePosNegValue( 5 + newSmallerSize * 2));
-
-	}
+//	public Asteroid(Asteroid astExploded){
+//		//calls the other constructor: Asteroid(int size)
+//		this(astExploded.getSize() + 1);
+//		setCenter((Point)astExploded.getCenter().clone());
+//		int newSmallerSize = astExploded.getSize() + 1;
+//		//random delta-x : inertia + the smaller the asteroid, the faster its possible speed
+//		setDeltaX(astExploded.getDeltaX() / 1.5 + somePosNegValue( 5 + newSmallerSize * 2));
+//		//random delta-y : inertia + the smaller the asteroid, the faster its possible speed
+//		setDeltaY(astExploded.getDeltaY() / 1.5 + somePosNegValue( 5 + newSmallerSize * 2));
+//
+//	}
 
 	//converts the radius to integer representing the size of the Asteroid:
 	//0 = large, 1 = medium, 2 = small
@@ -121,37 +121,37 @@ public class Asteroid extends Sprite {
 		renderVector(g);
 	}
 
-	@Override
-	public void removeFromGame(LinkedList<Movable> list) {
-		super.removeFromGame(list);
-		spawnSmallerAsteroidsOrDebris();
-		//give the user some points for destroying the asteroid
-		CommandCenter.getInstance().setScore(CommandCenter.getInstance().getScore() + 10L * (getSize() + 1));
+//	@Override
+//	public void removeFromGame(LinkedList<Movable> list) {
+//		super.removeFromGame(list);
+////		spawnSmallerAsteroidsOrDebris();
+//		//give the user some points for destroying the asteroid
+//		CommandCenter.getInstance().setScore(CommandCenter.getInstance().getScore() + 10L * (getSize() + 1));
+//
+//		//small (2) asteroids
+//		if (getSize() > 1)
+//			SoundLoader.playSound("pillow.wav");
+//		//else large (0) or medium (1) asteroids
+//		else
+//			SoundLoader.playSound("kapow.wav");
+//
+//	}
 
-		//small (2) asteroids
-		if (getSize() > 1)
-			SoundLoader.playSound("pillow.wav");
-		//else large (0) or medium (1) asteroids
-		else
-			SoundLoader.playSound("kapow.wav");
-
-	}
-
-	private void spawnSmallerAsteroidsOrDebris() {
-
-		int size = getSize();
-		//small (2) asteroids
-		if (size > 1) {
-			CommandCenter.getInstance().getOpsQueue().enqueue(new WhiteCloudDebris(this), GameOp.Action.ADD);
-		}
-		else {
-			//for large (0) and medium (1) sized Asteroids only, spawn 2 or 3 smaller asteroids respectively
-			//We can use the existing variable (size) to do this
-			size += 2;
-			while (size-- > 0) {
-				CommandCenter.getInstance().getOpsQueue().enqueue(new Asteroid(this), GameOp.Action.ADD);
-			}
-		}
-
-	}
+//	private void spawnSmallerAsteroidsOrDebris() {
+//
+//		int size = getSize();
+//		//small (2) asteroids
+//		if (size > 1) {
+//			CommandCenter.getInstance().getOpsQueue().enqueue(new WhiteCloudDebris(this), GameOp.Action.ADD);
+//		}
+//		else {
+//			//for large (0) and medium (1) sized Asteroids only, spawn 2 or 3 smaller asteroids respectively
+//			//We can use the existing variable (size) to do this
+//			size += 2;
+//			while (size-- > 0) {
+//				CommandCenter.getInstance().getOpsQueue().enqueue(new Asteroid(this), GameOp.Action.ADD);
+//			}
+//		}
+//
+//	}
 }
