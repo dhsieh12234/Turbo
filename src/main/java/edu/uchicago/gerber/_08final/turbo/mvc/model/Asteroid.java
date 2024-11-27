@@ -1,15 +1,16 @@
 package edu.uchicago.gerber._08final.turbo.mvc.model;
 
 
-import edu.uchicago.gerber._08final.turbo.mvc.controller.CommandCenter;
-import edu.uchicago.gerber._08final.turbo.mvc.controller.Game;
-import edu.uchicago.gerber._08final.turbo.mvc.controller.GameOp;
-import edu.uchicago.gerber._08final.turbo.mvc.controller.SoundLoader;
+import edu.uchicago.gerber._08final.turbo.mvc.controller.*;
 import edu.uchicago.gerber._08final.turbo.mvc.model.prime.PolarPoint;
+import edu.uchicago.gerber._08final.turbo.mvc.controller.ImageLoader;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -19,6 +20,13 @@ public class Asteroid extends Sprite {
 
 	//radius of a large asteroid
 	private final int LARGE_RADIUS = 30;
+
+	public enum ImageState {
+		RED_CAR, //different color cars
+		BLUE_CAR
+
+	}
+	private ImageState imageState;
 
 	//size determines if the Asteroid is Large (0), Medium (1), or Small (2)
 	public Asteroid(int size){
@@ -40,6 +48,14 @@ public class Asteroid extends Sprite {
 		setDeltaY(0);
 
 		setCartesians(generateVertices());
+
+		Map<ImageState, BufferedImage> rasterMap = new HashMap<>();
+		rasterMap.put(ImageState.RED_CAR, ImageLoader.getImage("/imgs/fal/red_car001.png"));
+		rasterMap.put(ImageState.BLUE_CAR, ImageLoader.getImage("/imgs/fal/blue_car001.png"));
+		setRasterMap(rasterMap);
+
+		this.imageState = Game.R.nextBoolean() ? ImageState.RED_CAR : ImageState.BLUE_CAR;
+
 
 	}
 
@@ -118,7 +134,8 @@ public class Asteroid extends Sprite {
 
 	@Override
 	public void draw(Graphics g) {
-		renderVector(g);
+		// Use the pre-assigned color (ImageState)
+		renderRaster((Graphics2D) g, getRasterMap().get(imageState));
 	}
 
 	@Override
