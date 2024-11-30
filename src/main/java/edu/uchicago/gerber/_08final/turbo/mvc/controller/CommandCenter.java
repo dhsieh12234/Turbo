@@ -1,10 +1,7 @@
 package edu.uchicago.gerber._08final.turbo.mvc.controller;
 
 
-import edu.uchicago.gerber._08final.turbo.mvc.model.Falcon;
-import edu.uchicago.gerber._08final.turbo.mvc.model.MiniMap;
-import edu.uchicago.gerber._08final.turbo.mvc.model.Movable;
-import edu.uchicago.gerber._08final.turbo.mvc.model.Star;
+import edu.uchicago.gerber._08final.turbo.mvc.model.*;
 import lombok.Data;
 import lombok.Getter;
 
@@ -62,8 +59,8 @@ public class CommandCenter {
 
 	 */
 	private final LinkedList<Movable> movDebris = new LinkedList<>();
-	private final LinkedList<Movable> movFriends = new LinkedList<>();
 	private final LinkedList<Movable> movFoes = new LinkedList<>();
+	private final LinkedList<Movable> movFriends = new LinkedList<>();
 	private final LinkedList<Movable> movFloaters = new LinkedList<>();
 
 	private final GameOpsQueue opsQueue = new GameOpsQueue();
@@ -116,6 +113,7 @@ public class CommandCenter {
 
 	public void initGame(){
 		clearAll();
+		opsQueue.enqueue(new Raceway(), GameOp.Action.ADD);
 		generateStarField();
 		setDimHash();
 		setLevelFromEnv();
@@ -127,7 +125,6 @@ public class CommandCenter {
 		falcon.decrementFalconNumAndSpawn();
 		opsQueue.enqueue(falcon, GameOp.Action.ADD);
 		opsQueue.enqueue(miniMap, GameOp.Action.ADD);
-
 
 	}
 

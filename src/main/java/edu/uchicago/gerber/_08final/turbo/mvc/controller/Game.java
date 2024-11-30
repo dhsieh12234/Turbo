@@ -150,7 +150,7 @@ public class Game implements Runnable, KeyListener {
 
                 //detect collision
                 if (pntFriendCenter.distance(pntFoeCenter) < (radFriend + radFoe)) {
-                    System.out.println("RECOGNIZED COLLISION" + movFoe);
+//                    System.out.println("RECOGNIZED COLLISION" + movFoe);
                     //enqueue the Action to collide
                     CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, GameOp.Action.COLLIDE);
                     CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.COLLIDE);
@@ -241,7 +241,7 @@ public class Game implements Runnable, KeyListener {
 
         while (num-- > 0) {
             //Asteroids with size of zero are big
-            CommandCenter.getInstance().getOpsQueue().enqueue(new Asteroid(0), GameOp.Action.ADD);
+            CommandCenter.getInstance().getOpsQueue().enqueue(new Asteroid(0, new Raceway()), GameOp.Action.ADD);
 
         }
     }
@@ -286,7 +286,7 @@ public class Game implements Runnable, KeyListener {
         level = level + 1;
         CommandCenter.getInstance().setLevel(level);
         //spawn some big new asteroids
-        spawnBigAsteroids(level);
+        spawnBigAsteroids(15);
         //make falcon invincible momentarily in case new asteroids spawn on top of him, and give player
         //time to adjust to new universe and new asteroids in game space.
         CommandCenter.getInstance().getFalcon().setShield(Falcon.INITIAL_SPAWN_TIME);

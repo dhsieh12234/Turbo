@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public class Asteroid extends Sprite {
 
 	//radius of a large asteroid
-	private final int LARGE_RADIUS = 30;
+	private final int LARGE_RADIUS = 100;
 
 	public enum ImageState {
 		RED_CAR, //different color cars
@@ -29,7 +29,7 @@ public class Asteroid extends Sprite {
 	private ImageState imageState;
 
 	//size determines if the Asteroid is Large (0), Medium (1), or Small (2)
-	public Asteroid(int size){
+	public Asteroid(int size, Raceway raceway) {
 
 		//a size of zero is a big asteroid
 		//a size of 1 or 2 is med or small asteroid respectively. See getSize() method.
@@ -56,8 +56,29 @@ public class Asteroid extends Sprite {
 
 		this.imageState = Game.R.nextBoolean() ? ImageState.RED_CAR : ImageState.BLUE_CAR;
 
-
+		// Set a random center within the raceway
+//		setCenterWithinRaceway(raceway);
 	}
+
+//	public void setCenterWithinRaceway(Raceway raceway) {
+//		Point racewayCenter = raceway.getCenter();
+//		int racewayWidth = raceway.getWidth();
+//
+//		// Horizontal bounds (confined to the raceway's width)
+//		int minX = racewayCenter.x - (racewayWidth / 2) + getRadius();
+//		int maxX = racewayCenter.x + (racewayWidth / 2) - getRadius();
+//
+//		// Random horizontal position within the raceway's width
+//		int x = Game.R.nextInt(maxX - minX + 1) + minX;
+//
+//		// Random vertical position anywhere along the length of the raceway
+//		int y = Game.R.nextInt(raceway.getHeight()); // Full height of the raceway
+//
+//		setCenter(new Point(x, y));
+//	}
+
+
+
 
 
 
@@ -158,7 +179,7 @@ public class Asteroid extends Sprite {
 
 	@Override
 	public void collidingToFriend(LinkedList<Movable> list) {
-		System.out.println("COLLISION");
+//		System.out.println("COLLISION");
 		Point asteroidCenter = getCenter(); // The Falcon's center point (or the object invoking this)
 
 		// Apply shaking effect
