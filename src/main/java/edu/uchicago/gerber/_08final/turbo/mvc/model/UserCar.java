@@ -13,10 +13,10 @@ import java.util.LinkedList;
 import java.util.Map;
 
 @Data
-public class Falcon extends Sprite {
+public class UserCar extends Sprite {
 
 	// ==============================================================
-	// FIELDS 
+	// FIELDS
 	// ==============================================================
 
 	//static fields
@@ -29,7 +29,7 @@ public class Falcon extends Sprite {
 	public static final int MAX_SHIELD = 200;
 	public static final int MAX_NUKE = 600;
 
-	public static final int MIN_RADIUS = 70;
+	public static final int MIN_RADIUS = 50;
 
 
 	//images states
@@ -66,8 +66,8 @@ public class Falcon extends Sprite {
 	// ==============================================================
 	// CONSTRUCTOR
 	// ==============================================================
-	
-	public Falcon() {
+
+	public UserCar() {
 
 		setTeam(Team.FRIEND);
 
@@ -91,7 +91,7 @@ public class Falcon extends Sprite {
 
 
 	// ==============================================================
-	// METHODS 
+	// METHODS
 	// ==============================================================
 	@Override
 	public void move() {
@@ -205,13 +205,13 @@ public class Falcon extends Sprite {
 		CommandCenter.getInstance().setNumFalcons(CommandCenter.getInstance().getNumFalcons() -1);
 		if (CommandCenter.getInstance().isGameOver()) return;
 		SoundLoader.playSound("shipspawn.wav");
-		setShield(Falcon.INITIAL_SPAWN_TIME);
-		setInvisible(Falcon.INITIAL_SPAWN_TIME/5);
+		setShield(UserCar.INITIAL_SPAWN_TIME);
+		setInvisible(UserCar.INITIAL_SPAWN_TIME/5);
 		//random number between 0-360 in steps of TURN_STEP
-		setOrientation(Game.R.nextInt(360 / Falcon.TURN_STEP) * Falcon.TURN_STEP);
+		setOrientation(Game.R.nextInt(360 / UserCar.TURN_STEP) * UserCar.TURN_STEP);
 		setDeltaX(0);
 		setDeltaY(0);
-		setRadius(Falcon.MIN_RADIUS);
+		setRadius(UserCar.MIN_RADIUS);
 		setMaxSpeedAttained(false);
 		setNukeMeter(0);
 

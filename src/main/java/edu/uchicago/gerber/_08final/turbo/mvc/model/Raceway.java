@@ -4,19 +4,21 @@ import edu.uchicago.gerber._08final.turbo.mvc.controller.CommandCenter;
 import edu.uchicago.gerber._08final.turbo.mvc.controller.Game;
 import edu.uchicago.gerber._08final.turbo.mvc.controller.GameOp;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.Random;
 
 public class Raceway extends Sprite {
+    @Setter
     private Point center;
     @Getter
     private int width;    // Width of the segment
     @Getter
     private int height;   // Height of the segment
     private Color color;  // Color of the segment (optional)
-    private LinkedList<Asteroid> cars;
+    private LinkedList<EnemyCars> cars;
 
     public Raceway(Point point) {
         this.center = new Point(Game.DIM.width / 2, Game.DIM.height / 2);
@@ -32,18 +34,13 @@ public class Raceway extends Sprite {
     @Override
     public void move() {
 
-        System.out.println("Moving");
+//        System.out.println("Moving");
         // Move the raceway downward based on Falcon's vertical speed
         double slowingFactor = 0.5; // Optional: Move slower than the Falcon
-        center.y -= CommandCenter.getInstance().getFalcon().getDeltaY() * slowingFactor;
-        center.x -= CommandCenter.getInstance().getFalcon().getDeltaX() * slowingFactor;
+        center.y -= CommandCenter.getInstance().getUserCar().getDeltaY() * slowingFactor;
+        center.x -= CommandCenter.getInstance().getUserCar().getDeltaX() * slowingFactor;
 
-        // Move cars within the segment
-        for (Asteroid car : cars) {
-            car.move();
-        }
-
-        // If the segment moves off the screen, remove it and add a new one
+//         If the segment moves off the screen, remove it and add a new one
         if (center.y - height / 2 > Game.DIM.height) {
             System.out.println("NEW SEGMENT");
             // Remove this segment from the game
@@ -56,10 +53,6 @@ public class Raceway extends Sprite {
         }
     }
 
-    public void setCenter(Point point) {
-        this.center = point;
-    }
-
 
     @Override
     public void draw(Graphics g) {
@@ -68,7 +61,7 @@ public class Raceway extends Sprite {
         g.fillRect(center.x - (width / 2), center.y - (height / 2), width, height);
 
         // Draw cars in this segment
-        for (Asteroid car : cars) {
+        for (EnemyCars car : cars) {
             car.draw(g);
         }
     }
@@ -81,7 +74,7 @@ public class Raceway extends Sprite {
         for (int i = 0; i < numberOfCars; i++) {
             int randomX = random.nextInt(width - 100) + (center.x - (width / 2) + 50); // Random X within road
             int randomY = random.nextInt(height) + (center.y - (height / 2)); // Random Y within segment
-            cars.add(new Asteroid(new Point(randomX, randomY))); // Add new car
+            cars.add(new EnemyCars(new Point(randomX, randomY))); // Add new car
         }
     }
 
@@ -97,7 +90,7 @@ public class Raceway extends Sprite {
 
     @Override
     public Team getTeam() {
-        return Team.FRIEND;
+        return Team.RACEWAY;
     }
 
     @Override

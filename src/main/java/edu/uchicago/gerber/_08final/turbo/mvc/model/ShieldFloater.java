@@ -21,7 +21,7 @@ public class ShieldFloater extends Floater {
 		//if getExpiry() > 0, then this remove was the result of a collision, rather than natural mortality
 		if (getExpiry() > 0) {
 			SoundLoader.playSound("shieldup.wav");
-		    CommandCenter.getInstance().getFalcon().setShield(Falcon.MAX_SHIELD);
+		    CommandCenter.getInstance().getUserCar().setShield(UserCar.MAX_SHIELD);
 	   }
 
 	}

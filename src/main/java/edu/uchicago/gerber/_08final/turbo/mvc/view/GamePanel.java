@@ -120,9 +120,9 @@ public class GamePanel extends Panel {
 
         //build the status string array with possible messages in middle of screen
         List<String> statusArray = new ArrayList<>();
-        if (CommandCenter.getInstance().getFalcon().getShowLevel() > 0) statusArray.add(levelText);
-        if (CommandCenter.getInstance().getFalcon().isMaxSpeedAttained()) statusArray.add("WARNING - SLOW DOWN");
-        if (CommandCenter.getInstance().getFalcon().getNukeMeter() > 0) statusArray.add("PRESS F for NUKE");
+        if (CommandCenter.getInstance().getUserCar().getShowLevel() > 0) statusArray.add(levelText);
+        if (CommandCenter.getInstance().getUserCar().isMaxSpeedAttained()) statusArray.add("WARNING - SLOW DOWN");
+        if (CommandCenter.getInstance().getUserCar().getNukeMeter() > 0) statusArray.add("PRESS F for NUKE");
 
             //draw the statusArray strings to middle of screen
         if (!statusArray.isEmpty())
@@ -144,8 +144,8 @@ public class GamePanel extends Panel {
     private void drawMeters(Graphics g){
 
         //will be a number between 0-100 inclusive
-        int shieldValue =   CommandCenter.getInstance().getFalcon().getShield() / 2;
-        int nukeValue = CommandCenter.getInstance().getFalcon().getNukeMeter() /6;
+        int shieldValue =   CommandCenter.getInstance().getUserCar().getShield() / 2;
+        int nukeValue = CommandCenter.getInstance().getUserCar().getNukeMeter() /6;
 
         drawOneMeter(g, Color.CYAN, 1, shieldValue);
         drawOneMeter(g, Color.YELLOW, 2, nukeValue);

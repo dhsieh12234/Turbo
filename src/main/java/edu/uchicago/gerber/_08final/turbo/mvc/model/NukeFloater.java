@@ -22,7 +22,7 @@ public class NukeFloater extends Floater {
 		//if getExpiry() > 0, then this remove was the result of a collision, rather than natural mortality
 		if (getExpiry() > 0) {
 			SoundLoader.playSound("nuke-up.wav");
-			CommandCenter.getInstance().getFalcon().setNukeMeter(Falcon.MAX_NUKE);
+			CommandCenter.getInstance().getUserCar().setNukeMeter(UserCar.MAX_NUKE);
 		}
 
 	}

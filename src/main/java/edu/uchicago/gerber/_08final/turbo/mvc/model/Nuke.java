@@ -14,8 +14,8 @@ public class Nuke extends Sprite {
     private static final int EXPIRE = 60;
     private int nukeState = 0;
 
-    public Nuke(Falcon falcon) {
-        setCenter((Point)falcon.getCenter().clone());
+    public Nuke(UserCar userCar) {
+        setCenter((Point) userCar.getCenter().clone());
         setColor(Color.YELLOW);
         setExpiry(EXPIRE);
         setRadius(0);
@@ -23,13 +23,13 @@ public class Nuke extends Sprite {
 
         final double FIRE_POWER = 11.0;
         double vectorX =
-                Math.cos(Math.toRadians(falcon.getOrientation())) * FIRE_POWER;
+                Math.cos(Math.toRadians(userCar.getOrientation())) * FIRE_POWER;
         double vectorY =
-                Math.sin(Math.toRadians(falcon.getOrientation())) * FIRE_POWER;
+                Math.sin(Math.toRadians(userCar.getOrientation())) * FIRE_POWER;
 
         //fire force: falcon inertia + fire-vector
-        setDeltaX(falcon.getDeltaX() + vectorX);
-        setDeltaY(falcon.getDeltaY() + vectorY);
+        setDeltaX(userCar.getDeltaX() + vectorX);
+        setDeltaY(userCar.getDeltaY() + vectorY);
 
     }
 
@@ -87,10 +87,10 @@ public class Nuke extends Sprite {
     @Override
     public void addToGame(LinkedList<Movable> list) {
         //only deploy the nuke if the nukeMeter > 0
-        if (CommandCenter.getInstance().getFalcon().getNukeMeter() > 0){
+        if (CommandCenter.getInstance().getUserCar().getNukeMeter() > 0){
             list.add(this);
             SoundLoader.playSound("nuke.wav");
-            CommandCenter.getInstance().getFalcon().setNukeMeter(0);
+            CommandCenter.getInstance().getUserCar().setNukeMeter(0);
         }
     }
 

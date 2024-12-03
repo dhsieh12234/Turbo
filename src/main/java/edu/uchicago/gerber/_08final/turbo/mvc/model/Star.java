@@ -72,8 +72,8 @@ public class Star implements Movable {
             //in-bounds
         } else {
             //move star in opposite direction of falcon.
-            center.x = (int) Math.round(center.x - CommandCenter.getInstance().getFalcon().getDeltaX());
-            center.y = (int) Math.round(center.y - CommandCenter.getInstance().getFalcon().getDeltaY());
+            center.x = (int) Math.round(center.x - CommandCenter.getInstance().getUserCar().getDeltaX());
+            center.y = (int) Math.round(center.y - CommandCenter.getInstance().getUserCar().getDeltaY());
         }
 
 

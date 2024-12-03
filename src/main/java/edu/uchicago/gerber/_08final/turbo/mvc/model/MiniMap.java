@@ -80,8 +80,8 @@ public class MiniMap extends Sprite {
 
         //draw foe (asteroids) radar-blips
         CommandCenter.getInstance().getMovFoes().forEach(mov -> {
-                    if (!(mov instanceof Asteroid)) return;
-                    Asteroid asteroid = (Asteroid) mov;
+                    if (!(mov instanceof EnemyCars)) return;
+                    EnemyCars asteroid = (EnemyCars) mov;
                     g.setColor(LIGHT_GRAY);
                     Point translatedPoint = translatePoint(asteroid.getCenter());
                     switch (asteroid.getSize()){
@@ -115,7 +115,7 @@ public class MiniMap extends Sprite {
         //draw friend radar-blips
         CommandCenter.getInstance().getMovFriends().forEach(mov -> {
                     Color color;
-                    if (mov instanceof Falcon && CommandCenter.getInstance().getFalcon().getShield() > 0)
+                    if (mov instanceof UserCar && CommandCenter.getInstance().getUserCar().getShield() > 0)
                         color = Color.CYAN;
                     else if (mov instanceof Nuke)
                         color = Color.YELLOW;

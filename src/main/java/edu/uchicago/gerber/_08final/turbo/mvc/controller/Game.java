@@ -165,8 +165,8 @@ public class Game implements Runnable, KeyListener {
         }//end outer for
 
         //check for collisions between falcon and floaters. Order of growth of O(FLOATERS)
-        Point pntFalCenter = CommandCenter.getInstance().getFalcon().getCenter();
-        int radFalcon = CommandCenter.getInstance().getFalcon().getRadius();
+        Point pntFalCenter = CommandCenter.getInstance().getUserCar().getCenter();
+        int radFalcon = CommandCenter.getInstance().getUserCar().getRadius();
 
         Point pntFloaterCenter;
         int radFloater;
@@ -214,6 +214,7 @@ public class Game implements Runnable, KeyListener {
                     break;
                 case RACEWAY:
                     list = CommandCenter.getInstance().getMovRaceway();
+                    break;
                 default:
                     System.err.println("Unknown team: " + mov.getTeam());
                     continue;
@@ -257,7 +258,7 @@ public class Game implements Runnable, KeyListener {
             Point spawnPoint = determineSpawnPointWithinRaceway(commandCenter.getRaceway());
 
             // Create a new Asteroid at the spawn point
-            Asteroid bigAsteroid = new Asteroid(spawnPoint);
+            EnemyCars bigAsteroid = new EnemyCars(spawnPoint);
 
             // Enqueue the Asteroid to be added to the game
             commandCenter.getOpsQueue().enqueue(bigAsteroid, GameOp.Action.ADD);
@@ -305,7 +306,7 @@ public class Game implements Runnable, KeyListener {
         //if there are no more Asteroids on the screen
         boolean asteroidFree = true;
         for (Movable movFoe : CommandCenter.getInstance().getMovFoes()) {
-            if (movFoe instanceof Asteroid) {
+            if (movFoe instanceof EnemyCars) {
                 asteroidFree = false;
                 break;
             }
@@ -324,7 +325,7 @@ public class Game implements Runnable, KeyListener {
         CommandCenter.getInstance().setScore(CommandCenter.getInstance().getScore() + (10_000L * level));
 
         //center the falcon at each level-clear
-        CommandCenter.getInstance().getFalcon().setCenter(new Point(Game.DIM.width / 2, Game.DIM.height / 2));
+        CommandCenter.getInstance().getUserCar().setCenter(new Point(Game.DIM.width / 2, (int)(Game.DIM.height * 0.8)));;
 
         //Set universe according to mod of level - cycle through universes
         int ordinal = level % CommandCenter.Universe.values().length;
@@ -340,9 +341,9 @@ public class Game implements Runnable, KeyListener {
         spawnBigAsteroids(1);
         //make falcon invincible momentarily in case new asteroids spawn on top of him, and give player
         //time to adjust to new universe and new asteroids in game space.
-        CommandCenter.getInstance().getFalcon().setShield(Falcon.INITIAL_SPAWN_TIME);
+        CommandCenter.getInstance().getUserCar().setShield(UserCar.INITIAL_SPAWN_TIME);
         //show "Level: [X] UNIVERSE" in middle of screen
-        CommandCenter.getInstance().getFalcon().setShowLevel(Falcon.INITIAL_SPAWN_TIME);
+        CommandCenter.getInstance().getUserCar().setShowLevel(UserCar.INITIAL_SPAWN_TIME);
 
 
     }
@@ -353,24 +354,24 @@ public class Game implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        Falcon falcon = CommandCenter.getInstance().getFalcon();
+        UserCar userCar = CommandCenter.getInstance().getUserCar();
         int keyCode = e.getKeyCode();
         switch (keyCode) {
             case FIRE:
-                CommandCenter.getInstance().getOpsQueue().enqueue(new Bullet(falcon), GameOp.Action.ADD);
+                CommandCenter.getInstance().getOpsQueue().enqueue(new Bullet(userCar), GameOp.Action.ADD);
                 break;
             case NUKE:
-                CommandCenter.getInstance().getOpsQueue().enqueue(new Nuke(falcon), GameOp.Action.ADD);
+                CommandCenter.getInstance().getOpsQueue().enqueue(new Nuke(userCar), GameOp.Action.ADD);
                 break;
             case TURBO:
-                falcon.setThrusting(true);
+                userCar.setThrusting(true);
                 SoundLoader.playSound("whitenoise_loop.wav");
                 break;
             case LEFT:
-                falcon.setTurnState(Falcon.TurnState.LEFT);
+                userCar.setTurnState(UserCar.TurnState.LEFT);
                 break;
             case RIGHT:
-                falcon.setTurnState(Falcon.TurnState.RIGHT);
+                userCar.setTurnState(UserCar.TurnState.RIGHT);
                 break;
             default:
                 break;
@@ -380,7 +381,7 @@ public class Game implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        Falcon falcon = CommandCenter.getInstance().getFalcon();
+        UserCar userCar = CommandCenter.getInstance().getUserCar();
         int keyCode = e.getKeyCode();
         //show the key-code in the console
         System.out.println(keyCode);
@@ -395,10 +396,10 @@ public class Game implements Runnable, KeyListener {
             //releasing either the LEFT or RIGHT arrow key will set the TurnState to IDLE
             case LEFT:
             case RIGHT:
-                falcon.setTurnState(Falcon.TurnState.IDLE);
+                userCar.setTurnState(UserCar.TurnState.IDLE);
                 break;
             case TURBO:
-                falcon.setThrusting(false);
+                userCar.setThrusting(false);
                 SoundLoader.stopSound("whitenoise_loop.wav");
                 break;
             case PAUSE:

@@ -11,7 +11,7 @@ public class Bullet extends Sprite {
 
 
 
-    public Bullet(Falcon falcon) {
+    public Bullet(UserCar userCar) {
 
         setTeam(Team.FRIEND);
         setColor(Color.ORANGE);
@@ -21,10 +21,10 @@ public class Bullet extends Sprite {
 
 
         //everything is relative to the falcon ship that fired the bullet
-        setCenter((Point)falcon.getCenter().clone());
+        setCenter((Point) userCar.getCenter().clone());
 
         //set the bullet orientation to the falcon (ship) orientation
-        setOrientation(falcon.getOrientation());
+        setOrientation(userCar.getOrientation());
 
         final double FIRE_POWER = 35.0;
         double vectorX =
@@ -33,14 +33,14 @@ public class Bullet extends Sprite {
                 Math.sin(Math.toRadians(getOrientation())) * FIRE_POWER;
 
         //fire force: falcon inertia + fire-vector
-        setDeltaX(falcon.getDeltaX() + vectorX);
-        setDeltaY(falcon.getDeltaY() + vectorY);
+        setDeltaX(userCar.getDeltaX() + vectorX);
+        setDeltaY(userCar.getDeltaY() + vectorY);
 
         //we have a reference to the falcon passed into the constructor. Let's create some kick-back.
         //fire kick-back on the falcon: inertia - fire-vector / some arbitrary divisor
         final double KICK_BACK_DIVISOR = 36.0;
-        falcon.setDeltaX(falcon.getDeltaX() - vectorX / KICK_BACK_DIVISOR);
-        falcon.setDeltaY(falcon.getDeltaY() - vectorY / KICK_BACK_DIVISOR);
+        userCar.setDeltaX(userCar.getDeltaX() - vectorX / KICK_BACK_DIVISOR);
+        userCar.setDeltaY(userCar.getDeltaY() - vectorY / KICK_BACK_DIVISOR);
 
 
         //define the points on a cartesian grid

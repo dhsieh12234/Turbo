@@ -11,10 +11,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class Asteroid extends Sprite {
+public class EnemyCars extends Sprite {
 
 	// Constants
-	private static final int CAR_RADIUS = 35; // Fixed radius for all cars
+	private static final int CAR_RADIUS = 50; // Fixed radius for all cars
 	private static final Random RANDOM = new Random();
 
 	public int getSize() {
@@ -34,7 +34,7 @@ public class Asteroid extends Sprite {
 	 *
 	 * @param center The center point where the Asteroid (car) will be placed.
 	 */
-	public Asteroid(Point center) {
+	public EnemyCars(Point center) {
 		// Initialize position
 		setCenter(center);
 
@@ -48,8 +48,8 @@ public class Asteroid extends Sprite {
 		setColor(Color.WHITE);
 
 		// Initialize movement deltas opposite to Falcon's current velocity with slight randomness
-		setDeltaX(-CommandCenter.getInstance().getFalcon().getDeltaX() + RANDOM.nextInt(3) - 1);
-		setDeltaY(-CommandCenter.getInstance().getFalcon().getDeltaY() + RANDOM.nextInt(3) - 1);
+		setDeltaX(-CommandCenter.getInstance().getUserCar().getDeltaX() + RANDOM.nextInt(3) - 1);
+		setDeltaY(-CommandCenter.getInstance().getUserCar().getDeltaY() + RANDOM.nextInt(3) - 1);
 
 		// Set spin (if applicable)
 		setSpin(0); // Adjust as needed
@@ -109,9 +109,9 @@ public class Asteroid extends Sprite {
 	@Override
 	public void move() {
 		// Get Falcon's deltaX and deltaY
-		Falcon falcon = CommandCenter.getInstance().getFalcon();
-		double falconDeltaX = falcon.getDeltaX();
-		double falconDeltaY = falcon.getDeltaY();
+		UserCar userCar = CommandCenter.getInstance().getUserCar();
+		double falconDeltaX = userCar.getDeltaX();
+		double falconDeltaY = userCar.getDeltaY();
 
 		// Apply slowing effect to the Asteroid's own deltaX and deltaY
 		// For example, reduce deltaX and deltaY by a factor of 0.5 each frame

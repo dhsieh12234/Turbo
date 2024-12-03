@@ -106,8 +106,8 @@ public abstract class Sprite implements Movable {
             double newYPos = center.y;
             //if falcon-fixed, move the sprite in the opposite direction of the falcon to create centered-play
             if (CommandCenter.getInstance().isFalconPositionFixed()){
-                newXPos -= CommandCenter.getInstance().getFalcon().getDeltaX();
-                newYPos -= CommandCenter.getInstance().getFalcon().getDeltaY();
+                newXPos -= CommandCenter.getInstance().getUserCar().getDeltaX();
+                newYPos -= CommandCenter.getInstance().getUserCar().getDeltaY();
             }
             center.x = (int) Math.round(newXPos + getDeltaX());
             center.y = (int) Math.round(newYPos + getDeltaY());

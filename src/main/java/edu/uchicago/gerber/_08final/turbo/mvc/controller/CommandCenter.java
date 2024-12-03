@@ -13,6 +13,10 @@ import java.util.*;
 @Data
 public class CommandCenter {
 
+	private static final int CAR_WIDTH = 70;  // Adjust to your car's width
+	private static final int CAR_HEIGHT = 140; // Adjust to your car's height
+	private static final int MAX_CARS = 5;
+
 	public enum Universe {
 		FREE_FLY,
 		CENTER,
@@ -39,7 +43,7 @@ public class CommandCenter {
 	//the falcon is located in the movFriends list, but since we use this reference a lot, we keep track of it in a
 	//separate reference. Use final to ensure that the falcon ref always points to the single falcon object on heap.
 	//Lombok will not provide setter methods on final members
-	private final Falcon falcon  = new Falcon();
+	private final UserCar userCar = new UserCar();
 	//miniDimHash associates dimension with the Universe.
 	private final Map<Universe, Dimension> miniDimHash = new HashMap<>();
 	private final MiniMap miniMap = new MiniMap();
@@ -79,7 +83,7 @@ public class CommandCenter {
     @Getter
     private boolean inputEnabled = true;
 
-	private final long CAR_SPAWN_INTERVAL = 2000; // Spawn a car every 2 seconds
+	private final long CAR_SPAWN_INTERVAL = 5000; // Spawn a car every 2 seconds
 	private long lastCarSpawnTime = 0;
 
 	// Define the screen boundaries
@@ -121,7 +125,9 @@ public class CommandCenter {
 
 	public void update() {
 		long currentTime = System.currentTimeMillis();
-		if (currentTime - lastCarSpawnTime > CAR_SPAWN_INTERVAL) {
+
+		// Check if it's time to spawn a new car and if we're below the maximum limit
+		if (currentTime - lastCarSpawnTime > CAR_SPAWN_INTERVAL && getCarCount() < MAX_CARS) {
 			spawnCar();
 			lastCarSpawnTime = currentTime;
 		}
@@ -130,8 +136,8 @@ public class CommandCenter {
 		Iterator<Movable> iterator = movFoes.iterator();
 		while (iterator.hasNext()) {
 			Movable movable = iterator.next();
-			if (movable instanceof Asteroid) {
-				Asteroid car = (Asteroid) movable;
+			if (movable instanceof EnemyCars) {
+				EnemyCars car = (EnemyCars) movable;
 				Point center = car.getCenter();
 				if (center.x < -car.getRadius() || center.x > SCREEN_WIDTH + car.getRadius() ||
 						center.y < -car.getRadius() || center.y > SCREEN_HEIGHT + car.getRadius()) {
@@ -139,8 +145,10 @@ public class CommandCenter {
 					iterator.remove();
 					// Enqueue removal if necessary
 					opsQueue.enqueue(car, GameOp.Action.REMOVE);
-					// Spawn a new car
-					spawnCar();
+					// Optionally, spawn a new car if we're below the limit
+					// if (getCarCount() < MAX_CARS) {
+					//     spawnCar();
+					// }
 				}
 			}
 		}
@@ -149,15 +157,52 @@ public class CommandCenter {
 		frame = frame < Long.MAX_VALUE ? frame + 1 : 0;
 	}
 
-	private void spawnCar() {
-		Random random = new Random();
-		int x = random.nextInt(SCREEN_WIDTH - 100) + 50; // Spawn within screen width with padding
-		int y = -100; // Start above the screen
+	private int getCarCount() {
+		int count = 0;
+		for (Movable movable : movFoes) {
+			if (movable instanceof EnemyCars) {
+				count++;
+			}
+		}
+		return count;
+	}
 
-		Asteroid newCar = new Asteroid(new Point(x, y));
+	private void spawnCar() {
+		if (getCarCount() >= MAX_CARS) {
+			// Do not spawn new car if we've reached the maximum limit
+			return;
+		}
+
+		Random random = new Random();
+		CommandCenter commandCenter = CommandCenter.getInstance();
+
+		// Get the raceway instance
+		Raceway raceway = commandCenter.getRaceway();
+
+		// Define padding to avoid spawning too close to the edges
+		int padding = 10; // Adjust as needed
+
+		// Calculate horizontal boundaries within the raceway
+		int minX = raceway.getCenter().x - (raceway.getWidth() / 2) + padding + (CAR_WIDTH / 2);
+		int maxX = raceway.getCenter().x + (raceway.getWidth() / 2) - padding - (CAR_WIDTH / 2);
+
+		// Randomly select an x-coordinate within the raceway boundaries
+		int x = random.nextInt(maxX - minX + 1) + minX;
+
+		// Spawn the car just above the raceway
+		int y = raceway.getCenter().y - (raceway.getHeight() / 2) - CAR_HEIGHT;
+
+		// Create a new Asteroid (car) at the calculated position
+		EnemyCars newCar = new EnemyCars(new Point(x, y));
+
+		// Enqueue the new car to be added to the game
 		opsQueue.enqueue(newCar, GameOp.Action.ADD);
+
+		// Optional: Log the spawn event for debugging
 		System.out.println("Spawned new car at (" + x + ", " + y + ")");
 	}
+
+
 
 
 	public void initGame(){
@@ -173,7 +218,7 @@ public class CommandCenter {
 
 		movRaceway.clear(); // Clear any previous raceway segments
 
-		int segmentHeight = 300; // Height of each raceway segment
+		int segmentHeight = 30; // Height of each raceway segment
 		int numSegments = (int) Math.ceil((double) Game.DIM.height / segmentHeight) + 1;
 		System.out.println("NUMSEGMENTS" + numSegments);// Enough segments to cover the screen
 
@@ -187,8 +232,8 @@ public class CommandCenter {
 		}
 		spawnCar();
 
-		falcon.decrementFalconNumAndSpawn();
-		opsQueue.enqueue(falcon, GameOp.Action.ADD);
+		userCar.decrementFalconNumAndSpawn();
+		opsQueue.enqueue(userCar, GameOp.Action.ADD);
 		opsQueue.enqueue(miniMap, GameOp.Action.ADD);
 
 	}
