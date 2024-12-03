@@ -10,7 +10,7 @@ The goal is to make subsystems easier to use by providing a higher-level interfa
  */
 public interface Movable {
 
-	enum Team {FRIEND, FOE, FLOATER, DEBRIS}
+	enum Team {FRIEND, FOE, FLOATER, RACEWAY, DEBRIS}
 
 	//for the game to move and draw movable objects. See the GamePanel class.
 	void move();

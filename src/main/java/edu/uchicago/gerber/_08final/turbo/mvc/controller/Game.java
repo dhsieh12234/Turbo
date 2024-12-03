@@ -21,7 +21,7 @@ public class Game implements Runnable, KeyListener {
     // ===============================================
 
     public static final Dimension DIM = new Dimension(1500, 950); //the dimension of the game-screen.
-
+    private static final int LARGE_RADIUS = 100;
 
 
     private final GamePanel gamePanel;
@@ -91,6 +91,8 @@ public class Game implements Runnable, KeyListener {
         // this thread animates the scene
         while (Thread.currentThread() == animationThread) {
 
+            //updates car position
+            CommandCenter.getInstance().update();
 
             //this call will cause all movables to move() and draw() themselves every ~40ms
             // see GamePanel class for details
@@ -188,11 +190,15 @@ public class Game implements Runnable, KeyListener {
         // mutating the movable linkedlists while iterating them above.
         while (!CommandCenter.getInstance().getOpsQueue().isEmpty()) {
 
+
             GameOp gameOp = CommandCenter.getInstance().getOpsQueue().dequeue();
+
+
 
             //given team, determine which linked-list this object will be added-to or removed-from
             LinkedList<Movable> list;
             Movable mov = gameOp.getMovable();
+
             switch (mov.getTeam()) {
                 case FOE:
                     list = CommandCenter.getInstance().getMovFoes();
@@ -204,8 +210,13 @@ public class Game implements Runnable, KeyListener {
                     list = CommandCenter.getInstance().getMovFloaters();
                     break;
                 case DEBRIS:
-                default:
                     list = CommandCenter.getInstance().getMovDebris();
+                    break;
+                case RACEWAY:
+                    list = CommandCenter.getInstance().getMovRaceway();
+                default:
+                    System.err.println("Unknown team: " + mov.getTeam());
+                    continue;
             }
 
             //pass the appropriate linked-list from above
@@ -238,12 +249,52 @@ public class Game implements Runnable, KeyListener {
 
     //this method spawns new Large (0) Asteroids
     private void spawnBigAsteroids(int num) {
+        CommandCenter commandCenter = CommandCenter.getInstance();
+        Random random = new Random();
 
-        while (num-- > 0) {
-            //Asteroids with size of zero are big
-            CommandCenter.getInstance().getOpsQueue().enqueue(new Asteroid(0, new Raceway()), GameOp.Action.ADD);
+        for (int i = 0; i < num; i++) {
+            // Determine spawn position
+            Point spawnPoint = determineSpawnPointWithinRaceway(commandCenter.getRaceway());
 
+            // Create a new Asteroid at the spawn point
+            Asteroid bigAsteroid = new Asteroid(spawnPoint);
+
+            // Enqueue the Asteroid to be added to the game
+            commandCenter.getOpsQueue().enqueue(bigAsteroid, GameOp.Action.ADD);
+
+            System.out.println("Spawned Big Asteroid at: " + spawnPoint);
         }
+    }
+
+    /**
+     * Determines a random spawn point within the given raceway.
+     *
+     * @param raceway The current raceway within which to spawn the asteroid.
+     * @return A Point representing the spawn location.
+     */
+    private Point determineSpawnPointWithinRaceway(Raceway raceway) {
+        if (raceway == null) {
+            // Fallback to random position if raceway is not defined
+            int x = Game.R.nextInt(Game.DIM.width);
+            int y = Game.R.nextInt(Game.DIM.height);
+            return new Point(x, y);
+        }
+
+        Point racewayCenter = raceway.getCenter();
+        int racewayWidth = raceway.getWidth();
+        int racewayHeight = raceway.getHeight();
+
+        // Define spawn boundaries within the raceway
+        int minX = racewayCenter.x - (racewayWidth / 2) + LARGE_RADIUS;
+        int maxX = racewayCenter.x + (racewayWidth / 2) - LARGE_RADIUS;
+        int minY = racewayCenter.y - (racewayHeight / 2) - LARGE_RADIUS; // Spawn above the raceway
+        int maxY = racewayCenter.y + (racewayHeight / 2) - LARGE_RADIUS; // Optionally, spawn within or beyond raceway
+
+        // Randomly select a spawn position within the boundaries
+        int x = Game.R.nextInt(maxX - minX + 1) + minX;
+        int y = minY; // Spawning just above the raceway for cars to enter
+
+        return new Point(x, y);
     }
 
 
@@ -286,7 +337,7 @@ public class Game implements Runnable, KeyListener {
         level = level + 1;
         CommandCenter.getInstance().setLevel(level);
         //spawn some big new asteroids
-        spawnBigAsteroids(15);
+        spawnBigAsteroids(1);
         //make falcon invincible momentarily in case new asteroids spawn on top of him, and give player
         //time to adjust to new universe and new asteroids in game space.
         CommandCenter.getInstance().getFalcon().setShield(Falcon.INITIAL_SPAWN_TIME);

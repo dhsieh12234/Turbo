@@ -29,7 +29,7 @@ public class Falcon extends Sprite {
 	public static final int MAX_SHIELD = 200;
 	public static final int MAX_NUKE = 600;
 
-	public static final int MIN_RADIUS = 100;
+	public static final int MIN_RADIUS = 70;
 
 
 	//images states

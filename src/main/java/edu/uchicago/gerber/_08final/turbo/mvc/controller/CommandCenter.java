@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 //The CommandCenter is a singleton that manages the state of the game.
 //the lombok @Data gives us automatic getters and setters on all members
@@ -24,8 +22,11 @@ public class CommandCenter {
 		DARK
 
 	}
+    // Manual getter method
+    @Getter
+    private final Raceway raceway = new Raceway(new Point(Game.DIM.width / 2, Game.DIM.height - 100)); // Example position
 
-	private Universe universe;
+    private Universe universe;
 	private  int numFalcons;
 	private  int level;
 	private  long score;
@@ -62,6 +63,7 @@ public class CommandCenter {
 	private final LinkedList<Movable> movFoes = new LinkedList<>();
 	private final LinkedList<Movable> movFriends = new LinkedList<>();
 	private final LinkedList<Movable> movFloaters = new LinkedList<>();
+	private final LinkedList<Movable> movRaceway = new LinkedList<>();
 
 	private final GameOpsQueue opsQueue = new GameOpsQueue();
 
@@ -76,6 +78,13 @@ public class CommandCenter {
     // Check if input is enabled
     @Getter
     private boolean inputEnabled = true;
+
+	private final long CAR_SPAWN_INTERVAL = 2000; // Spawn a car every 2 seconds
+	private long lastCarSpawnTime = 0;
+
+	// Define the screen boundaries
+	private final int SCREEN_WIDTH = Game.DIM.width;
+	private final int SCREEN_HEIGHT = Game.DIM.height;
 
 	// Constructor made private
 	private CommandCenter() {}
@@ -110,10 +119,49 @@ public class CommandCenter {
 		}
 	}
 
+	public void update() {
+		long currentTime = System.currentTimeMillis();
+		if (currentTime - lastCarSpawnTime > CAR_SPAWN_INTERVAL) {
+			spawnCar();
+			lastCarSpawnTime = currentTime;
+		}
+
+		// Remove cars that are off-screen
+		Iterator<Movable> iterator = movFoes.iterator();
+		while (iterator.hasNext()) {
+			Movable movable = iterator.next();
+			if (movable instanceof Asteroid) {
+				Asteroid car = (Asteroid) movable;
+				Point center = car.getCenter();
+				if (center.x < -car.getRadius() || center.x > SCREEN_WIDTH + car.getRadius() ||
+						center.y < -car.getRadius() || center.y > SCREEN_HEIGHT + car.getRadius()) {
+					// Car is off-screen
+					iterator.remove();
+					// Enqueue removal if necessary
+					opsQueue.enqueue(car, GameOp.Action.REMOVE);
+					// Spawn a new car
+					spawnCar();
+				}
+			}
+		}
+
+		// Increment frame
+		frame = frame < Long.MAX_VALUE ? frame + 1 : 0;
+	}
+
+	private void spawnCar() {
+		Random random = new Random();
+		int x = random.nextInt(SCREEN_WIDTH - 100) + 50; // Spawn within screen width with padding
+		int y = -100; // Start above the screen
+
+		Asteroid newCar = new Asteroid(new Point(x, y));
+		opsQueue.enqueue(newCar, GameOp.Action.ADD);
+		System.out.println("Spawned new car at (" + x + ", " + y + ")");
+	}
+
 
 	public void initGame(){
 		clearAll();
-		opsQueue.enqueue(new Raceway(), GameOp.Action.ADD);
 		generateStarField();
 		setDimHash();
 		setLevelFromEnv();
@@ -122,6 +170,23 @@ public class CommandCenter {
 		setUniverse(Universe.VERTICAL);
 		//set to one greater than number of falcons lives in your game as decrementFalconNumAndSpawn() also decrements
 		setNumFalcons(3);
+
+		movRaceway.clear(); // Clear any previous raceway segments
+
+		int segmentHeight = 300; // Height of each raceway segment
+		int numSegments = (int) Math.ceil((double) Game.DIM.height / segmentHeight) + 1;
+		System.out.println("NUMSEGMENTS" + numSegments);// Enough segments to cover the screen
+
+		for (int i = 0; i < numSegments; i++) {
+			Raceway racewaySegment = new Raceway(new Point(Game.DIM.width / 2, Game.DIM.height - 100));
+			int yPosition = i * segmentHeight - (segmentHeight / 2); // Position segments one after another
+			racewaySegment.setCenter(new Point(Game.DIM.width / 2, yPosition));
+			opsQueue.enqueue(racewaySegment, GameOp.Action.ADD);
+
+			System.out.println("Segment " + i + " - Height: " + racewaySegment.getHeight() + ", Width: " + racewaySegment.getWidth());
+		}
+		spawnCar();
+
 		falcon.decrementFalconNumAndSpawn();
 		opsQueue.enqueue(falcon, GameOp.Action.ADD);
 		opsQueue.enqueue(miniMap, GameOp.Action.ADD);
@@ -156,6 +221,7 @@ public class CommandCenter {
 		movFriends.clear();
 		movFoes.clear();
 		movFloaters.clear();
+		movRaceway.clear();
 	}
 
 	public boolean isGameOver() {		//if the number of falcons is zero, then game over
