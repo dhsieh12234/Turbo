@@ -15,11 +15,21 @@ import lombok.Data;
 //the lombok @AllArgsConstructor gives us an All-Args-Constructor :)
 @AllArgsConstructor
 public class GameOp {
-    //this could also be a boolean, but we want to be explicit about what we're doing
+
+    // Members
+    private Movable movable;
+    private Movable other; // Optional, to store the other object in a COLLIDE operation (can be null for ADD/REMOVE actions)
+    private Action action;
+
+    // Enum to specify the type of action
     public enum Action {
         ADD, REMOVE, COLLIDE
     }
-    //members
-    private Movable movable;
-    private Action action;
+
+    // Add a convenience constructor for ADD/REMOVE actions (single-movable operations)
+    public GameOp(Movable movable, Action action) {
+        this.movable = movable;
+        this.other = null; // No other object involved
+        this.action = action;
+    }
 }

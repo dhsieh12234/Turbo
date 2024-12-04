@@ -34,13 +34,14 @@ public class GamePanel extends Panel {
     private Image imgOff;
     private Graphics grpOff;
 
-
+    private final Game game;
 
     // ==============================================================
     // CONSTRUCTOR
     // ==============================================================
 
-    public GamePanel(Dimension dim) {
+    public GamePanel(Dimension dim, Game game) {
+        this.game = game;
 
         GameFrame gameFrame = new GameFrame();
 
@@ -205,6 +206,7 @@ public class GamePanel extends Panel {
 
 
             moveDrawMovables(grpOff,
+                    CommandCenter.getInstance().getMovBackground(),
                     CommandCenter.getInstance().getMovRaceway(),
                     CommandCenter.getInstance().getMovDebris(),
                     CommandCenter.getInstance().getMovFloaters(),
@@ -216,6 +218,7 @@ public class GamePanel extends Panel {
             drawNumberShipsRemaining(grpOff);
             drawMeters(grpOff);
             drawFalconStatus(grpOff);
+            drawTimer(grpOff);
 
 
         }
@@ -224,6 +227,43 @@ public class GamePanel extends Panel {
         // of the game panel, and show it for ~40ms. If you attempt to draw sprites directly on the gamePanel, e.g.
         // without the use of a double-buffered off-screen image, you will see flickering.
         g.drawImage(imgOff, 0, 0, this);
+    }
+
+    // Add the drawTimer method
+    private void drawTimer(Graphics g) {
+        // Get the elapsed time from the game timer
+        long elapsedTime = game.getGameTimer().getElapsedTime();
+
+        // Convert to minutes and seconds
+        int totalSeconds = (int) (elapsedTime / 1000);
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+
+        // Format the time string
+        String timeString = String.format("Time Left: %02d:%02d", minutes, seconds);
+
+        // Set font and color
+        g.setFont(fontBig);
+
+        // Change color when time is less than 10 seconds
+        if (elapsedTime <= 10_000) { // 10 seconds
+            if ((elapsedTime / 500) % 2 == 0) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.YELLOW);
+            }
+        } else {
+            g.setColor(Color.WHITE);
+        }
+
+        // Calculate the position to center the text at the top middle
+        FontMetrics fm = g.getFontMetrics();
+        int textWidth = fm.stringWidth(timeString);
+        int x = (Game.DIM.width - textWidth) / 2;
+        int y = fm.getAscent() + 20; // Adjust y as needed
+
+        // Draw the string
+        g.drawString(timeString, x, y);
     }
 
 

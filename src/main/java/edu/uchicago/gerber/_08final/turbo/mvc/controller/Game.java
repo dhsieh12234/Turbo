@@ -2,6 +2,7 @@ package edu.uchicago.gerber._08final.turbo.mvc.controller;
 
 import edu.uchicago.gerber._08final.turbo.mvc.model.*;
 import edu.uchicago.gerber._08final.turbo.mvc.view.GamePanel;
+import lombok.Getter;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -34,6 +35,9 @@ public class Game implements Runnable, KeyListener {
 
     private final Thread animationThread;
 
+    @Getter
+    private GameTimer gameTimer;
+
 
     //key-codes
     private static final int
@@ -55,13 +59,17 @@ public class Game implements Runnable, KeyListener {
 
     public Game() {
 
-        gamePanel = new GamePanel(DIM);
+        gamePanel = new GamePanel(DIM, this);
         gamePanel.addKeyListener(this); //Game object implements KeyListener
         //fire up the animation thread
         animationThread = new Thread(this); // pass the animation thread a runnable object, the Game object
         //set as daemon so as not to block the main thread from exiting
         animationThread.setDaemon(true);
         animationThread.start();
+
+        gameTimer = new GameTimer(60_000);
+
+        gameTimer.start();
 
 
     }
@@ -90,6 +98,12 @@ public class Game implements Runnable, KeyListener {
 
         // this thread animates the scene
         while (Thread.currentThread() == animationThread) {
+
+            //update game timer
+            gameTimer.update();
+            if (gameTimer.isTimeUp()) {
+                break;
+            }
 
             //updates car position
             CommandCenter.getInstance().update();
@@ -137,6 +151,55 @@ public class Game implements Runnable, KeyListener {
     is dangerous and may lead to null-pointer or array-index-out-of-bounds exceptions, or other erroneous behavior.
      */
 
+    private boolean isTouchingBackground(Movable friend, Background background) {
+        Rectangle friendBounds = new Rectangle(
+                friend.getCenter().x - friend.getRadius(),
+                friend.getCenter().y - friend.getRadius(),
+                friend.getRadius() * 2,
+                friend.getRadius() * 2
+        );
+
+        Rectangle backgroundBounds = new Rectangle(0, 0, background.getWidth(), background.getHeight());
+
+        return friendBounds.intersects(backgroundBounds);
+    }
+
+
+    private Background getBackgroundInstance() {
+        for (Movable movable : CommandCenter.getInstance().getMovBackground()) {
+            if (movable instanceof Background) {
+                return (Background) movable;
+            }
+        }
+        return null; // No background found
+    }
+
+    private boolean isTouchingRaceway(Movable friend, Raceway raceway) {
+        // Get the bounding rectangle of the FRIEND
+        Rectangle friendBounds = new Rectangle(
+                friend.getCenter().x - friend.getRadius(),
+                friend.getCenter().y - friend.getRadius(),
+                friend.getRadius() * 2,
+                friend.getRadius() * 2
+        );
+
+        // Get the bounding rectangle of the RACEWAY
+        Rectangle racewayBounds = new Rectangle(
+                raceway.getCenter().x - raceway.getWidth() / 2,
+                raceway.getCenter().y - raceway.getHeight() / 2,
+                raceway.getWidth(),
+                raceway.getHeight()
+        );
+        System.out.println(friendBounds);
+        System.out.println(racewayBounds);
+
+        // Check if the bounding rectangles intersect
+        return friendBounds.intersects(racewayBounds);
+    }
+
+
+
+
     private void checkCollisions() {
 
         //This has order-of-growth of O(FOES * FRIENDS)
@@ -152,10 +215,10 @@ public class Game implements Runnable, KeyListener {
 
                 //detect collision
                 if (pntFriendCenter.distance(pntFoeCenter) < (radFriend + radFoe)) {
-//                    System.out.println("RECOGNIZED COLLISION" + movFoe);
+                    System.out.println("RECOGNIZED COLLISION" + movFoe);
                     //enqueue the Action to collide
-                    CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, GameOp.Action.COLLIDE);
-                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.COLLIDE);
+                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, movFoe, GameOp.Action.COLLIDE);
+                    CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, movFriend, GameOp.Action.COLLIDE);
 //                    //enqueue the friend
 //                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.REMOVE);
 //                    //enqueue the foe
@@ -163,6 +226,29 @@ public class Game implements Runnable, KeyListener {
                 }
             }//end inner for
         }//end outer for
+
+        // Check collisions for FRIENDS and BACKGROUND
+        Background background = getBackgroundInstance(); // Fetch the background object
+        if (background != null) {
+            for (Movable movFriend : CommandCenter.getInstance().getMovFriends()) {
+                boolean touchingBackground = isTouchingBackground(movFriend, background);
+                boolean touchingRaceway = false;
+
+                // Check if the FRIEND is touching any raceway
+                for (Movable movRaceway : CommandCenter.getInstance().getMovRaceway()) {
+                    if (isTouchingRaceway(movFriend, (Raceway) movRaceway)) {
+                        touchingRaceway = true;
+                        break;
+                    }
+                }
+                System.out.println(touchingRaceway);
+
+                // Only trigger the collision if it is touching the BACKGROUND but not the RACEWAY
+                if (touchingBackground && !touchingRaceway) {
+                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, background, GameOp.Action.COLLIDE);
+                }
+            }
+        }
 
         //check for collisions between falcon and floaters. Order of growth of O(FLOATERS)
         Point pntFalCenter = CommandCenter.getInstance().getUserCar().getCenter();
@@ -215,6 +301,9 @@ public class Game implements Runnable, KeyListener {
                 case RACEWAY:
                     list = CommandCenter.getInstance().getMovRaceway();
                     break;
+                case BACKGROUND:
+                    list = CommandCenter.getInstance().getMovBackground();
+                    break;
                 default:
                     System.err.println("Unknown team: " + mov.getTeam());
                     continue;
@@ -226,7 +315,8 @@ public class Game implements Runnable, KeyListener {
             if (action == GameOp.Action.ADD) {
                 mov.addToGame(list);
             } else if (action == GameOp.Action.COLLIDE) {
-                mov.collidingToFriend(list);
+                Movable other = gameOp.getOther();
+                mov.collidingFoe(list, other);
             } else //REMOVE
                 mov.removeFromGame(list);
         }//end while
@@ -403,6 +493,12 @@ public class Game implements Runnable, KeyListener {
                 SoundLoader.stopSound("whitenoise_loop.wav");
                 break;
             case PAUSE:
+                boolean paused = !gameTimer.isPaused();
+                if (paused) {
+                    gameTimer.pause();
+                } else {
+                    gameTimer.resume();
+                }
                 CommandCenter.getInstance().setPaused(!CommandCenter.getInstance().isPaused());
                 break;
             case QUIT:
@@ -433,7 +529,6 @@ public class Game implements Runnable, KeyListener {
     // does nothing, but we need it b/c of KeyListener contract
     public void keyTyped(KeyEvent e) {
     }
-
 
 
 }

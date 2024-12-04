@@ -92,7 +92,7 @@ public class Star implements Movable {
     }
 
     @Override
-    public void collidingToFriend(LinkedList<Movable> list) { list.add(this); }
+    public void collidingFoe(LinkedList<Movable> list, Movable mov) { list.add(this); }
 
 
 

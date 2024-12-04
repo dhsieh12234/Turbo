@@ -261,7 +261,7 @@ public abstract class Sprite implements Movable {
         list.remove(this);
     }
     @Override
-    public void collidingToFriend(LinkedList<Movable> list) {
+    public void collidingFoe(LinkedList<Movable> list, Movable mov) {
         list.add(this);
     }
 

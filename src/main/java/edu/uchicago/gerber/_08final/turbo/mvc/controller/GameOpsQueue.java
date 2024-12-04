@@ -17,6 +17,11 @@ public class GameOpsQueue extends LinkedBlockingDeque<GameOp> {
         addLast(new GameOp(mov, action));
     }
 
+    // Enqueue for COLLIDE action
+    public void enqueue(Movable movable, Movable other, GameOp.Action action) {
+        addLast(new GameOp(movable, other, action)); // Add to the end of the deque
+    }
+
     public GameOp dequeue() {
         return removeFirst();
     }

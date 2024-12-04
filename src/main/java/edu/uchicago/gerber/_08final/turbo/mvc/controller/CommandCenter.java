@@ -68,6 +68,7 @@ public class CommandCenter {
 	private final LinkedList<Movable> movFriends = new LinkedList<>();
 	private final LinkedList<Movable> movFloaters = new LinkedList<>();
 	private final LinkedList<Movable> movRaceway = new LinkedList<>();
+	private final LinkedList<Movable> movBackground = new LinkedList<>();
 
 	private final GameOpsQueue opsQueue = new GameOpsQueue();
 
@@ -89,6 +90,10 @@ public class CommandCenter {
 	// Define the screen boundaries
 	private final int SCREEN_WIDTH = Game.DIM.width;
 	private final int SCREEN_HEIGHT = Game.DIM.height;
+
+	private boolean gameOver;
+
+
 
 	// Constructor made private
 	private CommandCenter() {}
@@ -190,7 +195,7 @@ public class CommandCenter {
 		int x = random.nextInt(maxX - minX + 1) + minX;
 
 		// Spawn the car just above the raceway
-		int y = raceway.getCenter().y - (raceway.getHeight() / 2) - CAR_HEIGHT;
+		int y = -CAR_HEIGHT;
 
 		// Create a new Asteroid (car) at the calculated position
 		EnemyCars newCar = new EnemyCars(new Point(x, y));
@@ -207,6 +212,10 @@ public class CommandCenter {
 
 	public void initGame(){
 		clearAll();
+
+		Background background = new Background();
+		opsQueue.enqueue(background, GameOp.Action.ADD);
+
 		generateStarField();
 		setDimHash();
 		setLevelFromEnv();
@@ -219,7 +228,7 @@ public class CommandCenter {
 		movRaceway.clear(); // Clear any previous raceway segments
 
 		int segmentHeight = 30; // Height of each raceway segment
-		int numSegments = (int) Math.ceil((double) Game.DIM.height / segmentHeight) + 1;
+		int numSegments = (int) Math.ceil((double) Game.DIM.height / segmentHeight) + 100;
 		System.out.println("NUMSEGMENTS" + numSegments);// Enough segments to cover the screen
 
 		for (int i = 0; i < numSegments; i++) {

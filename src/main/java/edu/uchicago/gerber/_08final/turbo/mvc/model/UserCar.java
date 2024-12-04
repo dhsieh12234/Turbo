@@ -79,10 +79,10 @@ public class UserCar extends Sprite {
 		//Using enums as keys is safer b/c we know the value exists when we reference the consts later in code.
     	Map<ImageState, BufferedImage> rasterMap = new HashMap<>();
 		rasterMap.put(ImageState.FALCON_INVISIBLE, null );
-		rasterMap.put(ImageState.FALCON, ImageLoader.getImage("/imgs/fal/red_car001.png")); //normal ship
-		rasterMap.put(ImageState.FALCON_THR, ImageLoader.getImage("/imgs/fal/red_car001.png")); //normal ship thrusting
-		rasterMap.put(ImageState.FALCON_SHIELD, ImageLoader.getImage("/imgs/fal/red_car001.png")); //SHIELD
-		rasterMap.put(ImageState.FALCON_SHIELD_THR, ImageLoader.getImage("/imgs/fal/red_car001.png")); //S+THR
+		rasterMap.put(ImageState.FALCON, ImageLoader.getImage("/imgs/fal/green_car001.png")); //normal ship
+		rasterMap.put(ImageState.FALCON_THR, ImageLoader.getImage("/imgs/fal/green_car001.png")); //normal ship thrusting
+		rasterMap.put(ImageState.FALCON_SHIELD, ImageLoader.getImage("/imgs/fal/green_car001.png")); //SHIELD
+		rasterMap.put(ImageState.FALCON_SHIELD_THR, ImageLoader.getImage("/imgs/fal/green_car001.png")); //S+THR
 
 		setRasterMap(rasterMap);
 
@@ -188,14 +188,44 @@ public class UserCar extends Sprite {
 	}
 
 	@Override
-	public void collidingToFriend(LinkedList<Movable> list) {
-		// Set both X and Y velocity (acceleration) to zero
-		setDeltaX(0);
-		setDeltaY(0);
+	public void collidingFoe(LinkedList<Movable> list, Movable mov) {
+		if (mov instanceof EnemyCars) {
+			// Calculate the opposite direction of movement
+			int reverseDeltaX = (int) -getDeltaX();
+			int reverseDeltaY = (int) -getDeltaY();
 
-		// Optionally, log the event for debugging
-		System.out.println("Falcon collided! Acceleration set to zero.");
+			// Apply a backward movement with a damping factor
+			double dampingFactor = 0.5; // Adjust this to control the backward speed
+			setDeltaX((int) (reverseDeltaX * dampingFactor));
+			setDeltaY((int) (reverseDeltaY * dampingFactor));
+
+			// Optionally, move the Falcon slightly back to simulate recoil
+			Point currentCenter = getCenter();
+			int newX = (int) (currentCenter.x + reverseDeltaX * dampingFactor);
+			int newY = (int) (currentCenter.y + reverseDeltaY * dampingFactor);
+			setCenter(new Point(newX, newY));
+
+			// Optionally, log the collision event
+			System.out.println("Falcon collided! Moving backward with damping factor: " + dampingFactor);
+
+		} else if (mov instanceof Background) {
+			// Reverse horizontal movement (left or right)
+			int reverseDeltaX = (int) -getDeltaX();
+
+			// Apply a horizontal recoil with a damping factor
+			double dampingFactor = 0.3; // Adjust for left/right recoil speed
+			setDeltaX((int) (reverseDeltaX * dampingFactor));
+
+			// Update position
+			Point currentCenter = getCenter();
+			int newX = (int) (currentCenter.x + reverseDeltaX * dampingFactor);
+			setCenter(new Point(newX, currentCenter.y));
+
+			// Log the event
+			System.out.println("Falcon collided with Background! Moving horizontally with damping factor: " + dampingFactor);
+		}
 	}
+
 
 
 

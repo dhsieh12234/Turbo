@@ -56,15 +56,45 @@ public class Raceway extends Sprite {
 
     @Override
     public void draw(Graphics g) {
-        // Draw the road
+        // Draw the main road
         g.setColor(color);
         g.fillRect(center.x - (width / 2), center.y - (height / 2), width, height);
+
+        // Define the stripe dimensions
+        int stripeWidth = 10;     // Width of the side stripes
+        int stripeHeight = 20;    // Height of each stripe segment
+        int numStripes = height / stripeHeight;
+
+        // Draw left side stripes
+        for (int i = 0; i < numStripes; i++) {
+            if (i % 2 == 0) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.WHITE);
+            }
+            int x = center.x - (width / 2);
+            int y = center.y - (height / 2) + i * stripeHeight;
+            g.fillRect(x, y, stripeWidth, stripeHeight);
+        }
+
+        // Draw right side stripes
+        for (int i = 0; i < numStripes; i++) {
+            if (i % 2 == 0) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.WHITE);
+            }
+            int x = center.x + (width / 2) - stripeWidth;
+            int y = center.y - (height / 2) + i * stripeHeight;
+            g.fillRect(x, y, stripeWidth, stripeHeight);
+        }
 
         // Draw cars in this segment
         for (EnemyCars car : cars) {
             car.draw(g);
         }
     }
+
 
     private void configureRandomCars() {
         cars.clear(); // Clear existing cars
@@ -104,7 +134,7 @@ public class Raceway extends Sprite {
     }
 
     @Override
-    public void collidingToFriend(LinkedList<Movable> list) {
+    public void collidingFoe(LinkedList<Movable> list, Movable mov) {
         // Placeholder implementation (no specific collision behavior for Raceway)
         // You can leave this empty or add logic if necessary
     }

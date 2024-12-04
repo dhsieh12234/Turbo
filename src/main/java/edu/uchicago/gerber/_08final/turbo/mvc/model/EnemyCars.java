@@ -15,6 +15,7 @@ public class EnemyCars extends Sprite {
 
 	// Constants
 	private static final int CAR_RADIUS = 50; // Fixed radius for all cars
+	private static final int CAR_SPEED = 5;
 	private static final Random RANDOM = new Random();
 
 	public int getSize() {
@@ -47,7 +48,7 @@ public class EnemyCars extends Sprite {
 		// Set color (can be overridden by imageState)
 		setColor(Color.WHITE);
 
-		// Initialize movement deltas opposite to Falcon's current velocity with slight randomness
+//		// Initialize movement deltas opposite to Falcon's current velocity with slight randomness
 		setDeltaX(-CommandCenter.getInstance().getUserCar().getDeltaX() + RANDOM.nextInt(3) - 1);
 		setDeltaY(-CommandCenter.getInstance().getUserCar().getDeltaY() + RANDOM.nextInt(3) - 1);
 
@@ -125,6 +126,7 @@ public class EnemyCars extends Sprite {
 		setCenter(new Point(newX, newY));
 	}
 
+
 	@Override
 	public void draw(Graphics g) {
 		// Render the image based on the current ImageState
@@ -154,7 +156,7 @@ public class EnemyCars extends Sprite {
 	}
 
 	@Override
-	public void collidingToFriend(LinkedList<Movable> list) {
+	public void collidingFoe(LinkedList<Movable> list, Movable mov) {
 		Point asteroidCenter = getCenter();
 
 		// Apply shaking effect to simulate collision
