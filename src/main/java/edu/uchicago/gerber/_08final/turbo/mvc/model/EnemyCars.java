@@ -133,16 +133,27 @@ public class EnemyCars extends Sprite {
 	public void collidingFoe(LinkedList<Movable> list, Movable mov) {
 		Point asteroidCenter = getCenter();
 
-		// Apply shaking effect to simulate collision
-		for (int i = 0; i < 5; i++) {
-			int shakeOffsetX = (int) (Math.random() * 10 - 5); // -5 to +5
-			int shakeOffsetY = (int) (Math.random() * 10 - 5); // -5 to +5
+		if (mov.getTeam() == Team.FRIEND) {
+			// Apply shaking effect to simulate collision
+			for (int i = 0; i < 5; i++) {
+				int shakeOffsetX = (int) (Math.random() * 10 - 5); // -5 to +5
+				int shakeOffsetY = (int) (Math.random() * 10 - 5); // -5 to +5
 
-			// Update the center to simulate shaking
-			setCenter(new Point(
-					asteroidCenter.x + shakeOffsetX,
-					asteroidCenter.y + shakeOffsetY
-			));
+				// Update the center to simulate shaking
+				setCenter(new Point(
+						asteroidCenter.x + shakeOffsetX,
+						asteroidCenter.y + shakeOffsetY
+				));
+			}
+		} else if (mov.getTeam() == Team.RACEWAY){
+			int backgroundWidth = Game.DIM.width / 2; // Assume background width is half the game screen width
+			if (asteroidCenter.x < backgroundWidth) {
+				// Collided on the left side, teleport 100 blocks to the right
+				setCenter(new Point(asteroidCenter.x + 100, asteroidCenter.y));
+			} else {
+				// Collided on the right side, teleport 100 blocks to the left
+				setCenter(new Point(asteroidCenter.x - 100, asteroidCenter.y));
+			}
 		}
 
 		// Enqueue removal after collision

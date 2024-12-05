@@ -214,6 +214,14 @@ public class Game implements Runnable, KeyListener {
         for (Movable movFriend : CommandCenter.getInstance().getMovFriends()) {
             for (Movable movFoe : CommandCenter.getInstance().getMovFoes()) {
 
+//                if (movFriend.getTeam() == Movable.Team.FRIEND) {
+//                    System.out.println("This is a FRIEND: " + movFriend);
+//                } else if (movFriend.getTeam() == Movable.Team.FOE) {
+//                    System.out.println("This is a FOE: " + movFriend);
+//                } else {
+//                    System.out.println("This is another type: " + movFriend.getTeam());
+//                }
+
                 pntFriendCenter = movFriend.getCenter();
                 pntFoeCenter = movFoe.getCenter();
                 radFriend = movFriend.getRadius();
@@ -221,7 +229,7 @@ public class Game implements Runnable, KeyListener {
 
                 //detect collision
                 if (pntFriendCenter.distance(pntFoeCenter) < (radFriend + radFoe)) {
-                    System.out.println("RECOGNIZED COLLISION" + movFoe);
+                    System.out.println("RECOGNIZED COLLISION BETWEEN FRIEND AND FOE");
                     //enqueue the Action to collide
                     CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, movFoe, GameOp.Action.COLLIDE);
                     CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, movFriend, GameOp.Action.COLLIDE);
@@ -257,7 +265,32 @@ public class Game implements Runnable, KeyListener {
             // Trigger the collision if the FRIEND is not fully inside any RACEWAY
             if (!fullyInsideAnyRaceway) {
                 // Pass the raceway object when enqueuing the collision
+                System.out.println("RECOGNIZED COLLISION BETWEEN BACKGROUND AND FRIEND");
                 CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, collidedRaceway, GameOp.Action.COLLIDE);
+            }
+        }
+
+        // Check if FOES are not fully inside any raceway
+        for (Movable movFoe : CommandCenter.getInstance().getMovFoes()) {
+            boolean fullyInsideAnyRaceway = false;
+            Raceway collidedRaceway = null;
+
+            // Check if the FOE is fully inside any raceway segment
+            for (Movable movRaceway : CommandCenter.getInstance().getMovRaceway()) {
+                Raceway raceway = (Raceway) movRaceway;
+
+                if (isTouchingRaceway(movFoe, raceway)) {
+                    fullyInsideAnyRaceway = true;
+                    break; // Fully inside, no further checks needed
+                } else {
+                    collidedRaceway = raceway; // Track the collided raceway
+                }
+            }
+
+            // If FOE is not fully inside any raceway, trigger a collision
+            if (!fullyInsideAnyRaceway) {
+                System.out.println("RECOGNIZED COLLISION BETWEEN FOE AND RACEWAY");
+                CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, collidedRaceway, GameOp.Action.COLLIDE);
             }
         }
 
@@ -272,6 +305,7 @@ public class Game implements Runnable, KeyListener {
             radFloater = movFloater.getRadius();
             //detect collision
             if (pntFalCenter.distance(pntFloaterCenter) < (radFalcon + radFloater)) {
+                System.out.println("RECOGNIZED COLLISION BETWEEN FLOATER AND FRIEND");
                 //enqueue the floater
                 CommandCenter.getInstance().getOpsQueue().enqueue(movFloater, GameOp.Action.REMOVE);
             }//end if
