@@ -17,15 +17,15 @@ public class Raceway extends Sprite {
     private int width;    // Width of the segment
     @Getter
     private int height;   // Height of the segment
-    private Color color;  // Color of the segment (optional)
-    private LinkedList<EnemyCars> cars;
+    private final Color color;  // Color of the segment (optional)
+//    private LinkedList<EnemyCars> cars;
 
-    public Raceway(Point point) {
+    public Raceway() {
         this.center = new Point(Game.DIM.width / 2, Game.DIM.height / 2);
         this.width = 600;
         this.height = 300;
         this.color = Color.gray;
-        this.cars = new LinkedList<>();
+//        this.cars = new LinkedList<>();
 
         setTeam(Team.RACEWAY);
 
@@ -47,7 +47,7 @@ public class Raceway extends Sprite {
             CommandCenter.getInstance().getOpsQueue().enqueue(this, GameOp.Action.REMOVE);
 
             // Create a new segment at the top
-            Raceway newRacewaySegment = new Raceway(new Point(Game.DIM.width / 2, Game.DIM.height - 100));
+            Raceway newRacewaySegment = new Raceway();
             newRacewaySegment.setCenter(new Point(Game.DIM.width / 2, -height / 2));
             CommandCenter.getInstance().getOpsQueue().enqueue(newRacewaySegment, GameOp.Action.ADD);
         }
@@ -89,24 +89,24 @@ public class Raceway extends Sprite {
             g.fillRect(x, y, stripeWidth, stripeHeight);
         }
 
-        // Draw cars in this segment
-        for (EnemyCars car : cars) {
-            car.draw(g);
-        }
+//        // Draw cars in this segment
+//        for (EnemyCars car : cars) {
+//            car.draw(g);
+//        }
     }
 
 
-    private void configureRandomCars() {
-        cars.clear(); // Clear existing cars
-        Random random = new Random();
-        int numberOfCars = random.nextInt(3) + 1; // 1–3 cars per segment
-
-        for (int i = 0; i < numberOfCars; i++) {
-            int randomX = random.nextInt(width - 100) + (center.x - (width / 2) + 50); // Random X within road
-            int randomY = random.nextInt(height) + (center.y - (height / 2)); // Random Y within segment
-            cars.add(new EnemyCars(new Point(randomX, randomY))); // Add new car
-        }
-    }
+//    private void configureRandomCars() {
+//        cars.clear(); // Clear existing cars
+//        Random random = new Random();
+//        int numberOfCars = random.nextInt(3) + 1; // 1–3 cars per segment
+//
+//        for (int i = 0; i < numberOfCars; i++) {
+//            int randomX = random.nextInt(width - 100) + (center.x - (width / 2) + 50); // Random X within road
+//            int randomY = random.nextInt(height) + (center.y - (height / 2)); // Random Y within segment
+//            cars.add(new EnemyCars(new Point(randomX, randomY))); // Add new car
+//        }
+//    }
 
     @Override
     public Point getCenter() {
@@ -123,15 +123,6 @@ public class Raceway extends Sprite {
         return Team.RACEWAY;
     }
 
-    @Override
-    public void addToGame(LinkedList<Movable> list) {
-        list.add(this);
-    }
-
-    @Override
-    public void removeFromGame(LinkedList<Movable> list) {
-        list.remove(this);
-    }
 
     @Override
     public void collidingFoe(LinkedList<Movable> list, Movable mov) {

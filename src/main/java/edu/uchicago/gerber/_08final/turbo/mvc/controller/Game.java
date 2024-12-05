@@ -26,6 +26,7 @@ public class Game implements Runnable, KeyListener {
 
 
     private final GamePanel gamePanel;
+
     //this is used throughout many classes.
     public static final Random R = new Random();
 
@@ -47,11 +48,10 @@ public class Game implements Runnable, KeyListener {
             RIGHT = 39, // rotate right; right arrow
             TURBO = 38, // thrust; up arrow
             ACCELERATE = 83, // s key
-            FIRE = 32, // space key
+//            FIRE = 32, // space key
             MUTE = 77, // m-key mute
             NUKE = 70, // f-key
             RADAR = 65; // a-key
-
 
     // ===============================================
     // ==CONSTRUCTOR
@@ -61,15 +61,18 @@ public class Game implements Runnable, KeyListener {
 
         gamePanel = new GamePanel(DIM, this);
         gamePanel.addKeyListener(this); //Game object implements KeyListener
+
+        CommandCenter.getInstance().initGame();
+
+        gameTimer = new GameTimer(60_000);
+        gameTimer.start();
+
         //fire up the animation thread
         animationThread = new Thread(this); // pass the animation thread a runnable object, the Game object
         //set as daemon so as not to block the main thread from exiting
         animationThread.setDaemon(true);
         animationThread.start();
 
-        gameTimer = new GameTimer(60_000);
-
-        gameTimer.start();
 
 
     }
@@ -100,9 +103,14 @@ public class Game implements Runnable, KeyListener {
         while (Thread.currentThread() == animationThread) {
 
             //update game timer
-            gameTimer.update();
-            if (gameTimer.isTimeUp()) {
-                break;
+            if (CommandCenter.getInstance().getGameState() == CommandCenter.GameState.PLAYING) {
+                gameTimer.update();
+
+                // Check if time is up
+                if (gameTimer.isTimeUp()) {
+                    CommandCenter.getInstance().setGameState(CommandCenter.GameState.TIME_UP);
+                    continue; // Skip the rest of the loop to stop game updates
+                }
             }
 
             //updates car position
@@ -115,6 +123,7 @@ public class Game implements Runnable, KeyListener {
             checkCollisions();
             checkNewLevel();
             checkFloaters();
+            updateCarsPassed();
             //this method will execute addToGame() and removeFromGame() callbacks on Movable objects
             processGameOpsQueue();
             //keep track of the frame for development purposes
@@ -143,6 +152,29 @@ public class Game implements Runnable, KeyListener {
         spawnNukeFloater();
     }
 
+    private void updateCarsPassed() {
+        UserCar playerCar = CommandCenter.getInstance().getUserCar();
+        int playerY = playerCar.getCenter().y;
+
+        for (Movable movFoe : CommandCenter.getInstance().getMovFoes()) {
+            if (movFoe instanceof EnemyCars enemyCar) {
+                if (!enemyCar.hasBeenPassed()) {
+                    int enemyY = enemyCar.getCenter().y;
+
+                    // Assuming the game coordinate system where y increases downwards
+                    // Check if the player's car has moved ahead of the enemy car
+                    System.out.println(enemyY);
+                    if (playerY < enemyY) {
+                        System.out.println("PASSED");
+                        // Player has passed this enemy car
+                        enemyCar.setHasBeenPassed(true);
+                        CommandCenter.getInstance().incrementCarsPassed();
+                    }
+                }
+            }
+        }
+    }
+
     /*
     TODO The following two methods are an example of the Command design pattern. This approach involves deferring
     mutations to collections (linked lists of Movables) while iterating over them, and then processing the mutations
@@ -151,28 +183,6 @@ public class Game implements Runnable, KeyListener {
     is dangerous and may lead to null-pointer or array-index-out-of-bounds exceptions, or other erroneous behavior.
      */
 
-    private boolean isTouchingBackground(Movable friend, Background background) {
-        Rectangle friendBounds = new Rectangle(
-                friend.getCenter().x - friend.getRadius(),
-                friend.getCenter().y - friend.getRadius(),
-                friend.getRadius() * 2,
-                friend.getRadius() * 2
-        );
-
-        Rectangle backgroundBounds = new Rectangle(0, 0, background.getWidth(), background.getHeight());
-
-        return friendBounds.intersects(backgroundBounds);
-    }
-
-
-    private Background getBackgroundInstance() {
-        for (Movable movable : CommandCenter.getInstance().getMovBackground()) {
-            if (movable instanceof Background) {
-                return (Background) movable;
-            }
-        }
-        return null; // No background found
-    }
 
     private boolean isTouchingRaceway(Movable friend, Raceway raceway) {
         // Get the bounding rectangle of the FRIEND
@@ -190,14 +200,10 @@ public class Game implements Runnable, KeyListener {
                 raceway.getWidth(),
                 raceway.getHeight()
         );
-        System.out.println(friendBounds);
-        System.out.println(racewayBounds);
 
         // Check if the bounding rectangles intersect
-        return friendBounds.intersects(racewayBounds);
+        return racewayBounds.contains(friendBounds);
     }
-
-
 
 
     private void checkCollisions() {
@@ -227,26 +233,31 @@ public class Game implements Runnable, KeyListener {
             }//end inner for
         }//end outer for
 
-        // Check collisions for FRIENDS and BACKGROUND
-        Background background = getBackgroundInstance(); // Fetch the background object
-        if (background != null) {
-            for (Movable movFriend : CommandCenter.getInstance().getMovFriends()) {
-                boolean touchingBackground = isTouchingBackground(movFriend, background);
-                boolean touchingRaceway = false;
+        // Check collisions for FRIENDS not fully inside any RACEWAY
+        for (Movable movFriend : CommandCenter.getInstance().getMovFriends()) {
+            boolean fullyInsideAnyRaceway = false;
+            Raceway collidedRaceway = null;
 
-                // Check if the FRIEND is touching any raceway
-                for (Movable movRaceway : CommandCenter.getInstance().getMovRaceway()) {
-                    if (isTouchingRaceway(movFriend, (Raceway) movRaceway)) {
-                        touchingRaceway = true;
-                        break;
-                    }
-                }
-                System.out.println(touchingRaceway);
+            // Check if the FRIEND is fully inside any raceway segment
+            for (Movable movRaceway : CommandCenter.getInstance().getMovRaceway()) {
+                Raceway raceway = (Raceway) movRaceway;
 
-                // Only trigger the collision if it is touching the BACKGROUND but not the RACEWAY
-                if (touchingBackground && !touchingRaceway) {
-                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, background, GameOp.Action.COLLIDE);
+                if (isTouchingRaceway(movFriend, raceway)) {
+                    fullyInsideAnyRaceway = true;
+                    // The car is fully inside this raceway segment, no need to check further
+                    break;
+                } else {
+                    // The car is not fully inside this raceway segment
+                    // Keep track of the raceway the car is currently interacting with
+                    collidedRaceway = raceway;
                 }
+            }
+//            System.out.println(fullyInsideAnyRaceway);
+
+            // Trigger the collision if the FRIEND is not fully inside any RACEWAY
+            if (!fullyInsideAnyRaceway) {
+                // Pass the raceway object when enqueuing the collision
+                CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, collidedRaceway, GameOp.Action.COLLIDE);
             }
         }
 
@@ -276,10 +287,7 @@ public class Game implements Runnable, KeyListener {
         // mutating the movable linkedlists while iterating them above.
         while (!CommandCenter.getInstance().getOpsQueue().isEmpty()) {
 
-
             GameOp gameOp = CommandCenter.getInstance().getOpsQueue().dequeue();
-
-
 
             //given team, determine which linked-list this object will be added-to or removed-from
             LinkedList<Movable> list;
@@ -385,7 +393,7 @@ public class Game implements Runnable, KeyListener {
         int x = Game.R.nextInt(maxX - minX + 1) + minX;
         int y = minY; // Spawning just above the raceway for cars to enter
 
-        return new Point(x, y);
+        return new Point(x, 0);
     }
 
 
@@ -447,9 +455,9 @@ public class Game implements Runnable, KeyListener {
         UserCar userCar = CommandCenter.getInstance().getUserCar();
         int keyCode = e.getKeyCode();
         switch (keyCode) {
-            case FIRE:
-                CommandCenter.getInstance().getOpsQueue().enqueue(new Bullet(userCar), GameOp.Action.ADD);
-                break;
+//            case FIRE:
+//                CommandCenter.getInstance().getOpsQueue().enqueue(new Bullet(userCar), GameOp.Action.ADD);
+//                break;
             case NUKE:
                 CommandCenter.getInstance().getOpsQueue().enqueue(new Nuke(userCar), GameOp.Action.ADD);
                 break;
@@ -473,17 +481,32 @@ public class Game implements Runnable, KeyListener {
     public void keyReleased(KeyEvent e) {
         UserCar userCar = CommandCenter.getInstance().getUserCar();
         int keyCode = e.getKeyCode();
-        //show the key-code in the console
+        // Show the key-code in the console
         System.out.println(keyCode);
 
-        if (keyCode == ACCELERATE && CommandCenter.getInstance().isGameOver()) {
-            CommandCenter.getInstance().initGame();
+        CommandCenter.GameState gameState = CommandCenter.getInstance().getGameState();
+
+        // Check if 'S' key is released to start or restart the game
+        if (keyCode == ACCELERATE) { // 'S' key
+            if (gameState == CommandCenter.GameState.START_SCREEN ||
+                    gameState == CommandCenter.GameState.GAME_OVER ||
+                    gameState == CommandCenter.GameState.TIME_UP) {
+                // Start or restart the game
+                CommandCenter.getInstance().initGame();
+                CommandCenter.getInstance().setGameState(CommandCenter.GameState.PLAYING);
+                gameTimer.start(); // Restart the timer
+                return;
+            }
+        }
+
+        // Ignore other inputs if the game is not in PLAYING state
+        if (gameState != CommandCenter.GameState.PLAYING) {
             return;
         }
 
         switch (keyCode) {
 
-            //releasing either the LEFT or RIGHT arrow key will set the TurnState to IDLE
+            // Releasing either the LEFT or RIGHT arrow key will set the TurnState to IDLE
             case LEFT:
             case RIGHT:
                 userCar.setTurnState(UserCar.TurnState.IDLE);
@@ -493,37 +516,36 @@ public class Game implements Runnable, KeyListener {
                 SoundLoader.stopSound("whitenoise_loop.wav");
                 break;
             case PAUSE:
+                // Toggle pause state
                 boolean paused = !gameTimer.isPaused();
                 if (paused) {
                     gameTimer.pause();
                 } else {
                     gameTimer.resume();
                 }
-                CommandCenter.getInstance().setPaused(!CommandCenter.getInstance().isPaused());
+                CommandCenter.getInstance().setPaused(paused);
                 break;
             case QUIT:
                 System.exit(0);
                 break;
             case RADAR:
-                //toggle the boolean switch
+                // Toggle the radar display
                 CommandCenter.getInstance().setRadar(!CommandCenter.getInstance().isRadar());
                 break;
             case MUTE:
-                //if music is currently playing, then stop
+                // Toggle the music
                 if (CommandCenter.getInstance().isThemeMusic()) {
                     SoundLoader.stopSound("dr_loop.wav");
-                } else { //else not playing, then play
+                } else {
                     SoundLoader.playSound("dr_loop.wav");
                 }
-                //toggle the boolean switch
                 CommandCenter.getInstance().setThemeMusic(!CommandCenter.getInstance().isThemeMusic());
                 break;
             default:
                 break;
-
         }
-
     }
+
 
     @Override
     // does nothing, but we need it b/c of KeyListener contract

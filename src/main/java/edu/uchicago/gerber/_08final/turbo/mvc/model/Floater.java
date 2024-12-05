@@ -1,5 +1,7 @@
 package edu.uchicago.gerber._08final.turbo.mvc.model;
 
+import edu.uchicago.gerber._08final.turbo.mvc.controller.Game;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +16,11 @@ public abstract class Floater extends Sprite {
         setExpiry(250);
         setColor(Color.WHITE);
         setRadius(50);
-        //set random DeltaX
-        setDeltaX(somePosNegValue(10));
+
+        setCenter(new Point(Game.DIM.width / 2, -getRadius()));
+        setDeltaX(0);
+//        //set random DeltaX
+//        setDeltaX(somePosNegValue(10));
         //set random DeltaY
         setDeltaY(somePosNegValue(10));
         //set random spin

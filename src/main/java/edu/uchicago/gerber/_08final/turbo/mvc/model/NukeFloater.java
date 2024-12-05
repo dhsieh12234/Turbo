@@ -10,7 +10,7 @@ import java.util.LinkedList;
 public class NukeFloater extends Floater {
 
 	//spawn every 12 seconds
-	public static final int SPAWN_NUKE_FLOATER = Game.FRAMES_PER_SECOND * 12;
+	public static final int SPAWN_NUKE_FLOATER = Game.FRAMES_PER_SECOND * 2;
 	public NukeFloater() {
 		setColor(Color.YELLOW);
 		setExpiry(120);

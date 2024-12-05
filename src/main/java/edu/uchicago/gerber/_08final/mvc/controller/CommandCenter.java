@@ -102,7 +102,7 @@ public class CommandCenter {
 		setScore(0);
 		setPaused(false);
 		//set to one greater than number of falcons lives in your game as decrementFalconNumAndSpawn() also decrements
-		setNumFalcons(4);
+		setNumFalcons(100);
 		falcon.decrementFalconNumAndSpawn();
 		opsQueue.enqueue(falcon, GameOp.Action.ADD);
 		opsQueue.enqueue(miniMap, GameOp.Action.ADD);

@@ -22,7 +22,7 @@ public class UserCar extends Sprite {
 	//static fields
 
 	//number of degrees the falcon will turn at each animation cycle if the turnState is LEFT or RIGHT
-	public final static int TURN_STEP = 11;
+//	public final static int TURN_STEP = 11;
 	//number of frames that the falcon will be protected after a spawn
 	public static final int INITIAL_SPAWN_TIME = 48;
 	//number of frames falcon will be protected after consuming a NewShieldFloater
@@ -110,7 +110,7 @@ public class UserCar extends Sprite {
 		final double SIDE_THRUST = 10; // Left/right thrust
 		final double DECELERATION_RATE = 0.95; // Friction factor for deceleration
 		final double MIN_VELOCITY = 0.05; // Velocity threshold to stop completely
-		final int MAX_VELOCITY = 39;
+		final int MAX_VELOCITY = 50;
 
 
 		//apply some thrust vectors using trig.
@@ -208,7 +208,7 @@ public class UserCar extends Sprite {
 			// Optionally, log the collision event
 			System.out.println("Falcon collided! Moving backward with damping factor: " + dampingFactor);
 
-		} else if (mov instanceof Background) {
+		} else if (mov instanceof Raceway) {
 			// Reverse horizontal movement (left or right)
 			int reverseDeltaX = (int) -getDeltaX();
 
@@ -238,7 +238,7 @@ public class UserCar extends Sprite {
 		setShield(UserCar.INITIAL_SPAWN_TIME);
 		setInvisible(UserCar.INITIAL_SPAWN_TIME/5);
 		//random number between 0-360 in steps of TURN_STEP
-		setOrientation(Game.R.nextInt(360 / UserCar.TURN_STEP) * UserCar.TURN_STEP);
+//		setOrientation(Game.R.nextInt(360 / UserCar.TURN_STEP) * UserCar.TURN_STEP);
 		setDeltaX(0);
 		setDeltaY(0);
 		setRadius(UserCar.MIN_RADIUS);

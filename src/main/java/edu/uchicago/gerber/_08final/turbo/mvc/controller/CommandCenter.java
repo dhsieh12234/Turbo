@@ -4,6 +4,7 @@ package edu.uchicago.gerber._08final.turbo.mvc.controller;
 import edu.uchicago.gerber._08final.turbo.mvc.model.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 import java.util.*;
@@ -26,9 +27,21 @@ public class CommandCenter {
 		DARK
 
 	}
+
+	public enum GameState {
+		START_SCREEN,
+		PLAYING,
+		GAME_OVER,
+		TIME_UP
+	}
+    // Getter and Setter for gameState
+    @Setter
+    @Getter
+    private GameState gameState;
+
     // Manual getter method
     @Getter
-    private final Raceway raceway = new Raceway(new Point(Game.DIM.width / 2, Game.DIM.height - 100)); // Example position
+    private final Raceway raceway = new Raceway(); // Example position
 
     private Universe universe;
 	private  int numFalcons;
@@ -92,6 +105,9 @@ public class CommandCenter {
 	private final int SCREEN_HEIGHT = Game.DIM.height;
 
 	private boolean gameOver;
+
+	@Getter
+    private int carsPassed;
 
 
 
@@ -213,6 +229,8 @@ public class CommandCenter {
 	public void initGame(){
 		clearAll();
 
+		setGameState(GameState.START_SCREEN);
+
 		Background background = new Background();
 		opsQueue.enqueue(background, GameOp.Action.ADD);
 
@@ -220,19 +238,24 @@ public class CommandCenter {
 		setDimHash();
 		setLevelFromEnv();
 		setScore(0);
+		carsPassed = 0;
+
 		setPaused(false);
 		setUniverse(Universe.VERTICAL);
+
+
+		this.universe = Universe.VERTICAL;
 		//set to one greater than number of falcons lives in your game as decrementFalconNumAndSpawn() also decrements
 		setNumFalcons(3);
 
 		movRaceway.clear(); // Clear any previous raceway segments
 
-		int segmentHeight = 30; // Height of each raceway segment
-		int numSegments = (int) Math.ceil((double) Game.DIM.height / segmentHeight) + 100;
+		int segmentHeight = 50; // Height of each raceway segment
+		int numSegments = (int) Math.ceil((double) Game.DIM.height / segmentHeight) + 30;
 		System.out.println("NUMSEGMENTS" + numSegments);// Enough segments to cover the screen
 
 		for (int i = 0; i < numSegments; i++) {
-			Raceway racewaySegment = new Raceway(new Point(Game.DIM.width / 2, Game.DIM.height - 100));
+			Raceway racewaySegment = new Raceway();
 			int yPosition = i * segmentHeight - (segmentHeight / 2); // Position segments one after another
 			racewaySegment.setCenter(new Point(Game.DIM.width / 2, yPosition));
 			opsQueue.enqueue(racewaySegment, GameOp.Action.ADD);
@@ -247,7 +270,11 @@ public class CommandCenter {
 
 	}
 
-	private void setDimHash(){
+	public void incrementCarsPassed() {
+		carsPassed++;
+	}
+
+    private void setDimHash(){
 		//initialize with values that define the aspect ratio of the Universe. See checkNewLevel() of Game class.
 		miniDimHash.put(Universe.FREE_FLY, new Dimension(1,1));
 		miniDimHash.put(Universe.CENTER, new Dimension(1,1));
@@ -279,7 +306,7 @@ public class CommandCenter {
 	}
 
 	public boolean isGameOver() {		//if the number of falcons is zero, then game over
-		return numFalcons < 1;
+		return carsPassed >= 50;
 	}
 
 	public Dimension getUniDim(){

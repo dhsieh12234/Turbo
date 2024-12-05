@@ -93,7 +93,7 @@ public class GamePanel extends Panel {
         initFontInfo();
         gameFrame.setSize(dim);
         //change the name of the game-frame to your game name
-        gameFrame.setTitle("Game Base");
+        gameFrame.setTitle("TURBO");
         gameFrame.setResizable(false);
         gameFrame.setVisible(true);
         setFocusable(true);
@@ -109,6 +109,12 @@ public class GamePanel extends Panel {
         graphics.setColor(Color.white);
         graphics.setFont(fontNormal);
         final int OFFSET_LEFT = 220;
+        final int OFFSET_TOP = fontHeight + 10;
+
+        // Draw the number of cars passed in the upper-left corner
+        int carsPassed = CommandCenter.getInstance().getCarsPassed();
+        String carsPassedText = "Cars Passed: " + carsPassed;
+        graphics.drawString(carsPassedText, OFFSET_LEFT, OFFSET_TOP);
 
 
         //draw the level upper-right corner
@@ -122,8 +128,8 @@ public class GamePanel extends Panel {
         //build the status string array with possible messages in middle of screen
         List<String> statusArray = new ArrayList<>();
         if (CommandCenter.getInstance().getUserCar().getShowLevel() > 0) statusArray.add(levelText);
-        if (CommandCenter.getInstance().getUserCar().isMaxSpeedAttained()) statusArray.add("WARNING - SLOW DOWN");
-        if (CommandCenter.getInstance().getUserCar().getNukeMeter() > 0) statusArray.add("PRESS F for NUKE");
+//        if (CommandCenter.getInstance().getUserCar().isMaxSpeedAttained()) statusArray.add("WARNING - SLOW DOWN");
+//        if (CommandCenter.getInstance().getUserCar().getNukeMeter() > 0) statusArray.add("PRESS F for NUKE");
 
             //draw the statusArray strings to middle of screen
         if (!statusArray.isEmpty())
@@ -173,61 +179,70 @@ public class GamePanel extends Panel {
 
         // The following "off" vars are used for the off-screen double-buffered image.
         imgOff = createImage(Game.DIM.width, Game.DIM.height);
-        //get its graphics context
+        // Get its graphics context
         grpOff = imgOff.getGraphics();
 
-        //fill the entire off-screen image with black background
+        // Fill the entire off-screen image with black background
         grpOff.setColor(Color.BLACK);
         grpOff.fillRect(0, 0, Game.DIM.width, Game.DIM.height);
 
-        //this is used for development, you may remove drawNumFrame() in your final game.
+        // This is used for development, you may remove drawNumFrame() in your final game.
         drawNumFrame(grpOff);
 
-        if (CommandCenter.getInstance().isGameOver()) {
+        // Get the current game state
+        CommandCenter.GameState gameState = CommandCenter.getInstance().getGameState();
+
+        // Handle different game states
+        if (gameState == CommandCenter.GameState.START_SCREEN) {
+            // Display the home screen
+            displayTextOnScreen(grpOff,
+                    "WELCOME TO THE GAME",
+                    "Press 'S' to Start",
+                    "Use Arrow Keys to Move",
+                    "Avoid Obstacles and Pass Enemy Cars");
+        } else if (gameState == CommandCenter.GameState.PLAYING) {
+            // Check if the game is paused
+            if (CommandCenter.getInstance().isPaused()) {
+                displayTextOnScreen(grpOff, "Game Paused");
+            } else {
+                // Game is playing and not paused
+                moveDrawMovables(grpOff,
+                        CommandCenter.getInstance().getMovBackground(),
+                        CommandCenter.getInstance().getMovRaceway(),
+                        CommandCenter.getInstance().getMovDebris(),
+                        CommandCenter.getInstance().getMovFloaters(),
+                        CommandCenter.getInstance().getMovFriends(),
+                        CommandCenter.getInstance().getMovFoes()
+                );
+
+//                drawNumberShipsRemaining(grpOff);
+                drawMeters(grpOff);
+                drawFalconStatus(grpOff);
+                drawTimer(grpOff);
+            }
+        } else if (gameState == CommandCenter.GameState.GAME_OVER || gameState == CommandCenter.GameState.TIME_UP) {
+
+            int carsPassed = CommandCenter.getInstance().getCarsPassed();
+            // Display game over screen
             displayTextOnScreen(grpOff,
                     "GAME OVER",
-                    "use the arrow keys to turn and thrust",
-                    "use the space bar to fire",
+                    "You passed " + carsPassed + " cars!",
+                    "Use the arrow keys to turn and thrust",
+                    "Use the space bar to fire",
                     "'S' to Start",
                     "'P' to Pause",
                     "'Q' to Quit",
                     "'M' to toggle music",
                     "'A' to toggle radar"
-
             );
-        } else if (CommandCenter.getInstance().isPaused()) {
-
-            displayTextOnScreen(grpOff, "Game Paused");
-
         }
 
-        //playing and not paused!
-        else {
-
-
-            moveDrawMovables(grpOff,
-                    CommandCenter.getInstance().getMovBackground(),
-                    CommandCenter.getInstance().getMovRaceway(),
-                    CommandCenter.getInstance().getMovDebris(),
-                    CommandCenter.getInstance().getMovFloaters(),
-                    CommandCenter.getInstance().getMovFriends(),
-                    CommandCenter.getInstance().getMovFoes()
-            );
-
-
-            drawNumberShipsRemaining(grpOff);
-            drawMeters(grpOff);
-            drawFalconStatus(grpOff);
-            drawTimer(grpOff);
-
-
-        }
-
-        //after drawing all the movables or text on the offscreen-image, copy it in one fell-swoop to graphics context
+        // After drawing all the movables or text on the offscreen-image, copy it in one fell-swoop to graphics context
         // of the game panel, and show it for ~40ms. If you attempt to draw sprites directly on the gamePanel, e.g.
         // without the use of a double-buffered off-screen image, you will see flickering.
         g.drawImage(imgOff, 0, 0, this);
     }
+
 
     // Add the drawTimer method
     private void drawTimer(Graphics g) {

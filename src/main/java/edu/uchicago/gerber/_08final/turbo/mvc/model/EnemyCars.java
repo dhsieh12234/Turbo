@@ -3,6 +3,7 @@ package edu.uchicago.gerber._08final.turbo.mvc.model;
 import edu.uchicago.gerber._08final.turbo.mvc.controller.*;
 import edu.uchicago.gerber._08final.turbo.mvc.model.prime.PolarPoint;
 import edu.uchicago.gerber._08final.turbo.mvc.controller.ImageLoader;
+import lombok.Setter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,12 +16,15 @@ public class EnemyCars extends Sprite {
 
 	// Constants
 	private static final int CAR_RADIUS = 50; // Fixed radius for all cars
-	private static final int CAR_SPEED = 5;
+//	private static final int CAR_SPEED = 5;
 	private static final Random RANDOM = new Random();
 
 	public int getSize() {
 		return CAR_RADIUS;
 	}
+
+	@Setter
+    private boolean hasBeenPassed = false;
 
 	// Enum for image states
 	public enum ImageState {
@@ -28,7 +32,7 @@ public class EnemyCars extends Sprite {
 		BLUE_CAR
 	}
 
-	private ImageState imageState;
+	private final ImageState imageState;
 
 	/**
 	 * Single constructor for Asteroid.
@@ -45,18 +49,18 @@ public class EnemyCars extends Sprite {
 		// Set fixed radius for all cars
 		setRadius(CAR_RADIUS);
 
-		// Set color (can be overridden by imageState)
-		setColor(Color.WHITE);
+//		// Set color (can be overridden by imageState)
+//		setColor(Color.WHITE);
 
 //		// Initialize movement deltas opposite to Falcon's current velocity with slight randomness
 		setDeltaX(-CommandCenter.getInstance().getUserCar().getDeltaX() + RANDOM.nextInt(3) - 1);
 		setDeltaY(-CommandCenter.getInstance().getUserCar().getDeltaY() + RANDOM.nextInt(3) - 1);
 
-		// Set spin (if applicable)
-		setSpin(0); // Adjust as needed
+//		// Set spin (if applicable)
+//		setSpin(0); // Adjust as needed
 
-		// Configure vertices (if necessary)
-		setCartesians(generateVertices());
+//		// Configure vertices (if necessary)
+//		setCartesians(generateVertices());
 
 		// Initialize raster map for image states
 		initializeRasterMap();
@@ -73,38 +77,6 @@ public class EnemyCars extends Sprite {
 		rasterMap.put(ImageState.RED_CAR, ImageLoader.getImage("/imgs/fal/red_car001.png"));
 		rasterMap.put(ImageState.BLUE_CAR, ImageLoader.getImage("/imgs/fal/blue_car001.png"));
 		setRasterMap(rasterMap);
-	}
-
-	/**
-	 * Generates vertices for the Asteroid shape.
-	 *
-	 * @return Array of Points representing vertices.
-	 */
-	private Point[] generateVertices() {
-		// 6.283 radians = 2 * PI
-		final int MAX_RADIANS_X1000 = 6283;
-		final double PRECISION = 1000.0;
-
-		Supplier<PolarPoint> polarPointSupplier = () -> {
-			double r = (800 + RANDOM.nextInt(200)) / PRECISION; // 0.8 to 0.999
-			double theta = RANDOM.nextInt(MAX_RADIANS_X1000) / PRECISION; // 0 to ~6.283
-			return new PolarPoint(r, theta);
-		};
-
-		Function<PolarPoint, Point> polarToCartesian =
-				pp -> new Point(
-						(int) (pp.getR() * PRECISION * Math.sin(pp.getTheta())),
-						(int) (pp.getR() * PRECISION * Math.cos(pp.getTheta()))
-				);
-
-		// Random number of vertices between 25 and 31
-		final int VERTICES = RANDOM.nextInt(7) + 25;
-
-		return Stream.generate(polarPointSupplier)
-				.limit(VERTICES)
-				.sorted(Comparator.comparingDouble(PolarPoint::getTheta))
-				.map(polarToCartesian)
-				.toArray(Point[]::new);
 	}
 
 	@Override
@@ -131,15 +103,17 @@ public class EnemyCars extends Sprite {
 	public void draw(Graphics g) {
 		// Render the image based on the current ImageState
 		BufferedImage img = getRasterMap().get(imageState);
-		if (img != null) {
-			g.drawImage(img, getCenter().x - getRadius(), getCenter().y - getRadius(),
-					getRadius() * 2, getRadius() * 2, null);
-		} else {
-			// Fallback to drawing a colored circle if image is not available
-			g.setColor(getColor());
-			g.fillOval(getCenter().x - getRadius(), getCenter().y - getRadius(),
-					getRadius() * 2, getRadius() * 2);
-		}
+		g.drawImage(img, getCenter().x - getRadius(), getCenter().y - getRadius(),
+				getRadius() * 2, getRadius() * 2, null);
+//		if (img != null) {
+//			g.drawImage(img, getCenter().x - getRadius(), getCenter().y - getRadius(),
+//					getRadius() * 2, getRadius() * 2, null);
+//		} else {
+//			// Fallback to drawing a colored circle if image is not available
+//			g.setColor(getColor());
+//			g.fillOval(getCenter().x - getRadius(), getCenter().y - getRadius(),
+//					getRadius() * 2, getRadius() * 2);
+//		}
 	}
 
 	@Override
@@ -174,4 +148,41 @@ public class EnemyCars extends Sprite {
 		// Enqueue removal after collision
 //		CommandCenter.getInstance().getOpsQueue().enqueue(this, GameOp.Action.REMOVE);
 	}
+
+	public boolean hasBeenPassed() {
+		return hasBeenPassed;
+	}
+
+//	/**
+//	 * Generates vertices for the Asteroid shape.
+//	 *
+//	 * @return Array of Points representing vertices.
+//	 */
+//	private Point[] generateVertices() {
+//		// 6.283 radians = 2 * PI
+//		final int MAX_RADIANS_X1000 = 6283;
+//		final double PRECISION = 1000.0;
+//
+//		Supplier<PolarPoint> polarPointSupplier = () -> {
+//			double r = (800 + RANDOM.nextInt(200)) / PRECISION; // 0.8 to 0.999
+//			double theta = RANDOM.nextInt(MAX_RADIANS_X1000) / PRECISION; // 0 to ~6.283
+//			return new PolarPoint(r, theta);
+//		};
+//
+//		Function<PolarPoint, Point> polarToCartesian =
+//				pp -> new Point(
+//						(int) (pp.getR() * PRECISION * Math.sin(pp.getTheta())),
+//						(int) (pp.getR() * PRECISION * Math.cos(pp.getTheta()))
+//				);
+//
+//		// Random number of vertices between 25 and 31
+//		final int VERTICES = RANDOM.nextInt(7) + 25;
+//
+//		return Stream.generate(polarPointSupplier)
+//				.limit(VERTICES)
+//				.sorted(Comparator.comparingDouble(PolarPoint::getTheta))
+//				.map(polarToCartesian)
+//				.toArray(Point[]::new);
+//	}
+
 }
