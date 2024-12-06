@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class TimeFloater extends Floater {
 
 	//spawn every 12 seconds
-	public static final int SPAWN_TIME_FLOATER = Game.FRAMES_PER_SECOND * 12;
+	public static final int SPAWN_TIME_FLOATER = Game.FRAMES_PER_SECOND * 10;
 	public TimeFloater() {
 		setColor(Color.YELLOW);
 		setExpiry(120);

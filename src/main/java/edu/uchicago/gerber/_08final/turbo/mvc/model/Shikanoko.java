@@ -12,7 +12,7 @@ import java.util.Map;
 public class Shikanoko extends Floater{
 
     //spawn every 12 seconds
-    public static final int SPAWN_SHIKANOKO_FLOATER = Game.FRAMES_PER_SECOND * 5;
+    public static final int SPAWN_SHIKANOKO_FLOATER = Game.FRAMES_PER_SECOND * 7;
     private BufferedImage deerImage;
     private boolean showBigImage = false; // To control image visibility
     private long displayStartTime; // To track when the display starts

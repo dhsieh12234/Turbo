@@ -165,8 +165,8 @@ public class Game implements Runnable, KeyListener {
 
     private void checkFloaters() {
 
-        spawnNukeFloater();
-        spawnShieldFloater();
+        spawnTimeFloater();
+//        spawnShieldFloater();
         spawnShikanokoFloater();
     }
 
@@ -390,7 +390,7 @@ public class Game implements Runnable, KeyListener {
         }
     }
 
-    private void spawnNukeFloater() {
+    private void spawnTimeFloater() {
         if (CommandCenter.getInstance().getFrame() % TimeFloater.SPAWN_TIME_FLOATER == 0) {
             System.out.println("SPAWNNN NUKE");
             CommandCenter.getInstance().getOpsQueue().enqueue(new TimeFloater(), GameOp.Action.ADD);

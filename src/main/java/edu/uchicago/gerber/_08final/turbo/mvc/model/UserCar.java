@@ -237,6 +237,7 @@ public class UserCar extends Sprite {
 		SoundLoader.playSound("shipspawn.wav");
 		setShield(UserCar.INITIAL_SPAWN_TIME);
 		setInvisible(UserCar.INITIAL_SPAWN_TIME/5);
+		setTeam(Team.FRIEND);
 		//random number between 0-360 in steps of TURN_STEP
 //		setOrientation(Game.R.nextInt(360 / UserCar.TURN_STEP) * UserCar.TURN_STEP);
 		setDeltaX(0);

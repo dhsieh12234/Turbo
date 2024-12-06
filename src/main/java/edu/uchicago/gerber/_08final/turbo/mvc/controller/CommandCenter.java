@@ -249,14 +249,14 @@ public class CommandCenter {
 		carsPassed = 0;
 
 
-		setPaused(false);
-		setUniverse(Universe.VERTICAL);
+		paused = false;
+//		setUniverse(Universe.VERTICAL);
 
 //		gameTimer = new GameTimer(60_000); // Initialize timer
 //		gameTimer.start();
 
 
-//		this.universe = Universe.VERTICAL;
+		this.universe = Universe.VERTICAL;
 		//set to one greater than number of falcons lives in your game as decrementFalconNumAndSpawn() also decrements
 		setNumFalcons(3);
 
@@ -313,7 +313,7 @@ public class CommandCenter {
 		frame = frame < Long.MAX_VALUE ? frame + 1 : 0;
 	}
 
-	private void clearAll(){
+	public void clearAll(){
 		movDebris.clear();
 		movFriends.clear();
 		movFoes.clear();
