@@ -54,9 +54,9 @@ public class Game implements Runnable, KeyListener {
             TURBO = 38, // thrust; up arrow
             ACCELERATE = 83, // s key
 //            FIRE = 32, // space key
-            MUTE = 77, // m-key mute
-            NUKE = 70, // f-key
-            RADAR = 65; // a-key
+            MUTE = 77; // m-key mute
+//            NUKE = 70, // f-key
+//            RADAR = 65; // a-key
 
     // ===============================================
     // ==CONSTRUCTOR
@@ -519,9 +519,9 @@ public class Game implements Runnable, KeyListener {
 //            case FIRE:
 //                CommandCenter.getInstance().getOpsQueue().enqueue(new Bullet(userCar), GameOp.Action.ADD);
 //                break;
-            case NUKE:
-                CommandCenter.getInstance().getOpsQueue().enqueue(new Nuke(userCar), GameOp.Action.ADD);
-                break;
+//            case NUKE:
+//                CommandCenter.getInstance().getOpsQueue().enqueue(new Nuke(userCar), GameOp.Action.ADD);
+//                break;
             case TURBO:
                 userCar.setThrusting(true);
                 SoundLoader.playSound("whitenoise_loop.wav");
@@ -589,10 +589,10 @@ public class Game implements Runnable, KeyListener {
             case QUIT:
                 System.exit(0);
                 break;
-            case RADAR:
-                // Toggle the radar display
-                CommandCenter.getInstance().setRadar(!CommandCenter.getInstance().isRadar());
-                break;
+//            case RADAR:
+//                // Toggle the radar display
+//                CommandCenter.getInstance().setRadar(!CommandCenter.getInstance().isRadar());
+//                break;
             case MUTE:
                 // Toggle the music
                 if (CommandCenter.getInstance().isThemeMusic()) {

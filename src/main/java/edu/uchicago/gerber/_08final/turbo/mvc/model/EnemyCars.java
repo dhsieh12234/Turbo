@@ -29,7 +29,8 @@ public class EnemyCars extends Sprite {
 	// Enum for image states
 	public enum ImageState {
 		RED_CAR, // Different color cars
-		BLUE_CAR
+		BLUE_CAR,
+		GREEN_CAR
 	}
 
 	private final ImageState imageState;
@@ -66,7 +67,7 @@ public class EnemyCars extends Sprite {
 		initializeRasterMap();
 
 		// Randomly assign image state
-		this.imageState = RANDOM.nextBoolean() ? ImageState.RED_CAR : ImageState.BLUE_CAR;
+		this.imageState = getRandomImageState();
 	}
 
 	/**
@@ -76,7 +77,13 @@ public class EnemyCars extends Sprite {
 		Map<ImageState, BufferedImage> rasterMap = new HashMap<>();
 		rasterMap.put(ImageState.RED_CAR, ImageLoader.getImage("/imgs/fal/red_car001.png"));
 		rasterMap.put(ImageState.BLUE_CAR, ImageLoader.getImage("/imgs/fal/blue_car001.png"));
+		rasterMap.put(ImageState.GREEN_CAR, ImageLoader.getImage("/imgs/fal/green_car002.png"));
 		setRasterMap(rasterMap);
+	}
+
+	private ImageState getRandomImageState() {
+		ImageState[] states = ImageState.values();
+		return states[RANDOM.nextInt(states.length)];
 	}
 
 	@Override
