@@ -1,7 +1,8 @@
-package edu.uchicago.gerber._08final.turbo.mvc.model;
+package edu.uchicago.gerber._08final.turbo.mvc.Unused;
 
 
 import edu.uchicago.gerber._08final.turbo.mvc.controller.ImageLoader;
+import edu.uchicago.gerber._08final.turbo.mvc.model.Sprite;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

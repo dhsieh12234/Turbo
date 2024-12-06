@@ -1,6 +1,7 @@
 package edu.uchicago.gerber._08final.turbo.mvc.controller;
 
 
+import edu.uchicago.gerber._08final.turbo.mvc.Unused.MiniMap;
 import edu.uchicago.gerber._08final.turbo.mvc.model.*;
 //import jdk.internal.perf.PerfCounter;
 import lombok.Data;
@@ -116,7 +117,7 @@ public class CommandCenter {
     private int carsPassed = 0;
 
 	@Setter @Getter
-	public int CAR_PASS_THRESHOLD = 5;
+	public int CAR_PASS_THRESHOLD = 25;
 
 
 
@@ -143,7 +144,7 @@ public class CommandCenter {
 		System.out.println("User input enabled.");
 	}
 
-    private void setLevelFromEnv(){
+    public void setLevelFromEnv(){
 		String strLevel = System.getenv("LEVEL");
 		String envLevel = (strLevel != null) ? strLevel : "1";
 		try {
@@ -198,42 +199,6 @@ public class CommandCenter {
 		return count;
 	}
 
-//	private void spawnCar() {
-//		if (getCarCount() >= MAX_CARS) {
-//			// Do not spawn new car if we've reached the maximum limit
-//			return;
-//		}
-//
-//		Random random = new Random();
-//		CommandCenter commandCenter = CommandCenter.getInstance();
-//
-//		// Get the raceway instance
-//		Raceway raceway = commandCenter.getRaceway();
-//
-//		// Define padding to avoid spawning too close to the edges
-//		int padding = 10; // Adjust as needed
-//
-//		// Calculate horizontal boundaries within the raceway
-//		int minX = raceway.getCenter().x - (raceway.getWidth() / 2) + padding + (CAR_WIDTH / 2);
-//		int maxX = raceway.getCenter().x + (raceway.getWidth() / 2) - padding - (CAR_WIDTH / 2);
-//
-//		// Randomly select an x-coordinate within the raceway boundaries
-//		int x = random.nextInt(maxX - minX + 1) + minX;
-//
-//		// Spawn the car just above the raceway
-//		int y = -CAR_HEIGHT;
-//
-//		// Create a new Asteroid (car) at the calculated position
-//		EnemyCars newCar = new EnemyCars(new Point(x, y));
-//
-//		// Enqueue the new car to be added to the game
-//		opsQueue.enqueue(newCar, GameOp.Action.ADD);
-//
-//		// Optional: Log the spawn event for debugging
-//		System.out.println("Spawned new car at (" + x + ", " + y + ")");
-//	}
-
-
 	public void initGame(){
 		clearAll();
 
@@ -242,19 +207,11 @@ public class CommandCenter {
 		Background background = new Background();
 
 		generateStarField();
-//		setDimHash();
-		setLevelFromEnv();
+		setLevel(0);
 		setScore(0);
 
 		carsPassed = 0;
-
-
 		paused = false;
-//		setUniverse(Universe.VERTICAL);
-
-//		gameTimer = new GameTimer(60_000); // Initialize timer
-//		gameTimer.start();
-
 
 		this.universe = Universe.VERTICAL;
 		//set to one greater than number of falcons lives in your game as decrementFalconNumAndSpawn() also decrements
@@ -287,17 +244,6 @@ public class CommandCenter {
 
 	public void incrementCarsPassed() {
 		carsPassed++;
-	}
-
-    private void setDimHash(){
-		//initialize with values that define the aspect ratio of the Universe. See checkNewLevel() of Game class.
-		miniDimHash.clear();
-//		miniDimHash.put(Universe.FREE_FLY, new Dimension(1,1));
-//		miniDimHash.put(Universe.CENTER, new Dimension(1,1));
-//		miniDimHash.put(Universe.BIG, new Dimension(2,2));
-//		miniDimHash.put(Universe.HORIZONTAL, new Dimension(3,1));
-		miniDimHash.put(Universe.VERTICAL, new Dimension(1,3));
-//		miniDimHash.put(Universe.DARK, new Dimension(4,4));
 	}
 
 

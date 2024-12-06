@@ -12,6 +12,13 @@ public class Background extends Sprite {
     private final int width;
     private final int height;
 
+    // Define the three specific colors (not grey)
+    Color[] colors = {Color.BLUE, Color.RED, Color.GREEN};
+
+    // Randomly pick one of the three colors
+    int colorIndex = Game.R.nextInt(colors.length);
+    Color selectedColor = colors[colorIndex];
+
     public Background() {
         // Set team to BACKGROUND
         setTeam(Team.BACKGROUND);
@@ -24,10 +31,16 @@ public class Background extends Sprite {
 
     @Override
     public void draw(Graphics g) {
-        // Example: Draw a background (replace with actual implementation)
-        g.setColor(Color.BLUE); // Background color
+
+        // Set the selected color
+        g.setColor(selectedColor);
+
+        // Draw the background with the selected color
         g.fillRect(0, 0, Game.DIM.width, Game.DIM.height); // Cover entire screen
     }
+
+
+
 
     @Override
     public void move() {

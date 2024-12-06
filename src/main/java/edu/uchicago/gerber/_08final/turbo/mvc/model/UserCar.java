@@ -27,7 +27,7 @@ public class UserCar extends Sprite {
 	public static final int INITIAL_SPAWN_TIME = 48;
 	//number of frames falcon will be protected after consuming a NewShieldFloater
 	public static final int MAX_SHIELD = 200;
-	public static final int MAX_NUKE = 600;
+//	public static final int MAX_NUKE = 600;
 
 	public static final int MIN_RADIUS = 50;
 
@@ -147,7 +147,7 @@ public class UserCar extends Sprite {
 	@Override
 	public void draw(Graphics g) {
 
-		if (nukeMeter > 0) drawNukeHalo(g);
+//		if (nukeMeter > 0) drawNukeHalo(g);
 
 		//set local image-state
 		ImageState imageState;
@@ -173,12 +173,12 @@ public class UserCar extends Sprite {
 		g.drawOval(getCenter().x - getRadius(), getCenter().y - getRadius(), getRadius() *2, getRadius() *2);
 	}
 
-	private void drawNukeHalo(Graphics g){
-		if (invisible > 0) return;
-		g.setColor(Color.YELLOW);
-		g.drawOval(getCenter().x - getRadius()+10, getCenter().y - getRadius()+10, getRadius() *2 -20,
-				getRadius() *2-20);
-	}
+//	private void drawNukeHalo(Graphics g){
+//		if (invisible > 0) return;
+//		g.setColor(Color.YELLOW);
+//		g.drawOval(getCenter().x - getRadius()+10, getCenter().y - getRadius()+10, getRadius() *2 -20,
+//				getRadius() *2-20);
+//	}
 
 	@Override
 	public void removeFromGame(LinkedList<Movable> list) {
@@ -238,13 +238,14 @@ public class UserCar extends Sprite {
 		setShield(UserCar.INITIAL_SPAWN_TIME);
 		setInvisible(UserCar.INITIAL_SPAWN_TIME/5);
 		setTeam(Team.FRIEND);
+
 		//random number between 0-360 in steps of TURN_STEP
 //		setOrientation(Game.R.nextInt(360 / UserCar.TURN_STEP) * UserCar.TURN_STEP);
 		setDeltaX(0);
 		setDeltaY(0);
 		setRadius(UserCar.MIN_RADIUS);
 		setMaxSpeedAttained(false);
-		setNukeMeter(0);
+//		setNukeMeter(0);
 
 	}
 

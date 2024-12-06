@@ -1,5 +1,6 @@
 package edu.uchicago.gerber._08final.turbo.mvc.controller;
 
+import edu.uchicago.gerber._08final.turbo.mvc.Unused.Nuke;
 import edu.uchicago.gerber._08final.turbo.mvc.model.*;
 import edu.uchicago.gerber._08final.turbo.mvc.view.GamePanel;
 import lombok.Getter;
@@ -67,7 +68,7 @@ public class Game implements Runnable, KeyListener {
 
         CommandCenter.getInstance().initGame();
 
-        gameTimer = new GameTimer(20_000);
+        gameTimer = new GameTimer(60_000);
         gameTimer.start();
 
         //fire up the animation thread
@@ -76,7 +77,6 @@ public class Game implements Runnable, KeyListener {
         animationThread.setDaemon(true);
         animationThread.start();
         instance = this;
-
     }
 
     // ===============================================
@@ -114,15 +114,16 @@ public class Game implements Runnable, KeyListener {
                     int carPassed = CommandCenter.getInstance().getCarsPassed();
                     int carTarget = CommandCenter.getInstance().getCAR_PASS_THRESHOLD();
                     if (carPassed >= carTarget) {
-                        System.out.println("GOOD JOB YOU PASS");
+//                        System.out.println("GOOD JOB YOU PASS");
                         CommandCenter.getInstance().CAR_PASS_THRESHOLD += 5;
 
-//                        int level = CommandCenter.getInstance().getLevel();
-//                        level = level + 1;
-//                        CommandCenter.getInstance().setLevel(level);
+                        int level = CommandCenter.getInstance().getLevel();
+                        level = level + 1;
+                        CommandCenter.getInstance().setLevel(level);
                         CommandCenter.getInstance().initGame();
 
                     } else {
+                        CommandCenter.getInstance().CAR_PASS_THRESHOLD = 25;
                         CommandCenter.getInstance().setGameState(CommandCenter.GameState.GAME_OVER);
                     }
 
@@ -183,7 +184,6 @@ public class Game implements Runnable, KeyListener {
                     // Check if the player's car has moved ahead of the enemy car
 //                    System.out.println(enemyY);
                     if (playerY < enemyY) {
-//                        System.out.println("PASSED");
                         // Player has passed this enemy car
                         enemyCar.setHasBeenPassed(true);
                         CommandCenter.getInstance().incrementCarsPassed();
@@ -201,7 +201,9 @@ public class Game implements Runnable, KeyListener {
     is dangerous and may lead to null-pointer or array-index-out-of-bounds exceptions, or other erroneous behavior.
      */
 
-
+    //Involves calcualting whether a friend is within the raceway. I understand you wanted to avoid doing rectangle
+    //intersection but this was the only solution I could think of to keep the cars within the raceway bounds. The way
+    //I set up is the raceway on top of background so there was no way I could do a collision with either to detect it.
     private boolean isTouchingRaceway(Movable friend, Raceway raceway) {
         // Get the bounding rectangle of the FRIEND
         Rectangle friendBounds = new Rectangle(
@@ -219,7 +221,7 @@ public class Game implements Runnable, KeyListener {
                 raceway.getHeight()
         );
 
-        // Check if the bounding rectangles intersect
+        // Check if the raceway contains the movable
         return racewayBounds.contains(friendBounds);
     }
 
@@ -232,6 +234,7 @@ public class Game implements Runnable, KeyListener {
         for (Movable movFriend : CommandCenter.getInstance().getMovFriends()) {
             for (Movable movFoe : CommandCenter.getInstance().getMovFoes()) {
 
+            //Check the type of the movable
 //                if (movFriend.getTeam() == Movable.Team.FRIEND) {
 //                    System.out.println("This is a FRIEND: " + movFriend);
 //                } else if (movFriend.getTeam() == Movable.Team.FOE) {
@@ -251,10 +254,6 @@ public class Game implements Runnable, KeyListener {
                     //enqueue the Action to collide
                     CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, movFoe, GameOp.Action.COLLIDE);
                     CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, movFriend, GameOp.Action.COLLIDE);
-//                    //enqueue the friend
-//                    CommandCenter.getInstance().getOpsQueue().enqueue(movFriend, GameOp.Action.REMOVE);
-//                    //enqueue the foe
-//                    CommandCenter.getInstance().getOpsQueue().enqueue(movFoe, GameOp.Action.REMOVE);
                 }
             }//end inner for
         }//end outer for
@@ -382,7 +381,7 @@ public class Game implements Runnable, KeyListener {
         }//end while
     }
 
-//works
+//Floaters
     private void spawnShieldFloater() {
         if (CommandCenter.getInstance().getFrame() % ShieldFloater.SPAWN_SHIELD_FLOATER == 0) {
             System.out.println("SPAWNNN SHIELD");
@@ -391,6 +390,9 @@ public class Game implements Runnable, KeyListener {
     }
 
     private void spawnTimeFloater() {
+//        System.out.println("Frame: " + CommandCenter.getInstance().getFrame() +
+//                ", Time Floater Interval: " + TimeFloater.SPAWN_TIME_FLOATER +
+//                ", Spawn Condition: " + (CommandCenter.getInstance().getFrame() % TimeFloater.SPAWN_TIME_FLOATER == 0));
         if (CommandCenter.getInstance().getFrame() % TimeFloater.SPAWN_TIME_FLOATER == 0) {
             System.out.println("SPAWNNN NUKE");
             CommandCenter.getInstance().getOpsQueue().enqueue(new TimeFloater(), GameOp.Action.ADD);
@@ -398,6 +400,7 @@ public class Game implements Runnable, KeyListener {
     }
 
     private void spawnShikanokoFloater() {
+//        System.out.println(CommandCenter.getInstance().getFrame() % Shikanoko.SPAWN_SHIKANOKO_FLOATER == 0);
         if (CommandCenter.getInstance().getFrame() % Shikanoko.SPAWN_SHIKANOKO_FLOATER == 0) {
             System.out.println("SPAWNNN SHIKANOKO");
             CommandCenter.getInstance().getOpsQueue().enqueue(new Shikanoko(), GameOp.Action.ADD);
@@ -406,23 +409,37 @@ public class Game implements Runnable, KeyListener {
 
 
     //this method spawns new Large (0) Asteroids
+    // This method spawns new Enemy Cars, tried to do many but makes it too ahrd
     private void spawnEnemyCar(int num) {
         CommandCenter commandCenter = CommandCenter.getInstance();
         Random random = new Random();
 
         for (int i = 0; i < num; i++) {
-            // Determine spawn position
-            Point spawnPoint = determineSpawnPointWithinRaceway(commandCenter.getRaceway());
+            Point spawnPoint;
 
-            // Create a new Asteroid at the spawn point
-            EnemyCars bigAsteroid = new EnemyCars(spawnPoint);
+            // Determine spawn position based on the car's index
+            if (i == 0) {
+                // Spawn the first car at the top of the screen
+                spawnPoint = determineSpawnPointWithinRaceway(commandCenter.getRaceway()); // Adjust for car's height
+            } else if (i == 1) {
+                // Spawn the second car midway down the screen
+                spawnPoint = new Point(Game.DIM.width / 2, Game.DIM.height / 2);
+            } else {
+                // Spawn other cars randomly within the raceway
+                spawnPoint = determineSpawnPointWithinRaceway(commandCenter.getRaceway());
+            }
 
-            // Enqueue the Asteroid to be added to the game
-            commandCenter.getOpsQueue().enqueue(bigAsteroid, GameOp.Action.ADD);
+            // Create a new Enemy Car at the determined position
+            EnemyCars enemyCar = new EnemyCars(spawnPoint);
 
-            System.out.println("Spawned Big Asteroid at: " + spawnPoint);
+            // Enqueue the car to be added to the game
+            commandCenter.getOpsQueue().enqueue(enemyCar, GameOp.Action.ADD);
+
+            // Log the spawn event
+            System.out.println("Spawned Enemy Car at: " + spawnPoint);
         }
     }
+
 
     /**
      * Determines a random spawn point within the given raceway.
@@ -481,35 +498,12 @@ public class Game implements Runnable, KeyListener {
 //            CommandCenter.getInstance().setGameState(CommandCenter.GameState.GAME_OVER);
             return;
         }
-//
-//
-//        //currentLevel will be zero at beginning of game
-//        int level = CommandCenter.getInstance().getLevel();
-//        //award some points for having cleared the previous level
-//        CommandCenter.getInstance().setScore(CommandCenter.getInstance().getScore() + (10_000L * level));
-//
+
         //center the falcon at each level-clear
         CommandCenter.getInstance().getUserCar().setCenter(new Point(Game.DIM.width / 2, (int)(Game.DIM.height * 0.8)));;
-//
-//        //Set universe according to mod of level - cycle through universes
-//        int ordinal = level % CommandCenter.Universe.values().length;
-//        CommandCenter.Universe key = CommandCenter.Universe.values()[ordinal];
-//        CommandCenter.getInstance().setUniverse(CommandCenter.Universe.VERTICAL);
-//        //players will need radar in the big universes, but they can still toggle it off
-//        CommandCenter.getInstance().setRadar(ordinal > 1);
-//
-//        //bump the level up
-//        level = level + 1;
-//        CommandCenter.getInstance().setLevel(level);
+
         //spawn some big new asteroids
         spawnEnemyCar(1);
-//        //make falcon invincible momentarily in case new asteroids spawn on top of him, and give player
-//        //time to adjust to new universe and new asteroids in game space.
-//        CommandCenter.getInstance().getUserCar().setShield(UserCar.INITIAL_SPAWN_TIME);
-//        //show "Level: [X] UNIVERSE" in middle of screen
-//        CommandCenter.getInstance().getUserCar().setShowLevel(UserCar.INITIAL_SPAWN_TIME);
-
-
     }
 
     // ===============================================

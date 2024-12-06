@@ -199,7 +199,7 @@ public class GamePanel extends Panel {
             displayTextOnScreen(grpOff,
                     "WELCOME TO THE GAME",
                     "YOU PASSED THE LEVEL",
-                    "You passed " + carsPassed + " cars!",
+                    "You passed the target of " + CommandCenter.getInstance().getCAR_PASS_THRESHOLD() + " cars!",
                     "Press 'S' to Start to move to the Next Level",
                     "Use Arrow Keys to Move",
                     "Avoid Obstacles and Pass Enemy Cars");

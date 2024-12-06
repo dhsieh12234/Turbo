@@ -105,15 +105,7 @@ public class EnemyCars extends Sprite {
 		BufferedImage img = getRasterMap().get(imageState);
 		g.drawImage(img, getCenter().x - getRadius(), getCenter().y - getRadius(),
 				getRadius() * 2, getRadius() * 2, null);
-//		if (img != null) {
-//			g.drawImage(img, getCenter().x - getRadius(), getCenter().y - getRadius(),
-//					getRadius() * 2, getRadius() * 2, null);
-//		} else {
-//			// Fallback to drawing a colored circle if image is not available
-//			g.setColor(getColor());
-//			g.fillOval(getCenter().x - getRadius(), getCenter().y - getRadius(),
-//					getRadius() * 2, getRadius() * 2);
-//		}
+
 	}
 
 	@Override
@@ -155,45 +147,10 @@ public class EnemyCars extends Sprite {
 				setCenter(new Point(asteroidCenter.x - 100, asteroidCenter.y));
 			}
 		}
-
-		// Enqueue removal after collision
-//		CommandCenter.getInstance().getOpsQueue().enqueue(this, GameOp.Action.REMOVE);
 	}
 
 	public boolean hasBeenPassed() {
 		return hasBeenPassed;
 	}
-
-//	/**
-//	 * Generates vertices for the Asteroid shape.
-//	 *
-//	 * @return Array of Points representing vertices.
-//	 */
-//	private Point[] generateVertices() {
-//		// 6.283 radians = 2 * PI
-//		final int MAX_RADIANS_X1000 = 6283;
-//		final double PRECISION = 1000.0;
-//
-//		Supplier<PolarPoint> polarPointSupplier = () -> {
-//			double r = (800 + RANDOM.nextInt(200)) / PRECISION; // 0.8 to 0.999
-//			double theta = RANDOM.nextInt(MAX_RADIANS_X1000) / PRECISION; // 0 to ~6.283
-//			return new PolarPoint(r, theta);
-//		};
-//
-//		Function<PolarPoint, Point> polarToCartesian =
-//				pp -> new Point(
-//						(int) (pp.getR() * PRECISION * Math.sin(pp.getTheta())),
-//						(int) (pp.getR() * PRECISION * Math.cos(pp.getTheta()))
-//				);
-//
-//		// Random number of vertices between 25 and 31
-//		final int VERTICES = RANDOM.nextInt(7) + 25;
-//
-//		return Stream.generate(polarPointSupplier)
-//				.limit(VERTICES)
-//				.sorted(Comparator.comparingDouble(PolarPoint::getTheta))
-//				.map(polarToCartesian)
-//				.toArray(Point[]::new);
-//	}
 
 }

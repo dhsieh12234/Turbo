@@ -21,9 +21,9 @@ public class BigShikanoko extends Floater {
     @Override
     public void draw(Graphics g) {
         if (deerImage != null) {
-            int scaleFactor = 3; // Scale the image
-            int width = deerImage.getWidth() * scaleFactor;
-            int height = deerImage.getHeight() * scaleFactor;
+            double scaleFactor = 2.7; // Scale the image
+            int width = (int)( deerImage.getWidth() * scaleFactor);
+            int height = (int) ( deerImage.getHeight() * scaleFactor);
 
             g.drawImage(deerImage,
                     getCenter().x - width / 2, // Center horizontally
