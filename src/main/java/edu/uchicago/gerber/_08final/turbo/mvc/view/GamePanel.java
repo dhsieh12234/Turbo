@@ -121,7 +121,7 @@ public class GamePanel extends Panel {
         String levelText = "Level : [" + CommandCenter.getInstance().getLevel() + "]  " +
         CommandCenter.getInstance().getUniverse().toString().replace('_', ' ');
         graphics.drawString(levelText, Game.DIM.width - OFFSET_LEFT, fontHeight); //upper-right corner
-        graphics.drawString("Score : " + decimalFormat.format(CommandCenter.getInstance().getScore()),
+        graphics.drawString("Target : " + decimalFormat.format(CommandCenter.getInstance().getCAR_PASS_THRESHOLD()),
                 Game.DIM.width - OFFSET_LEFT,
                 fontHeight * 2);
 
@@ -194,10 +194,13 @@ public class GamePanel extends Panel {
 
         // Handle different game states
         if (gameState == CommandCenter.GameState.START_SCREEN) {
+            int carsPassed = CommandCenter.getInstance().getCarsPassed();
             // Display the home screen
             displayTextOnScreen(grpOff,
                     "WELCOME TO THE GAME",
-                    "Press 'S' to Start",
+                    "YOU PASSED THE LEVEL",
+                    "You passed " + carsPassed + " cars!",
+                    "Press 'S' to Start to move to the Next Level",
                     "Use Arrow Keys to Move",
                     "Avoid Obstacles and Pass Enemy Cars");
         } else if (gameState == CommandCenter.GameState.PLAYING) {

@@ -37,7 +37,10 @@ public class Game implements Runnable, KeyListener {
     private final Thread animationThread;
 
     @Getter
-    private GameTimer gameTimer;
+    public GameTimer gameTimer;
+
+    @Getter
+    public static Game instance;
 
 
     //key-codes
@@ -72,8 +75,7 @@ public class Game implements Runnable, KeyListener {
         //set as daemon so as not to block the main thread from exiting
         animationThread.setDaemon(true);
         animationThread.start();
-
-
+        instance = this;
 
     }
 
@@ -109,6 +111,18 @@ public class Game implements Runnable, KeyListener {
                 // Check if time is up
                 if (gameTimer.isTimeUp()) {
                     CommandCenter.getInstance().setGameState(CommandCenter.GameState.TIME_UP);
+                    int carPassed = CommandCenter.getInstance().getCarsPassed();
+                    int carTarget = CommandCenter.getInstance().getCAR_PASS_THRESHOLD();
+                    if (carPassed >= carTarget) {
+                        CommandCenter.getInstance().CAR_PASS_THRESHOLD += 5;
+//                        int level = CommandCenter.getInstance().getLevel();
+//                        level = level + 1;
+//                        CommandCenter.getInstance().setLevel(level);
+                        CommandCenter.getInstance().setGameState(CommandCenter.GameState.START_SCREEN);
+                    } else {
+                        CommandCenter.getInstance().setGameState(CommandCenter.GameState.GAME_OVER);
+                    }
+
                     continue; // Skip the rest of the loop to stop game updates
                 }
             }
@@ -121,7 +135,7 @@ public class Game implements Runnable, KeyListener {
             gamePanel.update(gamePanel.getGraphics());
 
             checkCollisions();
-            checkNewLevel();
+            keepSpawningEnemies();
             checkFloaters();
             updateCarsPassed();
             //this method will execute addToGame() and removeFromGame() callbacks on Movable objects
@@ -148,8 +162,8 @@ public class Game implements Runnable, KeyListener {
 
     private void checkFloaters() {
 
-        spawnShieldFloater();
         spawnNukeFloater();
+        spawnShieldFloater();
     }
 
     private void updateCarsPassed() {
@@ -163,7 +177,7 @@ public class Game implements Runnable, KeyListener {
 
                     // Assuming the game coordinate system where y increases downwards
                     // Check if the player's car has moved ahead of the enemy car
-                    System.out.println(enemyY);
+//                    System.out.println(enemyY);
                     if (playerY < enemyY) {
                         System.out.println("PASSED");
                         // Player has passed this enemy car
@@ -364,24 +378,24 @@ public class Game implements Runnable, KeyListener {
         }//end while
     }
 
-
+//works
     private void spawnShieldFloater() {
-
         if (CommandCenter.getInstance().getFrame() % ShieldFloater.SPAWN_SHIELD_FLOATER == 0) {
+            System.out.println("SPAWNNN SHIELD");
             CommandCenter.getInstance().getOpsQueue().enqueue(new ShieldFloater(), GameOp.Action.ADD);
         }
     }
 
     private void spawnNukeFloater() {
-
-        if (CommandCenter.getInstance().getFrame() % NukeFloater.SPAWN_NUKE_FLOATER == 0) {
-            CommandCenter.getInstance().getOpsQueue().enqueue(new NukeFloater(), GameOp.Action.ADD);
+        if (CommandCenter.getInstance().getFrame() % TimeFloater.SPAWN_TIME_FLOATER == 0) {
+            System.out.println("SPAWNNN NUKE");
+            CommandCenter.getInstance().getOpsQueue().enqueue(new TimeFloater(), GameOp.Action.ADD);
         }
     }
 
 
     //this method spawns new Large (0) Asteroids
-    private void spawnBigAsteroids(int num) {
+    private void spawnEnemyCar(int num) {
         CommandCenter commandCenter = CommandCenter.getInstance();
         Random random = new Random();
 
@@ -434,48 +448,55 @@ public class Game implements Runnable, KeyListener {
 
 
 
-    private boolean isLevelClear() {
-        //if there are no more Asteroids on the screen
-        boolean asteroidFree = true;
+    // BOTh of these make sure there is an endless loop going on when spawning enemies. If an enemy is not on the screen
+    // a new one will pop up
+    private boolean enemyOnScreen() {
+        //if there are no more Cars on the screen
+        boolean enemyFree = true;
         for (Movable movFoe : CommandCenter.getInstance().getMovFoes()) {
             if (movFoe instanceof EnemyCars) {
-                asteroidFree = false;
+                enemyFree = false;
                 break;
             }
         }
-        return asteroidFree;
+        System.out.println(enemyFree);
+        return enemyFree;
     }
 
-    private void checkNewLevel() {
+    private void keepSpawningEnemies() {
 
         //short-circuit if level not yet cleared
-        if (!isLevelClear()) return;
-
-        //currentLevel will be zero at beginning of game
-        int level = CommandCenter.getInstance().getLevel();
-        //award some points for having cleared the previous level
-        CommandCenter.getInstance().setScore(CommandCenter.getInstance().getScore() + (10_000L * level));
-
+        if (!enemyOnScreen()) {
+//            CommandCenter.getInstance().setGameState(CommandCenter.GameState.GAME_OVER);
+            return;
+        }
+//
+//
+//        //currentLevel will be zero at beginning of game
+//        int level = CommandCenter.getInstance().getLevel();
+//        //award some points for having cleared the previous level
+//        CommandCenter.getInstance().setScore(CommandCenter.getInstance().getScore() + (10_000L * level));
+//
         //center the falcon at each level-clear
         CommandCenter.getInstance().getUserCar().setCenter(new Point(Game.DIM.width / 2, (int)(Game.DIM.height * 0.8)));;
-
-        //Set universe according to mod of level - cycle through universes
-        int ordinal = level % CommandCenter.Universe.values().length;
-        CommandCenter.Universe key = CommandCenter.Universe.values()[ordinal];
-        CommandCenter.getInstance().setUniverse(CommandCenter.Universe.VERTICAL);
-        //players will need radar in the big universes, but they can still toggle it off
-        CommandCenter.getInstance().setRadar(ordinal > 1);
-
-        //bump the level up
-        level = level + 1;
-        CommandCenter.getInstance().setLevel(level);
+//
+//        //Set universe according to mod of level - cycle through universes
+//        int ordinal = level % CommandCenter.Universe.values().length;
+//        CommandCenter.Universe key = CommandCenter.Universe.values()[ordinal];
+//        CommandCenter.getInstance().setUniverse(CommandCenter.Universe.VERTICAL);
+//        //players will need radar in the big universes, but they can still toggle it off
+//        CommandCenter.getInstance().setRadar(ordinal > 1);
+//
+//        //bump the level up
+//        level = level + 1;
+//        CommandCenter.getInstance().setLevel(level);
         //spawn some big new asteroids
-        spawnBigAsteroids(1);
-        //make falcon invincible momentarily in case new asteroids spawn on top of him, and give player
-        //time to adjust to new universe and new asteroids in game space.
-        CommandCenter.getInstance().getUserCar().setShield(UserCar.INITIAL_SPAWN_TIME);
-        //show "Level: [X] UNIVERSE" in middle of screen
-        CommandCenter.getInstance().getUserCar().setShowLevel(UserCar.INITIAL_SPAWN_TIME);
+        spawnEnemyCar(1);
+//        //make falcon invincible momentarily in case new asteroids spawn on top of him, and give player
+//        //time to adjust to new universe and new asteroids in game space.
+//        CommandCenter.getInstance().getUserCar().setShield(UserCar.INITIAL_SPAWN_TIME);
+//        //show "Level: [X] UNIVERSE" in middle of screen
+//        CommandCenter.getInstance().getUserCar().setShowLevel(UserCar.INITIAL_SPAWN_TIME);
 
 
     }

@@ -104,7 +104,7 @@ public class MiniMap extends Sprite {
 
         //draw floater radar-blips
         CommandCenter.getInstance().getMovFloaters().forEach(mov -> {
-                    g.setColor(mov instanceof NukeFloater ? Color.YELLOW : Color.CYAN);
+                    g.setColor(mov instanceof TimeFloater ? Color.YELLOW : Color.CYAN);
                     Point translatedPoint = translatePoint(mov.getCenter());
                     g.fillRect(translatedPoint.x - 2, translatedPoint.y - 2, 4, 4);
                 }
