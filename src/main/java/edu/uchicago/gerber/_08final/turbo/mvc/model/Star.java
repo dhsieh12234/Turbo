@@ -76,8 +76,6 @@ public class Star implements Movable {
             center.y = (int) Math.round(center.y - CommandCenter.getInstance().getUserCar().getDeltaY());
         }
 
-
-
     }
 
 

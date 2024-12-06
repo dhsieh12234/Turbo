@@ -1,8 +1,11 @@
-package edu.uchicago.gerber._08final.turbo.mvc.model;
+package edu.uchicago.gerber._08final.turbo.mvc.Unused;
 
 import edu.uchicago.gerber._08final.turbo.mvc.controller.CommandCenter;
 import edu.uchicago.gerber._08final.turbo.mvc.controller.Game;
 import edu.uchicago.gerber._08final.turbo.mvc.controller.SoundLoader;
+import edu.uchicago.gerber._08final.turbo.mvc.model.Floater;
+import edu.uchicago.gerber._08final.turbo.mvc.model.Movable;
+import edu.uchicago.gerber._08final.turbo.mvc.model.UserCar;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -22,7 +25,7 @@ public class ShieldFloater extends Floater {
 		if (getExpiry() > 0) {
 			SoundLoader.playSound("shieldup.wav");
 			UserCar userCar = CommandCenter.getInstance().getUserCar();
-			userCar.setTeam(Team.FOE);
+//			userCar.setTeam(Team.FOE);
 			userCar.setShield(UserCar.MAX_SHIELD);
 		}
 

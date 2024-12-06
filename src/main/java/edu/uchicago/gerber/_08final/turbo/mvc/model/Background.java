@@ -13,7 +13,7 @@ public class Background extends Sprite {
     private final int height;
 
     // Define the three specific colors (not grey)
-    Color[] colors = {Color.BLUE, Color.RED, Color.GREEN};
+    Color[] colors = {Color.BLUE, Color.BLACK, Color.GREEN};
 
     // Randomly pick one of the three colors
     int colorIndex = Game.R.nextInt(colors.length);

@@ -112,22 +112,34 @@ public class GamePanel extends Panel {
         final int OFFSET_TOP = fontHeight + 10;
 
         // Draw the number of cars passed in the upper-left corner
+        Font largeFont = new Font("Arial", Font.BOLD, 24);
+        graphics.setFont(largeFont);
+
         int carsPassed = CommandCenter.getInstance().getCarsPassed();
         String carsPassedText = "Cars Passed: " + carsPassed;
-        graphics.drawString(carsPassedText, OFFSET_LEFT, OFFSET_TOP);
+
+        int yPosition = OFFSET_TOP + 50; // Adjust this value to move the text further down
+        graphics.drawString(carsPassedText, OFFSET_LEFT, yPosition);
+
 
 
         //draw the level upper-right corner
-        String levelText = "Level : [" + CommandCenter.getInstance().getLevel() + "]  " +
-        CommandCenter.getInstance().getUniverse().toString().replace('_', ' ');
-        graphics.drawString(levelText, Game.DIM.width - OFFSET_LEFT, fontHeight); //upper-right corner
-        graphics.drawString("Target : " + decimalFormat.format(CommandCenter.getInstance().getCAR_PASS_THRESHOLD()),
-                Game.DIM.width - OFFSET_LEFT,
-                fontHeight * 2);
+        // Set a larger font for the text
+
+        // Draw the target cars passed in the upper-right corner
+        String targetText = "Target Cars: " + decimalFormat.format(CommandCenter.getInstance().getCAR_PASS_THRESHOLD());
+        graphics.drawString(targetText, Game.DIM.width - OFFSET_LEFT, yPosition);
+
+//        String levelText = "Level : [" + CommandCenter.getInstance().getLevel() + "]  " +
+//        CommandCenter.getInstance().getUniverse().toString().replace('_', ' ');
+//        graphics.drawString(levelText, Game.DIM.width - OFFSET_LEFT, fontHeight); //upper-right corner
+//        graphics.drawString("Target : " + decimalFormat.format(CommandCenter.getInstance().getCAR_PASS_THRESHOLD()),
+//                Game.DIM.width - OFFSET_LEFT,
+//                fontHeight * 2);
 
         //build the status string array with possible messages in middle of screen
         List<String> statusArray = new ArrayList<>();
-        if (CommandCenter.getInstance().getUserCar().getShowLevel() > 0) statusArray.add(levelText);
+//        if (CommandCenter.getInstance().getUserCar().getShowLevel() > 0) statusArray.add(levelText);
 //        if (CommandCenter.getInstance().getUserCar().isMaxSpeedAttained()) statusArray.add("WARNING - SLOW DOWN");
 //        if (CommandCenter.getInstance().getUserCar().getNukeMeter() > 0) statusArray.add("PRESS F for NUKE");
 
@@ -199,7 +211,7 @@ public class GamePanel extends Panel {
             displayTextOnScreen(grpOff,
                     "WELCOME TO THE GAME",
                     "YOU PASSED THE LEVEL",
-                    "You passed the target of " + CommandCenter.getInstance().getCAR_PASS_THRESHOLD() + " cars!",
+                    "You passed the target of " + (CommandCenter.getInstance().getCAR_PASS_THRESHOLD() - 5) + " cars!",
                     "Press 'S' to Start to move to the Next Level",
                     "Use Arrow Keys to Move",
                     "Avoid Obstacles and Pass Enemy Cars");
