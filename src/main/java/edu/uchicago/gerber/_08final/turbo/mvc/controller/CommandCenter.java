@@ -113,10 +113,10 @@ public class CommandCenter {
 	private boolean gameOver;
 
 	@Getter
-    private int carsPassed;
+    private int carsPassed = 0;
 
 	@Setter @Getter
-	public int CAR_PASS_THRESHOLD = 25;
+	public int CAR_PASS_THRESHOLD = 5;
 
 
 
@@ -161,6 +161,7 @@ public class CommandCenter {
 //			spawnCar();
 			lastCarSpawnTime = currentTime;
 		}
+
 
 		// Remove cars that are off-screen
 		Iterator<Movable> iterator = movFoes.iterator();
@@ -239,13 +240,14 @@ public class CommandCenter {
 		setGameState(GameState.START_SCREEN);
 
 		Background background = new Background();
-		opsQueue.enqueue(background, GameOp.Action.ADD);
 
 		generateStarField();
 //		setDimHash();
 		setLevelFromEnv();
 		setScore(0);
+
 		carsPassed = 0;
+
 
 		setPaused(false);
 		setUniverse(Universe.VERTICAL);
@@ -276,7 +278,10 @@ public class CommandCenter {
 
 		userCar.decrementFalconNumAndSpawn();
 		opsQueue.enqueue(userCar, GameOp.Action.ADD);
+		opsQueue.enqueue(background, GameOp.Action.ADD);
 //		opsQueue.enqueue(miniMap, GameOp.Action.ADD);
+
+		System.out.println("User Car Type: " + userCar.getClass().getSimpleName());
 
 	}
 

@@ -67,7 +67,7 @@ public class Game implements Runnable, KeyListener {
 
         CommandCenter.getInstance().initGame();
 
-        gameTimer = new GameTimer(60_000);
+        gameTimer = new GameTimer(20_000);
         gameTimer.start();
 
         //fire up the animation thread
@@ -114,11 +114,14 @@ public class Game implements Runnable, KeyListener {
                     int carPassed = CommandCenter.getInstance().getCarsPassed();
                     int carTarget = CommandCenter.getInstance().getCAR_PASS_THRESHOLD();
                     if (carPassed >= carTarget) {
+                        System.out.println("GOOD JOB YOU PASS");
                         CommandCenter.getInstance().CAR_PASS_THRESHOLD += 5;
+
 //                        int level = CommandCenter.getInstance().getLevel();
 //                        level = level + 1;
 //                        CommandCenter.getInstance().setLevel(level);
-                        CommandCenter.getInstance().setGameState(CommandCenter.GameState.START_SCREEN);
+                        CommandCenter.getInstance().initGame();
+
                     } else {
                         CommandCenter.getInstance().setGameState(CommandCenter.GameState.GAME_OVER);
                     }
@@ -164,6 +167,7 @@ public class Game implements Runnable, KeyListener {
 
         spawnNukeFloater();
         spawnShieldFloater();
+        spawnShikanokoFloater();
     }
 
     private void updateCarsPassed() {
@@ -179,7 +183,7 @@ public class Game implements Runnable, KeyListener {
                     // Check if the player's car has moved ahead of the enemy car
 //                    System.out.println(enemyY);
                     if (playerY < enemyY) {
-                        System.out.println("PASSED");
+//                        System.out.println("PASSED");
                         // Player has passed this enemy car
                         enemyCar.setHasBeenPassed(true);
                         CommandCenter.getInstance().incrementCarsPassed();
@@ -393,6 +397,13 @@ public class Game implements Runnable, KeyListener {
         }
     }
 
+    private void spawnShikanokoFloater() {
+        if (CommandCenter.getInstance().getFrame() % Shikanoko.SPAWN_SHIKANOKO_FLOATER == 0) {
+            System.out.println("SPAWNNN SHIKANOKO");
+            CommandCenter.getInstance().getOpsQueue().enqueue(new Shikanoko(), GameOp.Action.ADD);
+        }
+    }
+
 
     //this method spawns new Large (0) Asteroids
     private void spawnEnemyCar(int num) {
@@ -459,7 +470,7 @@ public class Game implements Runnable, KeyListener {
                 break;
             }
         }
-        System.out.println(enemyFree);
+//        System.out.println(enemyFree);
         return enemyFree;
     }
 
