@@ -210,6 +210,7 @@ public class CommandCenter {
 		setLevel(0);
 		setScore(0);
 
+
 		carsPassed = 0;
 		paused = false;
 

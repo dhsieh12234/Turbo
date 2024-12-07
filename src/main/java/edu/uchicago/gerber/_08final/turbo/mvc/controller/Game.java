@@ -117,6 +117,7 @@ public class Game implements Runnable, KeyListener {
                     if (carPassed >= carTarget) {
 //                        System.out.println("GOOD JOB YOU PASS");
                         CommandCenter.getInstance().CAR_PASS_THRESHOLD += 5;
+                        gameTimer = new GameTimer(60_000);
 
                         int level = CommandCenter.getInstance().getLevel();
                         level = level + 1;
