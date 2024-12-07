@@ -1,5 +1,7 @@
 Here are some instructionsn of my game and how it works:
 
+Check turbo.mvc files and within in the controller, model and view folders
+
 So my game is modeled after the 1981 game Turbo where there is a target amount of cars and you have to pass the cars in
 order to accumulate points which determine whether you pass the level or not. You use the arrow keys on the keyboard to
 accelerate your car forward and steer them past the other cars, trying to achieve the highest score before the timer
